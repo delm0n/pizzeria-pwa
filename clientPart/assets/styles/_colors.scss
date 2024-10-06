@@ -1,0 +1,50 @@
+:root {
+  color-scheme: light;
+  --background: rgb(252 252 253);
+  --background-secondary: rgb(251 251 251);
+  --background-opacity: rgba(252, 252, 253, 0.7);
+
+  --icons: #3f3f3f;
+
+  --text-color: #3f3f3f;
+
+  --text-description: rgb(92, 99, 112);
+
+  --accent: #f4576d;
+
+  --overlay: rgba(24, 24, 27, 0.52);
+
+  --button-text: #f4576d;
+  --button-bg: rgb(247 189 197 / 50%);
+  --button-bg-hover: rgb(247 189 197 / 80%);
+
+  --placeholder-button: rgb(252 252 253);
+  --placeholder: rgb(240 240 240);
+
+  --scrollbar-modal: #f4576d;
+
+  --shadow: rgba(6, 5, 50, 0.15);
+}
+
+[data-dark="true"] {
+  color-scheme: dark;
+
+  --background: #252122;
+  --background-secondary: #2c2829;
+  --background-opacity: rgba(37, 33, 34, 0.75);
+  --icons: rgb(230 221 221);
+
+  --text-color: rgb(225 225 225);
+  --text-description: rgb(155 155 155);
+  --overlay: rgb(144 144 153 / 35%);
+
+  --button-text: #fff;
+  --button-bg: rgb(238 83 105 / 64%);
+  --button-bg-hover: rgb(242, 58, 84);
+
+  --placeholder-button: rgb(239 239 239);
+  --placeholder: rgb(71 69 71);
+
+  --scrollbar-modal: rgb(225 225 225);
+  --shadow: rgba(209, 209, 228, 0.1);
+}

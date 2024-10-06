@@ -1,0 +1,70 @@
+.button {
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+
+  border-radius: 10px;
+  padding: 10px 20px;
+  border: none;
+  white-space: nowrap;
+  text-align: center;
+
+  font-weight: 600;
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+  height: 40px;
+  color: var(--button-text);
+  background: var(--button-bg);
+  transition: all 0.3s;
+
+  @media (max-width: 576px) {
+    border-radius: 12px;
+    padding: 10px 16px;
+    font-size: 14px;
+    height: 37px;
+  }
+
+  &:hover,
+  &:active {
+    background: var(--button-bg-hover);
+  }
+}
+
+.main-button {
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+
+  border-radius: 10px;
+  padding: 10px 20px;
+  border: none;
+  white-space: nowrap;
+  text-align: center;
+
+  font-weight: 600;
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+
+  color: rgb(252 252 253);
+  background: #f4576d;
+  height: 40px;
+  transition: all 0.3s;
+
+  &:hover,
+  &:active {
+    background: rgb(242, 58, 84);
+  }
+
+  @media (max-width: 576px) {
+    border-radius: 12px;
+    padding: 10px 16px;
+    font-size: 14px;
+    height: 37px;
+  }
+}

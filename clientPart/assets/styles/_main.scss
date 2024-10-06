@@ -1,0 +1,83 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  outline: none;
+  list-style-type: none;
+}
+
+picture {
+  display: flex;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  font-family: "Montserrat", sans-serif;
+
+  background: var(--background);
+  color: var(--text-color);
+}
+
+.container {
+  max-width: calc(1400px + 10px * 2);
+  width: 95%;
+  margin: 0 auto;
+  padding: 0 20px;
+
+  @media (max-width: 1280px) {
+    width: 85%;
+  }
+
+  @media (max-width: 992px) {
+    width: 90%;
+    max-width: 820px;
+  }
+
+  @media (max-width: 576px) {
+    padding: 0 16px;
+    width: 100%;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  background-color: rgba(239, 239, 239, 0.5);
+
+  @media (max-width: 576px) {
+    width: 6px;
+  }
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: rgba(57, 57, 57, 0.3);
+  z-index: 1;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(57, 57, 57, 0.45);
+  }
+
+  &:active {
+    background: rgba(57, 57, 57, 0.6);
+  }
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: rgba(239, 239, 239, 0.2);
+}
+
+*::selection {
+  background: rgba(206, 205, 205, 0.8);
+  color: #2b2b2b;
+}
+
+img {
+  max-width: 100%;
+}
+
+@import "./vars";
+@import "./components/dishes";
