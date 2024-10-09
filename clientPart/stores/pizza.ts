@@ -16,7 +16,6 @@ export const usePizzaStore = defineStore('pizzaStore', {
             return state.pizzas.find(el => el.PizzaId == pizzaId)!;
         },
 
-
         getPizzaSize: (state) => (pizzaId: number, pizzaSizeId: number): IPizzaSize => {
             return state.pizzas.find(el => el.PizzaId == pizzaId)!.PizzaSizes.find(el => el.PizzaSizeId == pizzaSizeId)!;
         },

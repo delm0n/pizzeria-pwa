@@ -21,7 +21,8 @@ export const useIngredientStore = defineStore('ingredientStore', {
                         UrlImg: element.UrlImg,
                         Mass: element.Mass,
                         Price: element.Price,
-                        Active: false
+                        Active: false,
+                        Type: element.Type,
                     });
                 });
 

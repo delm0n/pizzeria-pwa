@@ -14,14 +14,18 @@
             v-for="(item, index) in links"
             :key="index"
             @click="scrollTo(item.id)"
-            class="link-box__item"
+            :class="[
+              'link-box__item',
+              activeSection == item.id ? 'link-box__item--active' : '',
+            ]"
           >
             {{ item.title }}
           </li>
         </ul>
 
-        <div class="button-box">
+        <div v-if="viewport.isGreaterOrEquals('mobileWide')" class="cart-box">
           <NuxtLink to="/cart" class="main-button">Корзина</NuxtLink>
+          <nav-bar-notification />
         </div>
       </div>
     </div>
@@ -29,9 +33,12 @@
 </template>
 
 <script lang="ts">
+import NavBarNotification from "./NavBarNotification.vue";
+
 export default defineNuxtComponent({
   setup() {
     const store = useDishStore();
+    const viewport = useViewport();
 
     const links = [
       {
@@ -51,18 +58,27 @@ export default defineNuxtComponent({
     return {
       links,
       scrollTo,
+      viewport,
     };
   },
 
   data() {
     return {
       isFixed: false,
+      activeSection: "pizza",
     };
   },
 
   methods: {
     handleScroll() {
       this.isFixed = window.pageYOffset < 120 ? false : true;
+
+      this.links.forEach((element) => {
+        let hgt = document
+          .getElementById(element.id)!
+          .getBoundingClientRect().top;
+        hgt <= window.innerHeight ? (this.activeSection = element.id) : "";
+      });
     },
   },
 
@@ -72,6 +88,10 @@ export default defineNuxtComponent({
 
   beforeDestroy() {
     window.removeEventListener("scroll", this.handleScroll);
+  },
+
+  components: {
+    NavBarNotification,
   },
 });
 </script>
@@ -83,6 +103,10 @@ nav {
   top: 0px;
   z-index: 10;
   background-color: var(--background-opacity);
+
+  .container {
+    position: relative;
+  }
 
   &.fixed {
     box-shadow: var(--shadow) 0px 2px 15px -2px;
@@ -137,6 +161,14 @@ nav {
         &:hover {
           color: var(--accent);
         }
+
+        &--active {
+          color: var(--accent);
+
+          &:hover {
+            color: var(--accent-hover);
+          }
+        }
       }
 
       .logo {
@@ -151,12 +183,6 @@ nav {
         &.fixed {
           width: 55px;
         }
-      }
-    }
-
-    .button-box {
-      @media (max-width: 576px) {
-        display: none;
       }
     }
   }

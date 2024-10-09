@@ -42,12 +42,8 @@ body {
 }
 
 ::-webkit-scrollbar {
-  width: 12px;
+  width: 10px;
   background-color: rgba(239, 239, 239, 0.5);
-
-  @media (max-width: 576px) {
-    width: 6px;
-  }
 }
 
 ::-webkit-scrollbar-thumb {
@@ -80,4 +76,5 @@ img {
 }
 
 @import "./vars";
-@import "./components/dishes";
+@import "./components/addish-item";
+@import "./components/addish-cart";

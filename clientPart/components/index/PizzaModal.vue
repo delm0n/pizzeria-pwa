@@ -90,7 +90,12 @@ const addToCart = () => {
     Count: storeModal.pizzaCountModal,
   };
 
-  storeCart.addPizzaCart(newPizza);
+  if (storeModal.isEdit) {
+    storeCart.editPizzaCart(newPizza, storeModal.isEditIndex);
+  } else {
+    storeCart.addPizzaCart(newPizza);
+  }
+
   storeModal.setModalVisible(false);
 };
 </script>
@@ -232,7 +237,7 @@ const addToCart = () => {
         width: 100%;
         max-width: 220px;
 
-        @media (max-width: 425px) {
+        @media (max-width: 426px) {
           max-width: 100%;
         }
       }

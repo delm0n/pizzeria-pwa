@@ -58,7 +58,7 @@
 
   &:hover,
   &:active {
-    background: rgb(242, 58, 84);
+    background: var(--accent-hover);
   }
 
   @media (max-width: 576px) {

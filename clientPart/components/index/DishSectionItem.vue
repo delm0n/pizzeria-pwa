@@ -1,4 +1,3 @@
-div
 <template>
   <article class="addish-item" v-if="!!dish">
     <div class="addish-item__img">
@@ -82,7 +81,7 @@ const props = defineProps<{
   text-decoration: none;
   perspective: 1000px;
 
-  @media (max-width: 425px) {
+  @media (max-width: 426px) {
     flex-grow: 1;
   }
 

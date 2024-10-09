@@ -21,12 +21,10 @@ export default defineNuxtConfig({
       desktopWide: 1600,
 
       mobile: 320,
-      mobileMedium: 426,
+      mobileMedium: 427,
       mobileWide: 577,
 
-
       tablet: 769,
-
     },
   },
 

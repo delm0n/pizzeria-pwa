@@ -10,6 +10,8 @@
       :id="item.id"
       :title="item.title"
     />
+
+    <cart-icon />
   </main>
 </template>
 
@@ -18,13 +20,16 @@ import PizzaSection from "~/components/index/PizzaSection.vue";
 import DishSection from "~/components/index/DishSection.vue";
 import AlwaysSection from "~/components/index/AlwaysSection.vue";
 import NavBar from "~/components/index/NavBar.vue";
+import CartIcon from "~/components/UI/CartIcon.vue";
 
 const store = useDishStore();
+
 await callOnce(store.fetch);
 </script>
 
 <style lang="scss">
 .index-main {
+  position: relative;
   section {
     padding-top: 120px;
 

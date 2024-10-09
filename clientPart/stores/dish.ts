@@ -40,9 +40,10 @@ export const useDishStore = defineStore('dishStore', {
         },
 
         setDishesById(id: number) {
-            this.dishes.forEach((element) => {
-                element.DishId == id ? (element.Count = 1) : "";
-            });
+            this.dishes.find(el => el.DishId == id)!.Count = 1
+
+            const storeNotification = useNotificationStore();
+            storeNotification.addNotification(this.dishes.find(el => el.DishId == id)!.Name);
         },
 
         setDishCount(id: number, val: number) {
@@ -100,6 +101,12 @@ export const useDishStore = defineStore('dishStore', {
                 }
             }
         },
+
+        getDishesPrice(): number {
+            return this.dishes.reduce(function (sum, item) {
+                return item.Count > 0 ? sum + item.Price * item.Count : sum;
+            }, 0)
+        }
     }
 })
 

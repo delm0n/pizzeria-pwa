@@ -17,5 +17,16 @@ namespace serverPart.Data.Entity
         public decimal Price { get; set; }
 
         public int Mass { get; set; }
+
+        public TypesIngredient Type { get; set; }
+
+        public enum TypesIngredient
+        {
+            Cheese = 0,
+            Meet = 1,
+            Mushrooms = 2,
+            Vegetables = 3,
+            Fruit = 4
+        }
     }
 }

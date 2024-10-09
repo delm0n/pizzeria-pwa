@@ -44,16 +44,10 @@ const storePizza = usePizzaStore();
 
   h2 {
     font-size: 24px;
-    margin-bottom: 10px;
     font-weight: 600;
 
     @media (max-width: 768px) {
       font-size: 18px;
-      margin-bottom: 10px;
-    }
-
-    @media (max-width: 576px) {
-      margin-bottom: 0;
     }
   }
 

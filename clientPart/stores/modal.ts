@@ -4,13 +4,15 @@ type State = {
     modalVisible: boolean;
     pizzaModal: IPizza | null;
     pizzaCountModal: number;
+    isEditIndex: number;
 }
 
 export const useModalStore = defineStore('modalStore', {
     state: (): State => ({
         modalVisible: false,
         pizzaModal: null,
-        pizzaCountModal: 1
+        pizzaCountModal: 1,
+        isEditIndex: -1,
     }),
 
     getters: {
@@ -38,6 +40,18 @@ export const useModalStore = defineStore('modalStore', {
             return 0
 
         },
+
+        isEdit(): boolean {
+            return this.isEditIndex != -1
+        },
+
+        isTouchDevice(): boolean {
+            return (
+                'ontouchstart' in window ||
+                navigator.maxTouchPoints > 0 ||
+                window.matchMedia('(pointer: coarse)').matches
+            )
+        }
     },
 
     actions: {
@@ -48,12 +62,25 @@ export const useModalStore = defineStore('modalStore', {
             }, 300)
 
 
+            let bodyStyle = document.querySelector('body')!.style;
+
             if (value) {
-                document.querySelector('body')!.style.overflow = 'hidden';
+                bodyStyle.overflow = 'hidden';
+
+                if (!this.isTouchDevice) {
+                    bodyStyle.paddingRight = '10px'
+                }
+
                 this.pizzaCountModal = 1;
             }
             else {
-                document.querySelector('body')!.style.overflow = 'visible';
+                bodyStyle.overflow = 'visible';
+
+                if (!this.isTouchDevice) {
+                    bodyStyle.paddingRight = '0'
+                }
+
+                this.isEditIndex = -1;
             }
         },
 
@@ -78,18 +105,21 @@ export const useModalStore = defineStore('modalStore', {
             });
         },
 
-        setModalCart(cart: IPizzaCart) {
+        setModalCart(cart: IPizzaCart, index: number) {
             const storePizza = usePizzaStore();
             this.pizzaModal = storePizza.pizzas.find(el => el.PizzaId == cart.PizzaId)!;
             this.pizzaModal.PizzaSizes.forEach((element) => {
                 element.PizzaSizeId == cart.PizzaSizeId ? (element.Active = true) : (element.Active = false)
             });
-            this.pizzaCountModal = cart.Count
 
             const storeIngredient = useIngredientStore();
             storeIngredient.setIngredientsByIdArray(cart.IngredientsId);
 
-            this.setModalVisible(true)
+            this.isEditIndex = index;
+            this.setModalVisible(true);
+
+            //переприсваивание setModalVisible
+            this.pizzaCountModal = cart.Count
         }
 
     }

@@ -3,7 +3,6 @@ type State = {
     pizzas: IPizzaCart[]
 }
 
-
 export const useCartStore = defineStore('cartStore', {
     state: (): State => ({
         pizzas: []
@@ -25,6 +24,13 @@ export const useCartStore = defineStore('cartStore', {
                 // Если пиццы нет, добавляем новую
                 this.pizzas.push(newPizza);
             }
+
+            const storePizza = usePizzaStore();
+            const storeNotification = useNotificationStore();
+
+            storeNotification.addNotification(storePizza.getPizza(newPizza.PizzaId).PizzaName
+                + ', '
+                + storePizza.getPizzaSize(newPizza.PizzaId, newPizza.PizzaSizeId).NameSize.toLowerCase())
         },
 
         setPizzaCount(newPizza: IPizzaCart, val: number) {
@@ -38,6 +44,10 @@ export const useCartStore = defineStore('cartStore', {
         removePizzaCart(index: number) {
             this.pizzas.splice(index, 1)
         },
+
+        editPizzaCart(newPizza: IPizzaCart, index: number) {
+            this.pizzas.splice(index, 1, newPizza)
+        }
 
     },
 
@@ -61,7 +71,22 @@ export const useCartStore = defineStore('cartStore', {
             },
                 storePizza.getPizzaSize(cart.PizzaId, cart.PizzaSizeId).Price
             ) * cart.Count;
-        }
+        },
+
+        getAllCount(): number {
+            const storeDish = useDishStore();
+            return this.pizzas.length + storeDish.dishes.filter(el => el.Count > 0).length
+        },
+
+        getAllPrice(): number {
+            const storeDish = useDishStore();
+
+            return this.pizzas.reduce((sum, element) => {
+                return sum + this.getPrice(element)
+            }, storeDish.getDishesPrice)
+
+
+        },
     }
 })
 
