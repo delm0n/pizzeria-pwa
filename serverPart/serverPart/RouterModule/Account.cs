@@ -15,52 +15,13 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
+
 namespace serverPart.RouterModule
 {
     public class Account : NancyModule
     {
         public Account()
         {
-
-            Post["/client-re", runAsync: true] = async (x, token) =>
-            {
-                string token_headers = Request.Headers["Authorization"].FirstOrDefault();
-
-                if (token_headers == PersonalToken.getToken())
-                {
-                    x = this.Bind<Client>();
-                    int clientId = x.ClientId;
-
-                    using (var dbContext = new ApplicationContext())
-                    {
-                        Client client = await dbContext.Clients.Where(c => c.ClientId == clientId).FirstOrDefaultAsync();
-                        if (client != null)
-                        {
-                            //если клиент существует
-                            client.FirstName = x.FirstName; client.Password = x.Password;
-                            await dbContext.SaveChangesAsync();
-
-                            var response = new Response();
-                            response.StatusCode = (Nancy.HttpStatusCode)200;
-                            response.Headers["Access-Control-Allow-Origin"] = "*";
-                            response.Headers["Access-Control-Allow-Method"] = "POST";
-                            response.Headers["Access-Control-Expose-Headers"] = "Client"; 
-                            response.Headers["Content-Type"] = "application/json";
-                            response.Headers["Client"] = System.Text.Json.JsonSerializer.Serialize(client); 
-                            return response;
-                        }
-                        else
-                        {
-                            return new Response() { StatusCode = Nancy.HttpStatusCode.NotFound };
-                        }
-                    }
-                }
-                else
-                {
-                    return new Response() { StatusCode = Nancy.HttpStatusCode.Unauthorized };
-                }
-            };
-
 
             Post["/enter", runAsync: true] = async (x, token) =>
             {
@@ -74,26 +35,26 @@ namespace serverPart.RouterModule
                 }
 
                 if (client == null) //если клиент не зарегистрирован
-                    return "Not";
+                    return "false";
 
                 else
                 {
-                    var response = new Response();
-                    response.StatusCode = (Nancy.HttpStatusCode)200;
-                    response.Headers["Access-Control-Allow-Origin"] = "*";
-                    response.Headers["Access-Control-Allow-Method"] = "POST";
-                    PersonalToken.setToken(tel + ":" + Convert.ToBase64String(Guid.NewGuid().ToByteArray()));
-                    response.Headers["Token"] = PersonalToken.getToken();
-                    response.Headers["Access-Control-Expose-Headers"] = "Token, Client"; //для прочтения заголовков клиентом
-                    response.Headers["Content-Type"] = "application/json";
-                    response.Headers["Client"] = System.Text.Json.JsonSerializer.Serialize(client); //данные о клиенте
+                    //var response = new Response();
+                    //response.StatusCode = (Nancy.HttpStatusCode)200;
+                    //response.Headers["Access-Control-Allow-Origin"] = "*";
+                    //response.Headers["Access-Control-Allow-Method"] = "POST";
+                    //PersonalToken.setToken(tel + ":" + Convert.ToBase64String(Guid.NewGuid().ToByteArray()));
+                    //response.Headers["Token"] = PersonalToken.getToken();
+                    //response.Headers["Access-Control-Expose-Headers"] = "Token, Client"; //для прочтения заголовков клиентом
+                    //response.Headers["Content-Type"] = "application/json";
+                    //response.Headers["Client"] = JsonSerializer.Serialize(client); //данные о клиенте
 
-                    return response;
+                    return JsonSerializer.Serialize ( client );
                 }
             };
 
 
-            Post["/registr", runAsync: true] = async (x, token) =>
+            Post["/registration", runAsync: true] = async (x, token) =>
             {
                 x = this.Bind<Client>();
                 Client client = new Client(); string tel = x.Telephone; string email = x.Email;
@@ -101,38 +62,39 @@ namespace serverPart.RouterModule
                 using (var dbContext = new ApplicationContext())
                 {
                     if (await dbContext.Clients.Where(c => c.Telephone == tel).FirstOrDefaultAsync() != null)
-                        return "Tel";
-                    
-                    //if (await dbContext.Clients.Where(c => c.Email == email).FirstOrDefaultAsync() != null)
-                    //    return "Em";
+                        return "false";
 
                     else
                     {  //если клиент с таким номером телефона и почтой не зарегистрирован
 
-                        client.Telephone = x.Telephone; client.FirstName = x.FirstName;
-                        client.Password = x.Password; client.Email = x.Email;
-                        dbContext.Clients.Add(client); await dbContext.SaveChangesAsync();
+                        client.Telephone = x.Telephone; 
+                        client.FirstName = x.FirstName;
+                        client.Password = x.Password; 
+                        client.Email = x.Email;
+                        dbContext.Clients.Add(client); 
 
-                        client = await dbContext.Clients.Where(c => c.Telephone == tel).FirstOrDefaultAsync();
-                        Cart cart = new Cart() { ClientId = client.ClientId };
-                        dbContext.Carts.Add(cart);
                         await dbContext.SaveChangesAsync();
+
+                        //client = await dbContext.Clients.Where(c => c.Telephone == tel).FirstOrDefaultAsync();
+                        //Cart cart = new Cart() { ClientId = client.ClientId };
+                        //dbContext.Carts.Add(cart);
+                        //await dbContext.SaveChangesAsync();
                         
                     }
                 }
 
-                var response = new Response();
+                //var response = new Response();
 
-                response.StatusCode = (Nancy.HttpStatusCode)200;
-                response.Headers["Access-Control-Allow-Origin"] = "*";
-                response.Headers["Access-Control-Allow-Method"] = "POST";
-                response.Headers["Client"] = System.Text.Json.JsonSerializer.Serialize(client);
-                PersonalToken.setToken(tel + ":" + Convert.ToBase64String(Guid.NewGuid().ToByteArray()));
-                response.Headers["Token"] = PersonalToken.getToken();
-                response.Headers["Access-Control-Expose-Headers"] = "Token, Client"; //для прочтения заголовков клиентом
-                response.Headers["Content-Type"] = "application/json";
+                //response.StatusCode = (Nancy.HttpStatusCode)200;
+                //response.Headers["Access-Control-Allow-Origin"] = "*";
+                //response.Headers["Access-Control-Allow-Method"] = "POST";
+                //response.Headers["Client"] = System.Text.Json.JsonSerializer.Serialize(client);
+                //PersonalToken.setToken(tel + ":" + Convert.ToBase64String(Guid.NewGuid().ToByteArray()));
+                //response.Headers["Token"] = PersonalToken.getToken();
+                //response.Headers["Access-Control-Expose-Headers"] = "Token, Client"; //для прочтения заголовков клиентом
+                //response.Headers["Content-Type"] = "application/json";
 
-                return response;
+                return JsonSerializer.Serialize ( client );
             };
 
 

@@ -17,8 +17,11 @@ namespace serverPart.Data
         public DbSet<Dish> Dishes { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<ConstructorPizza> ConstructorPizzas { get; set; }
+        public DbSet<Promocode> Promocodes { get; set; }
 
-        public ApplicationContext() : base(nameOrConnectionString: "PGConnectionString") { }
+
+        public ApplicationContext () : base(nameOrConnectionString: "PGConnectionString") { }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

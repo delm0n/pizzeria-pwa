@@ -95,6 +95,7 @@
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.6.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Text.Encodings.Web, Version=4.0.4.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Text.Encodings.Web.4.6.0\lib\netstandard2.0\System.Text.Encodings.Web.dll</HintPath>
     </Reference>
@@ -123,13 +124,13 @@
     <Compile Include="Data\ApplicationContext.cs" />
     <Compile Include="Data\Entity\Cart.cs" />
     <Compile Include="Data\Entity\Client.cs" />
+    <Compile Include="Data\Entity\ConstructorPizza.cs" />
     <Compile Include="Data\Entity\Dish.cs" />
     <Compile Include="Data\Entity\Ingredient.cs" />
     <Compile Include="Data\Entity\Order.cs" />
-    <Compile Include="Data\EntitySupport\PizzaAll.cs" />
     <Compile Include="Data\Entity\Pizza.cs" />
-    <Compile Include="Data\EntitySupport\SizePizza.cs" />
     <Compile Include="Data\Entity\PizzaSize.cs" />
+    <Compile Include="Data\Entity\Promocode.cs" />
     <Compile Include="Data\Helper\DishCart.cs" />
     <Compile Include="Data\Helper\EmailBetween.cs" />
     <Compile Include="Data\Helper\PizzaCart.cs" />
@@ -142,6 +143,26 @@
     <Compile Include="Migrations\202410091105035_TypeIngredients.cs" />
     <Compile Include="Migrations\202410091105035_TypeIngredients.Designer.cs">
       <DependentUpon>202410091105035_TypeIngredients.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202410201614429_Constructor.cs" />
+    <Compile Include="Migrations\202410201614429_Constructor.Designer.cs">
+      <DependentUpon>202410201614429_Constructor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202410201624254_Constructor2.cs" />
+    <Compile Include="Migrations\202410201624254_Constructor2.Designer.cs">
+      <DependentUpon>202410201624254_Constructor2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202410201625268_HideUnusedFeild.cs" />
+    <Compile Include="Migrations\202410201625268_HideUnusedFeild.Designer.cs">
+      <DependentUpon>202410201625268_HideUnusedFeild.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202410201727290_AddedNewField.cs" />
+    <Compile Include="Migrations\202410201727290_AddedNewField.Designer.cs">
+      <DependentUpon>202410201727290_AddedNewField.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202410201852423_AddPromocode.cs" />
+    <Compile Include="Migrations\202410201852423_AddPromocode.Designer.cs">
+      <DependentUpon>202410201852423_AddPromocode.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
@@ -163,6 +184,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202410091105035_TypeIngredients.resx">
       <DependentUpon>202410091105035_TypeIngredients.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202410201614429_Constructor.resx">
+      <DependentUpon>202410201614429_Constructor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202410201624254_Constructor2.resx">
+      <DependentUpon>202410201624254_Constructor2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202410201625268_HideUnusedFeild.resx">
+      <DependentUpon>202410201625268_HideUnusedFeild.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202410201727290_AddedNewField.resx">
+      <DependentUpon>202410201727290_AddedNewField.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202410201852423_AddPromocode.resx">
+      <DependentUpon>202410201852423_AddPromocode.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

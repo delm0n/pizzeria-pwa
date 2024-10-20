@@ -1,7 +1,7 @@
 
 type State = {
     pizzas: IPizza[];
-    pizzasByСountOrder: IPizza[]
+    pizzasByСountOrder: IPizza[];
 }
 
 export const usePizzaStore = defineStore('pizzaStore', {
@@ -70,16 +70,12 @@ export const usePizzaStore = defineStore('pizzaStore', {
                     });
                 });
 
-                //устанавливаем первую пиццу в модальное окно
-                const storeModal = useModalStore();
-                storeModal.pizzaModal = this.pizzas[0];
-
                 //для блока always чаще всего заказывают
-                let array = this.pizzas;
+                let array = this.pizzas.slice(0);
                 this.pizzasByСountOrder = array.sort((a, b) => b.СountOrder - a.СountOrder).slice(0, 3)
             }
             catch {
-                console.log('error');
+                console.log('error pizzaStore');
             }
         },
     }

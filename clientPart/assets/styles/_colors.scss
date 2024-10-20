@@ -26,6 +26,8 @@
   --scrollbar-modal: #f4576d;
 
   --shadow: rgba(6, 5, 50, 0.15);
+
+  --input-background-hover: rgba(238, 238, 238, 0.6);
 }
 
 [data-dark="true"] {
@@ -51,4 +53,6 @@
 
   --scrollbar-modal: rgb(225 225 225);
   --shadow: rgba(209, 209, 228, 0.1);
+
+  --input-background-hover: rgb(31, 29, 29);
 }

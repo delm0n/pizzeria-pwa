@@ -41,7 +41,10 @@
           <p v-if="viewport.isGreaterOrEquals('mobileWide')">Бонусы</p>
         </NuxtLink>
 
-        <NuxtLink to="/login">
+        <div
+          v-if="!storeClient.isAutorization"
+          @click="storeModal.openModalEnter()"
+        >
           <button
             v-if="viewport.isGreaterOrEquals('mobileWide')"
             class="button"
@@ -51,7 +54,7 @@
 
           <svg
             v-else
-            class="icon-box__account"
+            class="icon-box__login"
             xmlns="http://www.w3.org/2000/svg"
             width="40"
             height="42"
@@ -67,6 +70,28 @@
               fill="black"
             />
           </svg>
+        </div>
+
+        <NuxtLink to="/account" class="icon-box__account" v-else>
+          <svg
+            class="icon-box__login"
+            xmlns="http://www.w3.org/2000/svg"
+            width="40"
+            height="42"
+            viewBox="0 0 40 42"
+            fill="none"
+          >
+            <path
+              d="M20 23.1C13.6344 23.1 8.44998 17.9156 8.44998 11.55C8.44998 5.18437 13.6344 0 20 0C26.3656 0 31.55 5.18437 31.55 11.55C31.55 17.9156 26.3656 23.1 20 23.1ZM20 2.1C14.791 2.1 10.55 6.34102 10.55 11.55C10.55 16.759 14.791 21 20 21C25.209 21 29.45 16.759 29.45 11.55C29.45 6.34102 25.209 2.1 20 2.1Z"
+              fill="black"
+            />
+            <path
+              d="M36.8 42H3.19999C1.46093 42 0.0499878 40.5891 0.0499878 38.85C0.0499878 38.7106 0.0828004 35.3145 2.62577 31.9184C4.11053 29.9414 6.13671 28.3746 8.65507 27.259C11.7312 25.8891 15.5457 25.2 20.0082 25.2C24.4707 25.2 28.2851 25.8891 31.3613 27.259C33.8797 28.3746 35.9058 29.9414 37.3824 31.9184C39.9254 35.3063 39.9582 38.7024 39.9582 38.85C39.95 40.5891 38.5391 42 36.8 42ZM20 27.3C12.6746 27.3 7.27694 29.3016 4.37303 33.0914C2.19921 35.9297 2.14999 38.8254 2.14999 38.8582C2.14999 39.4324 2.61757 39.9082 3.19999 39.9082H36.8C37.3824 39.9082 37.85 39.4406 37.85 38.8582C37.85 38.8336 37.8008 35.9297 35.6269 33.0914C32.723 29.3016 27.3172 27.3 20 27.3Z"
+              fill="black"
+            />
+          </svg>
+
+          <p v-html="storeClient.client.FirstName"></p>
         </NuxtLink>
       </div>
     </header>
@@ -75,6 +100,9 @@
 
 <script setup lang="ts">
 import ThemeToggle from "~/components/UI/ThemeToggle.vue";
+
+const storeClient = useClientStore();
+const storeModal = useModalStore();
 const viewport = useViewport();
 </script>
 
@@ -162,17 +190,41 @@ const viewport = useViewport();
       }
     }
 
-    &__account {
+    &__login {
       width: 25px;
+      height: 45px;
       cursor: pointer;
 
-      &:hover {
-        opacity: 0.9;
+      @media (min-width: 577px) {
+        path {
+          stroke-width: 0.85px !important;
+        }
+      }
+
+      @media (hover: hover) {
+        &:hover {
+          opacity: 0.9;
+        }
       }
     }
 
     .main-button {
       width: 93px;
+    }
+
+    &__account {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+
+      p {
+        font-weight: 600;
+        color: var(--text-color);
+
+        @media (max-width: 576px) {
+          display: none;
+        }
+      }
     }
   }
 }

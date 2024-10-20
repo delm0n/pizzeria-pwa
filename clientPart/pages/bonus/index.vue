@@ -1,3 +1,3 @@
 <template>
-  <main>bonus</main>
+  <main class="bonus-main">bonus</main>
 </template>

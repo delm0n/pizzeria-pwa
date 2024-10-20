@@ -4,9 +4,9 @@
     <always-section />
     <pizza-section />
     <dish-section
-      v-for="(item, index) in store.getDishByType"
+      v-for="(item, index) in storeDish.getDishByType"
       :key="index"
-      :dishes="store.dishes.filter((el) => el.DishType == item.type)"
+      :dishes="storeDish.dishes.filter((el) => el.DishType == item.type)"
       :id="item.id"
       :title="item.title"
     />
@@ -22,14 +22,13 @@ import AlwaysSection from "~/components/index/AlwaysSection.vue";
 import NavBar from "~/components/index/NavBar.vue";
 import CartIcon from "~/components/UI/CartIcon.vue";
 
-const store = useDishStore();
-
-await callOnce(store.fetch);
+const storeDish = useDishStore();
 </script>
 
 <style lang="scss">
 .index-main {
   position: relative;
+
   section {
     padding-top: 120px;
 
@@ -39,6 +38,10 @@ await callOnce(store.fetch);
 
     @media (max-width: 576px) {
       padding-top: 50px;
+
+      h2 {
+        margin-bottom: 0;
+      }
     }
   }
 }

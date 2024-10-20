@@ -4,7 +4,7 @@
       <h2 v-if="cartStore.getAllCount != 0">
         {{ formTovar(cartStore.getAllCount) }} на {{ cartStore.getAllPrice }} ₽
       </h2>
-      <h2 v-else>Ваша корзина пуста :(</h2>
+      <h2 v-else>Ваша корзина пуста <span class="emoji">:(</span></h2>
     </div>
   </section>
 </template>

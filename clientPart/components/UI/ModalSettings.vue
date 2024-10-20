@@ -1,7 +1,7 @@
 <template>
   <transition>
     <div
-      v-show="store.modalOpen"
+      v-show="store.modalVisible"
       class="modal-overlay"
       @click.self="store.setModalVisible(false)"
     >
@@ -56,16 +56,9 @@ const store = useModalStore();
   background: var(--background);
   border-radius: 10px;
   position: relative;
-  max-width: 900px;
   width: 100%;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 
-  @media (max-width: 992px) {
-    max-width: 768px;
-  }
-  @media (max-width: 768px) {
-    max-width: 596px;
-  }
   .close-button {
     position: absolute;
     top: -30px;

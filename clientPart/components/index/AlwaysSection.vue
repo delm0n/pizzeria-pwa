@@ -8,9 +8,12 @@
           v-for="pizza in storePizza.pizzasByСountOrder"
           :key="pizza.PizzaId"
         >
-          <div class="always-item" @click="storeModal.openModal(pizza.PizzaId)">
+          <div
+            class="always-item"
+            @click="storeModal.openModalPizza(pizza.PizzaId)"
+          >
             <div class="always-item__img">
-              <nuxt-picture
+              <NuxtPicture
                 format="avif,webp"
                 sizes="90px"
                 :src="'/images/pizzas/' + pizza.UrlImg + '.png'"
@@ -75,8 +78,10 @@ const storePizza = usePizzaStore();
       border-radius: 10px;
       cursor: pointer;
 
-      &:hover {
-        box-shadow: var(--shadow) 0px 2px 10px -2px;
+      @media (hover: hover) {
+        &:hover {
+          box-shadow: var(--shadow) 0px 2px 10px -2px;
+        }
       }
 
       &__img {

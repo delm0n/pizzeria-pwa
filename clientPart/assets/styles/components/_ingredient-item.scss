@@ -1,0 +1,76 @@
+.ingredient-item {
+  cursor: pointer;
+  outline: 2px solid var(--placeholder);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 10px;
+  transition: all 0.15s;
+  position: relative;
+  background: var(--background);
+
+  .ingredient-icon {
+    opacity: 0;
+    transition: all 0.15s;
+    position: absolute;
+    top: 4px;
+    right: 4px;
+
+    path {
+      fill: var(--accent);
+    }
+
+    &--active {
+      opacity: 1;
+    }
+  }
+
+  &--active {
+    outline: 3px solid var(--accent);
+    transform: scale(0.97);
+  }
+
+  &__img {
+    aspect-ratio: 1/1;
+    width: 100%;
+    margin: 0 auto 5px;
+
+    picture {
+      justify-content: center;
+    }
+  }
+
+  &__content {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    .content-title {
+      h5,
+      p {
+        text-align: center;
+        font-weight: 300;
+      }
+
+      h5 {
+        font-size: 12px;
+      }
+
+      p {
+        font-size: 14px;
+        white-space: nowrap;
+      }
+    }
+
+    .content-price {
+      flex-grow: 1;
+      display: flex;
+      align-items: flex-end;
+      font-weight: 600;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+  }
+}

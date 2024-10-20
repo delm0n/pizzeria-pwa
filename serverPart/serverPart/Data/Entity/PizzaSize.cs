@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
-//using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
-//using System.Text.Json;
-//using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 namespace serverPart.Data.Entity
 {
@@ -19,7 +17,7 @@ namespace serverPart.Data.Entity
 
         public int PizzaId { get; set;}
 
-        [JsonIgnore]
-        public Pizza Pizza { get; set; }
+        [JsonIgnore] // Use this for System.Text.Json
+        public virtual  Pizza Pizza { get; set; }
     }
 }

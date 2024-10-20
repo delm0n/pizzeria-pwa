@@ -18,6 +18,7 @@
 
 <style lang="scss">
 footer {
+  margin-top: 50px;
   box-shadow: var(--shadow) 0px 2px 15px -2px;
 
   .footer-wrapper {

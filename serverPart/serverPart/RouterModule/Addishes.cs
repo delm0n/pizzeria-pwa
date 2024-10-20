@@ -19,30 +19,36 @@ namespace serverPart.RouterModule
 
             Get["/pizzas", runAsync: true] = async ( x, token ) =>
             {
-                List<PizzaAll> pizzasAll = new List<PizzaAll>();
+                List<Pizza> pizzas = new List<Pizza>();
 
                 using ( var dbContext = new ApplicationContext ( ) )
                 {
-                    List<Pizza> pizzas = await dbContext.Pizzas.OrderBy(p => p.MinPrice).ToListAsync(); //все пиццы
+                    pizzas = await dbContext.Pizzas.OrderBy(p => p.MinPrice).ToListAsync(); //все пиццы
                     List<PizzaSize> pizzaSize = await dbContext.PizzaSizes.ToListAsync(); //все размеры всех пицц
 
                     for ( int i = 0; i < pizzas.Count; i++ )
                     {
-                        PizzaAll item = new PizzaAll(pizzas[i]);
-                        List<SizePizza> sizes = new List<SizePizza>();
-
                         //нужные три размера пиццы
-                        List<PizzaSize> itemSizes = pizzaSize.Where(p => p.PizzaId == pizzas[i].PizzaId).ToList();
-                        foreach ( var val in itemSizes )
-                            sizes.Add ( new SizePizza ( val ) );
-
-                        item.PizzaSizes = sizes;
-                        pizzasAll.Add ( item );
+                        pizzas[i].PizzaSizes = pizzaSize.Where(p => p.PizzaId == pizzas[i].PizzaId).ToList();
                     }
                 }
 
-                return JsonSerializer.Serialize ( pizzasAll );
+                var json = JsonSerializer.Serialize ( pizzas );
 
+                return json;
+
+            };
+
+            Get["/constructor-pizzas", runAsync: true] = async ( x, token ) =>
+            {
+                List<ConstructorPizza> constructorPizzas = new List<ConstructorPizza>();
+
+                using ( var dbContext = new ApplicationContext ( ) )
+                {
+                    constructorPizzas = await dbContext.ConstructorPizzas.ToListAsync ( );
+                }
+
+                return JsonSerializer.Serialize ( constructorPizzas );
             };
 
 

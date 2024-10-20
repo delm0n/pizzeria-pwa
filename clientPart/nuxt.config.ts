@@ -14,6 +14,10 @@ export default defineNuxtConfig({
     'nuxt-swiper',
   ],
 
+  plugins: [
+    { src: '~/plugins/vue-the-mask.ts' }
+  ],
+
   viewport: {
     breakpoints: {
       desktop: 1024,

@@ -1,0 +1,79 @@
+.pizza-input {
+  display: block;
+
+  &:not(:last-child) {
+    margin-bottom: 20px;
+
+    @media (max-width: 576px) {
+      margin-bottom: 15px;
+    }
+  }
+
+  span {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+
+    @media (max-width: 576px) {
+      font-size: 14px;
+    }
+  }
+
+  .input-container {
+    background: var(--background-secondary);
+    border: 1px solid #bbbbbb;
+    min-height: 48px;
+    padding: 12px;
+    border-radius: 6px;
+    position: relative;
+
+    cursor: text;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+
+    @media (max-width: 576px) {
+      font-size: 14px;
+      min-height: 41px;
+      padding: 10px;
+    }
+
+    input,
+    textarea {
+      resize: none;
+      background: transparent;
+      border: none;
+      width: 100%;
+      outline: 0 !important;
+      padding: 0;
+      display: flex;
+
+      color: var(--text-color);
+      font-size: 16px;
+      font-weight: 500;
+      font-family: "Montserrat", sans-serif;
+
+      @media (max-width: 576px) {
+        font-size: 14px;
+      }
+    }
+
+    svg {
+      cursor: pointer;
+      display: block;
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    &:hover,
+    &:active,
+    &:has(> input:focus),
+    &:has(> input:focus-visible) &:has(> textarea:focus),
+    &:has(> textarea:focus-visible) {
+      transition: 0.2s all;
+      background: var(--input-background-hover);
+    }
+  }
+}

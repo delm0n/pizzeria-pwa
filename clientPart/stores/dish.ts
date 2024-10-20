@@ -1,6 +1,7 @@
 
 type State = {
-    dishes: IDish[]
+    dishes: IDish[];
+
 }
 
 type myDish = {
@@ -12,6 +13,7 @@ type myDish = {
 export const useDishStore = defineStore('dishStore', {
     state: (): State => ({
         dishes: [],
+
     }),
 
     actions: {
@@ -33,10 +35,18 @@ export const useDishStore = defineStore('dishStore', {
                     });
                 });
 
+                //соусы для страницы конструктор
+                const storeConstructor = useConstructorStore();
+                storeConstructor.sauceArray = this.dishes.filter(el => el.DishType == DishType.Sauce && !el.Name.includes('варенье'));
+                if (!!storeConstructor.sauceArray) {
+                    storeConstructor.setSauceById(storeConstructor.sauceArray[0].DishId)
+                }
+
             }
             catch {
-                console.log('error');
+                console.log('error dishStore');
             }
+
         },
 
         setDishesById(id: number) {

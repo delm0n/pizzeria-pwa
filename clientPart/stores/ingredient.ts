@@ -1,11 +1,12 @@
 
 type State = {
-    ingredients: IIngredient[]
+    ingredients: IIngredient[];
 }
 
 export const useIngredientStore = defineStore('ingredientStore', {
     state: (): State => ({
         ingredients: [],
+
     }),
 
     actions: {
@@ -25,11 +26,11 @@ export const useIngredientStore = defineStore('ingredientStore', {
                         Type: element.Type,
                     });
                 });
-
             }
             catch {
-                console.log('error');
+                console.log('error ingredientStore');
             }
+
         },
 
         setIngredientsFalse() {
@@ -48,7 +49,9 @@ export const useIngredientStore = defineStore('ingredientStore', {
             this.ingredients.forEach((element) => {
                 ids.includes(element.IngredientId) ? element.Active = true : element.Active = false;
             });
-        }
-    }
+        },
+
+
+    },
 })
 

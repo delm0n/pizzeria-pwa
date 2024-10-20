@@ -2,8 +2,8 @@
   <Teleport to="#teleports">
     <modal-settings class="pizza-modal" v-if="!!storeModal.pizzaModal">
       <div class="pizza-modal__img" v-if="viewport.isGreaterOrEquals('tablet')">
-        <nuxt-picture
-          format="avif,webp"
+        <NuxtImg
+          placeholder="/images/pizzas/placeholder.svg"
           sizes="xl:100vw lg:100vw md:100vw sm:100vw"
           :src="'/images/pizzas/' + storeModal.pizzaModal.UrlImg + '.png'"
         />
@@ -13,8 +13,8 @@
         <div class="content-scroll">
           <div class="content-scroll__container">
             <div v-if="viewport.isLessThan('tablet')" class="pizza-modal__img">
-              <nuxt-picture
-                format="avif,webp"
+              <NuxtImg
+                placeholder="/images/pizzas/placeholder.svg"
                 sizes="xl:100vw lg:100vw md:100vw sm:100vw"
                 :src="'/images/pizzas/' + storeModal.pizzaModal.UrlImg + '.png'"
               />
@@ -39,7 +39,11 @@
               v-html="storeModal.pizzaModal.Structure"
             ></p>
 
-            <pizza-modal-toggle-size />
+            <toggle
+              :activeIndex="storeModal.getActiveIndexPizzaSizesModal"
+              :arrayToggle="storeModal.pizzaModal.PizzaSizes"
+              @click-toggle="(i) => storeModal.setPizzaSizeModal(i)"
+            />
 
             <p class="content-ingredients__title">Добавить к пицце</p>
             <pizza-modal-ingredients />
@@ -66,10 +70,9 @@
 <script lang="ts" setup>
 import ModalSettings from "../UI/ModalSettings.vue";
 import CountCalculate from "../UI/CountCalculate.vue";
-import PizzaModalToggleSize from "./PizzaModalToggleSize.vue";
+import Toggle from "../UI/Toggle.vue";
 import PizzaModalIngredients from "./PizzaModalIngredients.vue";
 import { defineEmits } from "vue";
-import { IPizzaCart } from "~/config/pizza";
 
 const storeModal = useModalStore();
 const storePizza = usePizzaStore();
@@ -101,144 +104,149 @@ const addToCart = () => {
 </script>
 
 <style lang="scss">
-.pizza-modal .modal-content {
-  display: grid;
-  grid-template-columns: 1fr 480px;
-  align-items: center;
-
-  @media (max-width: 992px) {
-    grid-template-columns: 1fr 420px;
-  }
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-  }
-
-  .pizza-modal__img {
-    aspect-ratio: 1/1;
-    max-width: 100%;
-    width: 100%;
-    flex-shrink: 0;
-    padding-left: 12px;
-
-    display: flex;
+.pizza-modal {
+  .modal-content {
+    max-width: 900px;
+    display: grid;
+    grid-template-columns: 1fr 480px;
     align-items: center;
-    justify-content: center;
 
     @media (max-width: 992px) {
-      max-width: 340px;
+      grid-template-columns: 1fr 420px;
+      max-width: 768px;
     }
 
     @media (max-width: 768px) {
-      margin: 20px auto 0;
+      grid-template-columns: 1fr;
+      max-width: 596px;
+    }
 
-      picture {
-        justify-content: center;
-        width: 100%;
+    .pizza-modal__img {
+      aspect-ratio: 1/1;
+      max-width: 100%;
+      width: 100%;
+      flex-shrink: 0;
+      padding-left: 12px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      @media (max-width: 992px) {
+        max-width: 340px;
       }
-    }
-
-    @media (max-width: 376px) {
-      margin: 10px auto 0;
-    }
-
-    img {
-      transition: all 0.3s;
-      transform: scale(
-        calc(0.8 + 0.1 * v-bind("storeModal.getActiveIndexPizzaSizesModal"))
-      );
-    }
-  }
-
-  .pizza-modal__content {
-    align-self: stretch;
-    padding: 10px 8px 10px 0;
-    border-radius: 0 10px 10px 0;
-    background: var(--background-secondary);
-
-    @media (min-width: 769px) {
-      margin-left: -12px;
-    }
-
-    .content-scroll {
-      overflow: hidden;
-      position: relative;
-      max-height: 74vh;
-      height: 460px;
-
-      &__container {
-        height: 100%;
-        position: absolute;
-        overflow-y: scroll;
-        padding-right: 10px;
-        padding-left: 12px;
-
-        &::-webkit-scrollbar {
-          width: 2px;
-          background-color: var(--placeholder);
-        }
-
-        &::-webkit-scrollbar-track {
-          background-color: var(--placeholder);
-        }
-
-        &::-webkit-scrollbar-thumb {
-          background: var(--scrollbar-modal);
-          cursor: pointer;
-          z-index: 1;
-        }
-      }
-    }
-
-    h4 {
-      font-size: 24px;
-      font-weight: 700;
-      margin: 20px 0 10px;
 
       @media (max-width: 768px) {
-        margin-top: 0;
+        margin: 20px auto 0;
+
+        picture {
+          justify-content: center;
+          width: 100%;
+        }
       }
 
-      @media (max-width: 576px) {
-        font-size: 20px;
+      @media (max-width: 376px) {
+        margin: 10px auto 0;
       }
-    }
 
-    .content-description {
-      margin-bottom: 10px;
-      opacity: 0.4;
-    }
-
-    .content-structure {
-      margin-bottom: 20px;
-
-      @media (max-width: 576px) {
-        font-size: 14px;
-      }
-    }
-
-    .content-ingredients__title {
-      font-weight: 600;
-      font-size: 18px;
-      margin-bottom: 10px;
-
-      @media (max-width: 576px) {
-        font-size: 16px;
+      img {
+        transition: all 0.3s;
+        transform: scale(
+          calc(0.8 + 0.1 * v-bind("storeModal.getActiveIndexPizzaSizesModal"))
+        );
       }
     }
 
-    .content-bottom {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 20px 10px 10px;
+    .pizza-modal__content {
+      align-self: stretch;
+      padding: 10px 8px 10px 0;
+      border-radius: 0 10px 10px 0;
+      background: var(--background-secondary);
 
-      .main-button {
-        width: 100%;
-        max-width: 220px;
+      @media (min-width: 769px) {
+        margin-left: -12px;
+      }
 
-        @media (max-width: 426px) {
-          max-width: 100%;
+      .content-scroll {
+        overflow: hidden;
+        position: relative;
+        max-height: 74vh;
+        height: 460px;
+
+        &__container {
+          height: 100%;
+          position: absolute;
+          overflow-y: scroll;
+          padding-right: 10px;
+          padding-left: 12px;
+
+          &::-webkit-scrollbar {
+            width: 2px;
+            background-color: var(--placeholder);
+          }
+
+          &::-webkit-scrollbar-track {
+            background-color: var(--placeholder);
+          }
+
+          &::-webkit-scrollbar-thumb {
+            background: var(--scrollbar-modal);
+            cursor: pointer;
+            z-index: 1;
+          }
+        }
+      }
+
+      h4 {
+        font-size: 24px;
+        font-weight: 700;
+        margin: 20px 0 10px;
+
+        @media (max-width: 768px) {
+          margin-top: 0;
+        }
+
+        @media (max-width: 576px) {
+          font-size: 20px;
+        }
+      }
+
+      .content-description {
+        margin-bottom: 10px;
+        opacity: 0.4;
+      }
+
+      .content-structure {
+        margin-bottom: 20px;
+
+        @media (max-width: 576px) {
+          font-size: 14px;
+        }
+      }
+
+      .content-ingredients__title {
+        font-weight: 600;
+        font-size: 18px;
+        margin-bottom: 10px;
+
+        @media (max-width: 576px) {
+          font-size: 16px;
+        }
+      }
+
+      .content-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 20px 10px 10px;
+
+        .main-button {
+          width: 100%;
+          max-width: 220px;
+
+          @media (max-width: 426px) {
+            max-width: 100%;
+          }
         }
       }
     }

@@ -13,7 +13,7 @@ export interface IPizzaSize {
     NameSize: string;
     Price: number;
     Mass: number;
-    Active: boolean
+    Active: boolean;
 }
 
 export interface IPizzaCart {
@@ -22,4 +22,12 @@ export interface IPizzaCart {
     IngredientsId: number[];
 
     Count: number;
+}
+
+export interface IPizzaConstructor {
+    PizzaId: number;
+    NameSize: string;
+    Price: number;
+    Mass: number;
+    Active: boolean;
 }

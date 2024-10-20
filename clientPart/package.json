@@ -18,10 +18,10 @@
     "nuxt-viewport": "^2.1.6",
     "pinia": "^2.2.2",
     "vue": "latest",
-    "vue-router": "latest"
+    "vue-router": "latest",
+    "vue-the-mask": "^0.11.1"
   },
   "devDependencies": {
-    "nuxt-anchorscroll": "^1.0.3",
     "sass": "^1.79.4"
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <article class="addish-item" v-if="!!dish">
     <div class="addish-item__img">
-      <nuxt-picture
+      <NuxtPicture
         format="avif,webp"
         sizes="xl:100vw lg:100vw md:100vw sm:100vw"
         :src="'/images/dishes/' + dish.UrlImg + '.png'"

@@ -4,6 +4,7 @@
       <h2>Пиццы</h2>
 
       <div class="addish-wrapper">
+        <pizza-constructor-link />
         <pizza-section-item
           v-for="(item, index) in storePizza.pizzas"
           :key="index"
@@ -16,12 +17,9 @@
 
 <script setup lang="ts">
 import PizzaSectionItem from "./PizzaSectionItem.vue";
+import PizzaConstructorLink from "./PizzaConstructorLink.vue";
 
 const storePizza = usePizzaStore();
-const storeIngredient = useIngredientStore();
-
-await callOnce(storePizza.fetch);
-await callOnce(storeIngredient.fetch);
 </script>
 
 <style lang="scss">
@@ -33,9 +31,11 @@ await callOnce(storeIngredient.fetch);
         transition: all 0.3s;
       }
 
-      &:hover {
-        img {
-          transform: translateY(6px);
+      @media (hover: hover) {
+        &:hover {
+          img {
+            transform: translateY(6px);
+          }
         }
       }
     }

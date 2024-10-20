@@ -71,14 +71,17 @@ export default defineNuxtComponent({
 
   methods: {
     handleScroll() {
-      this.isFixed = window.pageYOffset < 120 ? false : true;
+      // console.log(this.$router.currentRoute.value.path);
 
-      this.links.forEach((element) => {
-        let hgt = document
-          .getElementById(element.id)!
-          .getBoundingClientRect().top;
-        hgt <= window.innerHeight ? (this.activeSection = element.id) : "";
-      });
+      if (this.$router.currentRoute.value.path == "/") {
+        this.isFixed = window.pageYOffset < 120 ? false : true;
+        this.links.forEach((element) => {
+          let hgt = document
+            .getElementById(element.id)!
+            .getBoundingClientRect().top;
+          hgt <= window.innerHeight ? (this.activeSection = element.id) : "";
+        });
+      }
     },
   },
 
@@ -125,7 +128,7 @@ nav {
       margin-right: 20px;
 
       @media (max-width: 768px) {
-        overflow-x: scroll;
+        overflow-x: auto;
         overflow-y: hidden;
 
         &::-webkit-scrollbar {
@@ -158,15 +161,17 @@ nav {
         font-weight: 500;
         transition: all 0.2s;
 
-        &:hover {
-          color: var(--accent);
-        }
-
         &--active {
           color: var(--accent);
 
           &:hover {
             color: var(--accent-hover);
+          }
+        }
+
+        @media (hover: hover) {
+          &:hover {
+            color: var(--accent);
           }
         }
       }

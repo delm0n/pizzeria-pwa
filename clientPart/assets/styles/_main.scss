@@ -75,6 +75,22 @@ img {
   max-width: 100%;
 }
 
+.emoji {
+  white-space: nowrap;
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+
 @import "./vars";
 @import "./components/addish-item";
 @import "./components/addish-cart";
+@import "./components/pizza-input";
+@import "./components/ingredient-item";

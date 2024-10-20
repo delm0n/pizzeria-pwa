@@ -15,3 +15,9 @@ export enum IngredientType {
     Vegetables = 3,
     Fruit = 4
 }
+
+export interface IIngredientByType {
+    title: string;
+    id: string;
+    ingredientArray: IIngredient[];
+}

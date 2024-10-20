@@ -2,23 +2,24 @@ import type { IPizzaCart } from "~/config/pizza";
 
 type State = {
     modalVisible: boolean;
-    pizzaModal: IPizza | null;
+
     pizzaCountModal: number;
     isEditIndex: number;
+    pizzaModal: IPizza | null;
+    enterModal: boolean
 }
 
 export const useModalStore = defineStore('modalStore', {
     state: (): State => ({
         modalVisible: false,
+
         pizzaModal: null,
         pizzaCountModal: 1,
         isEditIndex: -1,
+        enterModal: false
     }),
 
     getters: {
-        modalOpen(): boolean {
-            return this.modalVisible && !!this.pizzaModal;
-        },
 
         getActiveIndexPizzaSizesModal(): number {
             if (!!this.pizzaModal) {
@@ -38,7 +39,6 @@ export const useModalStore = defineStore('modalStore', {
             }
 
             return 0
-
         },
 
         isEdit(): boolean {
@@ -59,41 +59,49 @@ export const useModalStore = defineStore('modalStore', {
         setModalVisible(value: boolean) {
             setTimeout(() => {
                 this.modalVisible = value;
+
+                let bodyStyle = document.querySelector('body')!.style;
+                //отступ для скролла на декстопах
+                if (value) {
+                    bodyStyle.overflow = 'hidden';
+                    if (!this.isTouchDevice) {
+                        bodyStyle.paddingRight = '10px'
+                    }
+                }
+                else {
+                    bodyStyle.overflow = 'visible';
+                    if (!this.isTouchDevice) {
+                        bodyStyle.paddingRight = '0'
+                    }
+                }
             }, 300)
 
-
-            let bodyStyle = document.querySelector('body')!.style;
-
             if (value) {
-                bodyStyle.overflow = 'hidden';
-
-                if (!this.isTouchDevice) {
-                    bodyStyle.paddingRight = '10px'
-                }
-
                 this.pizzaCountModal = 1;
             }
             else {
-                bodyStyle.overflow = 'visible';
-
-                if (!this.isTouchDevice) {
-                    bodyStyle.paddingRight = '0'
-                }
-
-                this.isEditIndex = -1;
+                setTimeout(() => {
+                    this.pizzaModal = null;
+                    this.enterModal = false;
+                    this.isEditIndex = -1;
+                }, 500)
             }
         },
 
-        openModal(id: number) {
+        openModalPizza(id: number) {
             const storePizza = usePizzaStore();
             this.pizzaModal = storePizza.pizzas.find(el => el.PizzaId == id)!;
 
             const storeIngredient = useIngredientStore();
             storeIngredient.setIngredientsFalse();
 
-            this.setModalVisible(true)
+            this.setModalVisible(true);
         },
 
+        openModalEnter() {
+            this.enterModal = true;
+            this.setModalVisible(true);
+        },
 
         setPizzaCountModal(val: number) {
             this.pizzaCountModal = val;

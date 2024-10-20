@@ -24,7 +24,7 @@
           </button>
 
           <div class="addish-item__img">
-            <nuxt-picture
+            <NuxtPicture
               format="avif,webp"
               sizes="90px"
               :src="'/images/dishes/' + dish.UrlImg + '.png'"

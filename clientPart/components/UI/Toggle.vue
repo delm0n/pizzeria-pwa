@@ -2,26 +2,36 @@
   <div class="toggle-wrapper">
     <div
       class="toggle-wrapper-bg"
-      :data-test="storeModal.getActiveIndexPizzaSizesModal"
       :style="
         'transform: translateX(' +
-        storeModal.getActiveIndexPizzaSizesModal * 100 +
-        '%)'
+        activeIndex * 100 +
+        '%); width: calc(100% / ' +
+        arrayToggle.length +
+        ');'
       "
     ></div>
     <div
-      v-for="(size, index) in storeModal.pizzaModal.PizzaSizes"
-      :key="size.PizzaSizeId"
-      @click="storeModal.setPizzaSizeModal(index)"
-      :class="['toggle-item', size.Active ? 'toggle-item--active' : '']"
+      v-for="(item, index) in arrayToggle"
+      :key="index"
+      @click="clickToggle(index)"
+      :class="['toggle-item', item.Active ? 'toggle-item--active' : '']"
     >
-      <p v-html="size.NameSize"></p>
+      <p v-html="item.NameSize"></p>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-const storeModal = useModalStore();
+const emit = defineEmits();
+
+const props = defineProps<{
+  activeIndex: number;
+  arrayToggle: IPizzaSize[] | IPizzaConstructor[];
+}>();
+
+const clickToggle = (index: number) => {
+  emit("click-toggle", index);
+};
 </script>
 
 <style lang="scss">
@@ -35,7 +45,7 @@ const storeModal = useModalStore();
 
   &-bg {
     background: var(--placeholder-button);
-    width: calc(33.3333%);
+
     position: absolute;
     box-shadow: 0 0.5rem 1rem var(--shadow);
     border-radius: 10px;
