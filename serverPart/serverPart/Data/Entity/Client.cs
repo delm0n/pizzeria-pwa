@@ -26,15 +26,13 @@ namespace serverPart.Data.Entity
         public string PizzaOrderJson { get; set; } = ""; //пиццы, которые заказывал клиент
         public string PromocodeJson { get; set; } = ""; //промокоды, которые использовал клиент
 
-
         public ICollection<Order> Orders { get; set; }
 
         public Client()
         { 
             Orders = new List<Order>();
         }
-       
-        
+              
         
     }
 }

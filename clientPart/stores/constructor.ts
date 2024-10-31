@@ -1,7 +1,10 @@
+import type { Router } from "vue-router";
 
 type State = {
     pizzas: IPizzaConstructor[];
-    sauceArray: IDish[]
+    sauceArray: IDish[];
+    count: number;
+    isEditIndex: number;
 }
 
 
@@ -9,12 +12,22 @@ export const useConstructorStore = defineStore('constructorStore', {
     state: (): State => ({
         pizzas: [],
         sauceArray: [],
+        count: 1,
+        isEditIndex: -1,
     }),
 
     getters: {
 
+        isEdit(): boolean {
+            return this.isEditIndex != -1
+        },
+
         getActiveIndex(): number {
             return this.pizzas.findIndex(el => el.Active);
+        },
+
+        getActiveId(): number {
+            return this.pizzas.find(el => el.Active)!.PizzaId;
         },
 
         getIngredientByType(): IIngredientByType[] {
@@ -23,35 +36,49 @@ export const useConstructorStore = defineStore('constructorStore', {
             return [
                 {
                     title: "Сыр",
-                    id: 'cheese',
+                    id: 'constructor-cheese',
                     ingredientArray: storeIngredient.ingredients.filter(el => el.Type == IngredientType.Cheese)
                 },
 
                 {
                     title: "Мясо",
-                    id: 'meet',
+                    id: 'constructor-meet',
                     ingredientArray: storeIngredient.ingredients.filter(el => el.Type == IngredientType.Meet)
                 },
 
                 {
                     title: "Грибы",
-                    id: 'mushrooms',
+                    id: 'constructor-mushrooms',
                     ingredientArray: storeIngredient.ingredients.filter(el => el.Type == IngredientType.Mushrooms)
                 },
 
                 {
                     title: "Овощи",
-                    id: 'megetables',
+                    id: 'constructor-megetables',
                     ingredientArray: storeIngredient.ingredients.filter(el => el.Type == IngredientType.Vegetables)
                 },
 
                 {
                     title: "Фрукты",
-                    id: 'fruit',
+                    id: 'constructor-fruit',
                     ingredientArray: storeIngredient.ingredients.filter(el => el.Type == IngredientType.Fruit)
                 },
 
             ];
+        },
+
+        getMinPrice(): number {
+            return !!this.pizzas ? this.pizzas[0].Price + this.sauceArray[0].Price : 340
+        },
+
+        /* ----------- */
+
+        getConstructorSizeDescription(state) {
+            return (pizzaConstructorCart: IPizzaConstructorCart): string => {
+                return this.pizzas.find(el => el.Active)?.NameSize +
+                    ', соус ' +
+                    this.sauceArray.find(el => el.DishId == pizzaConstructorCart.SauceId)?.Name;
+            }
         },
 
         getConstructorPrice(): number {
@@ -63,13 +90,22 @@ export const useConstructorStore = defineStore('constructorStore', {
                 return ingredient.Count == 1 ? sum + ingredient.Price : sum;
             }, this.pizzas.reduce(function (sum, pizza) {
                 return pizza.Active ? sum + pizza.Price : sum;
-            }, 0)))
+            }, 0))) * this.count
 
         },
 
-        getMinPrice(): number {
-            return !!this.pizzas ? this.pizzas[0].Price + this.sauceArray[0].Price : 340
-        }
+        getConstructorMass(): number {
+            const storeIngredient = useIngredientStore();
+
+            return storeIngredient.ingredients.reduce(function (sum, ingredient) {
+                return ingredient.Active ? sum + ingredient.Mass : sum;
+            }, this.sauceArray.reduce(function (sum, ingredient) {
+                return ingredient.Count == 1 ? sum + ingredient.Mass : sum;
+            }, this.pizzas.reduce(function (sum, pizza) {
+                return pizza.Active ? sum + pizza.Mass : sum;
+            }, 0)))
+        },
+
     },
 
     actions: {
@@ -107,6 +143,32 @@ export const useConstructorStore = defineStore('constructorStore', {
                 index == idx ? (element.Active = true) : (element.Active = false);
             });
         },
+
+        /* ----------- */
+
+        setConstructorCount(val: number) {
+            this.count = val;
+        },
+
+        setConstructorCart(cart: IPizzaConstructorCart, index: number, router: Router) {
+
+            this.sauceArray.forEach((element) => {
+                element.DishId == cart.SauceId ? (element.Count = 1) : (element.Count = 0)
+            });
+
+            this.pizzas.forEach((element) => {
+                element.PizzaId == cart.PizzaId ? (element.Active = true) : (element.Active = false)
+            });
+
+            const storeIngredient = useIngredientStore();
+            storeIngredient.setIngredientsByIdArray(cart.IngredientsId);
+
+            this.isEditIndex = index;
+            this.count = cart.Count;
+
+            router.push('/constructor');
+
+        }
     },
 })
 

@@ -9,6 +9,18 @@ export const useIngredientStore = defineStore('ingredientStore', {
 
     }),
 
+    getters: {
+        getActiveIndexArray(): number[] {
+            return this.ingredients.filter(el => el.Active).map(el => el.IngredientId)
+        },
+
+        checkCount(): boolean {
+            return this.ingredients.reduce(function (sum, ingredient) {
+                return ingredient.Active ? sum + 1 : sum;
+            }, 0) <= 8;
+        },
+    },
+
     actions: {
         async fetch() {
             try {
@@ -40,9 +52,19 @@ export const useIngredientStore = defineStore('ingredientStore', {
         },
 
         setIngredientsById(id: number) {
-            this.ingredients.forEach((element) => {
-                element.IngredientId == id ? (element.Active = !element.Active) : "";
-            });
+            let element = this.ingredients.find(el => el.IngredientId == id);
+
+            if (element) {
+                if (element.Active) {
+                    element.Active = !element.Active
+                }
+                else {
+                    if (this.checkCount) {
+                        element.Active = !element.Active
+                    }
+                }
+            }
+
         },
 
         setIngredientsByIdArray(ids: number[]) {

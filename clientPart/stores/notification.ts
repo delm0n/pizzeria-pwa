@@ -1,31 +1,27 @@
 type notifications = {
-    id: number,
-    name: string
+    title: string;
+    text: string;
 }
 
 type State = {
     notifications: notifications[];
-    idCount: number;
 }
 
 export const useNotificationStore = defineStore('notificationStore', {
     state: (): State => ({
         notifications: [],
-        idCount: 1,
     }),
 
     actions: {
-        addNotification(item: string) {
+        addNotification(itemTitle: string, itemText: string) {
             this.notifications.push({
-                id: this.idCount,
-                name: item
+                title: itemTitle,
+                text: itemText
             });
 
             setTimeout(() => {
                 this.notifications.splice(0, 1)
             }, 5000);
-
-            this.idCount++;
         }
     }
 })

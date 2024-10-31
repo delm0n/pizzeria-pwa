@@ -24,7 +24,7 @@
       <div class="content-bottom">
         <template v-if="viewport.isGreaterOrEquals('mobileMedium')">
           <p class="price">от {{ storeConstructor.getMinPrice }} ₽</p>
-          <button class="main-button">Выбрать</button>
+          <button class="main-button">Создать</button>
         </template>
         <template v-else>
           <button class="main-button">

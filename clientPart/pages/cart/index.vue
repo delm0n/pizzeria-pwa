@@ -1,6 +1,7 @@
 <template>
   <main class="cart-main">
     <cart-header-section />
+    <cart-constructor-section />
     <cart-pizza-section />
     <cart-dish-section />
   </main>
@@ -10,6 +11,7 @@
 import CartHeaderSection from "~/components/cart/CartHeaderSection.vue";
 import CartPizzaSection from "~/components/cart/CartPizzaSection.vue";
 import CartDishSection from "~/components/cart/CartDishSection.vue";
+import CartConstructorSection from "~/components/cart/CartConstructorSection.vue";
 </script>
 
 <style lang="scss">

@@ -39,6 +39,7 @@
         format="avif,webp"
         sizes="xl:100px lg:100px md:100px sm:100px"
         :src="'/images/ingredients/' + ingredient.UrlImg + '.png'"
+        :alt="ingredient.Name"
       />
     </div>
 

@@ -20,25 +20,33 @@ export const usePizzaStore = defineStore('pizzaStore', {
             return state.pizzas.find(el => el.PizzaId == pizzaId)!.PizzaSizes.find(el => el.PizzaSizeId == pizzaSizeId)!;
         },
 
-        getPizzaSizeDescription: (state) => (pizzaId: number, pizzaSizeId: number): string => {
-            let mass = state.pizzas.find(el => el.PizzaId == pizzaId)!.PizzaSizes.find(el => el.PizzaSizeId == pizzaSizeId)!.Mass + ' г'
+        getPizzaMass: (state) => (pizzaId: number, pizzaSizeId: number, ingredientsId: number[]): number => {
+            const storeIngredient = useIngredientStore();
 
-            switch (state.pizzas.find(el => el.PizzaId == pizzaId)!.PizzaSizes.findIndex(el => el.PizzaSizeId == pizzaSizeId)!) {
-                case 0: {
-                    return "30 см, " + mass
-                }
-                case 1: {
-                    return "35 см, " + mass
-                }
-                case 2: {
-                    return "40 см, " + mass
-                }
-                default: {
-                    return "35 см, " + mass
-                }
-            }
-        }
+            return storeIngredient.ingredients.reduce(function (sum, ingredient) {
+                return ingredientsId.includes(ingredient.IngredientId) ? sum + ingredient.Mass : sum;
+            }, state.pizzas.find(el => el.PizzaId == pizzaId)!.PizzaSizes.find(el => el.PizzaSizeId == pizzaSizeId)!.Mass);
+        },
 
+        // это синтаксис со стрелочной функцией 
+        //getPizzaSizeDescription: (state) => (pizzaId: number, pizzaSizeId: number, ingredientsId: number[]): string => {
+        getPizzaSizeDescription(state) {
+            return (pizzaId: number, pizzaSizeId: number, ingredientsId: number[]): string => {
+                const pizzaMass = this.getPizzaMass(pizzaId, pizzaSizeId, ingredientsId) + ' г';
+                const sizeIndex = state.pizzas.find(el => el.PizzaId == pizzaId)!.PizzaSizes.findIndex(el => el.PizzaSizeId == pizzaSizeId)!;
+
+                switch (sizeIndex) {
+                    case 0:
+                        return "30 см, " + pizzaMass;
+                    case 1:
+                        return "35 см, " + pizzaMass;
+                    case 2:
+                        return "40 см, " + pizzaMass;
+                    default:
+                        return "35 см, " + pizzaMass;
+                }
+            };
+        },
     },
 
     actions: {

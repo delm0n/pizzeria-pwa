@@ -5,17 +5,16 @@
     tag="div"
     class="notification"
   >
-    <NuxtLink
-      to="/cart"
+    <div
       class="notification-continer"
       v-for="(item, index) in storeNotification.notifications"
       :key="index"
     >
       <div class="notification-item">
-        <p>Добавлено:</p>
-        <p>{{ item.name }}</p>
+        <p>{{ item.title }}</p>
+        <p>{{ item.text }}</p>
       </div>
-    </NuxtLink>
+    </div>
   </transition-group>
 </template>
 

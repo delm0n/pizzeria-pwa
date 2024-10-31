@@ -1,5 +1,5 @@
 <template>
-  <article class="constructor-ingredient">
+  <article id="constructor-sauce" class="constructor-ingredient">
     <h2>Соус (основа)</h2>
 
     <div class="constructor-ingredient__content">

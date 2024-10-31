@@ -20,9 +20,10 @@ export interface IPizzaCart {
     PizzaId: number;
     PizzaSizeId: number;
     IngredientsId: number[];
-
     Count: number;
 }
+
+/* ---------- */
 
 export interface IPizzaConstructor {
     PizzaId: number;
@@ -30,4 +31,11 @@ export interface IPizzaConstructor {
     Price: number;
     Mass: number;
     Active: boolean;
+}
+
+export interface IPizzaConstructorCart {
+    PizzaId: number;
+    IngredientsId: number[];
+    Count: number;
+    SauceId: number
 }

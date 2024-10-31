@@ -165,10 +165,7 @@ const viewport = useViewport();
       cursor: pointer;
 
       svg {
-        transition: all 0.3s;
-        path {
-          transition: all 0.15s;
-        }
+        transition: transform 0.3s;
 
         @media (max-width: 576px) {
           width: 32px;

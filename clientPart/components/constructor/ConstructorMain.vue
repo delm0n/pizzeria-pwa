@@ -3,6 +3,7 @@
     <constructor-sauce />
     <constructor-ingredient
       v-for="(item, index) in ingredients"
+      :link="links[index + 1]"
       :key="index"
       :title="item.title"
       :ingredients="item.ingredientArray"
@@ -16,5 +17,6 @@ import ConstructorIngredient from "~/components/constructor/ConstructorIngredien
 
 const props = defineProps<{
   ingredients: IIngredientByType;
+  links: INavLink[];
 }>();
 </script>

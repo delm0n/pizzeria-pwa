@@ -2,9 +2,9 @@
   <div>
     <VitePwaManifest />
     <NuxtLayout>
-      <Transition name="page" mode="out-in">
+      <transition name="page" mode="out-in">
         <NuxtPage class="page-content" />
-      </Transition>
+      </transition>
 
       <pizza-modal />
       <enter-modal />

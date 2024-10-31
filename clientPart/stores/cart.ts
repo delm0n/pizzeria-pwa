@@ -1,11 +1,13 @@
 
 type State = {
-    pizzas: IPizzaCart[]
+    pizzas: IPizzaCart[];
+    constructors: IPizzaConstructorCart[];
 }
 
 export const useCartStore = defineStore('cartStore', {
     state: (): State => ({
-        pizzas: []
+        pizzas: [],
+        constructors: []
     }),
 
     actions: {
@@ -28,7 +30,7 @@ export const useCartStore = defineStore('cartStore', {
             const storePizza = usePizzaStore();
             const storeNotification = useNotificationStore();
 
-            storeNotification.addNotification(storePizza.getPizza(newPizza.PizzaId).PizzaName
+            storeNotification.addNotification("Добавлено:", storePizza.getPizza(newPizza.PizzaId).PizzaName
                 + ', '
                 + storePizza.getPizzaSize(newPizza.PizzaId, newPizza.PizzaSizeId).NameSize.toLowerCase())
         },
@@ -47,7 +49,48 @@ export const useCartStore = defineStore('cartStore', {
 
         editPizzaCart(newPizza: IPizzaCart, index: number) {
             this.pizzas.splice(index, 1, newPizza)
-        }
+        },
+
+        /* ---------------- */
+
+        addConstructorCart(newPizza: IPizzaConstructorCart) {
+
+            const existingIndex = this.constructors.findIndex(pizza =>
+                pizza.PizzaId === newPizza.PizzaId &&
+                pizza.SauceId === newPizza.SauceId &&
+                JSON.stringify(pizza.IngredientsId) === JSON.stringify(newPizza.IngredientsId)
+            );
+
+            if (existingIndex !== -1) {
+                // Если пицца уже существует в массиве, увеличиваем Count
+                this.constructors[existingIndex].Count += newPizza.Count;
+            } else {
+                // Если пиццы нет, добавляем новую
+                this.constructors.push(newPizza);
+            }
+
+            const storeNotification = useNotificationStore();
+            storeNotification.addNotification("Добавлено:", "Конструктор пиццы")
+        },
+
+        setConstructorCount(newPizza: IPizzaConstructorCart, val: number) {
+            this.constructors.find(pizza =>
+                pizza.PizzaId === newPizza.PizzaId &&
+                pizza.SauceId === newPizza.SauceId &&
+                JSON.stringify(pizza.IngredientsId) === JSON.stringify(newPizza.IngredientsId)
+            )!.Count = val
+        },
+
+        removeConstructorCart(index: number) {
+            this.constructors.splice(index, 1)
+        },
+
+        editConstructorCart(newPizza: IPizzaConstructorCart, index: number) {
+            this.constructors.splice(index, 1, newPizza);
+
+            const storeNotification = useNotificationStore();
+            storeNotification.addNotification("Отредактировано:", "Конструктор пиццы")
+        },
 
     },
 
@@ -62,7 +105,7 @@ export const useCartStore = defineStore('cartStore', {
             return storeIngredient.ingredients.filter(el => ingredientsId.includes(el.IngredientId))
         },
 
-        getPrice: () => (cart: IPizzaCart): number => {
+        getPizzaPrice: () => (cart: IPizzaCart): number => {
             const storeIngredient = useIngredientStore();
             const storePizza = usePizzaStore();
 
@@ -73,20 +116,34 @@ export const useCartStore = defineStore('cartStore', {
             ) * cart.Count;
         },
 
+        /* ----------- */
+
+        getConstructorPrice: () => (cart: IPizzaConstructorCart): number => {
+            const storeIngredient = useIngredientStore();
+            const storeConstructor = useConstructorStore();
+
+            return storeIngredient.ingredients.reduce(function (sum, ingredient) {
+                return cart.IngredientsId.includes(ingredient.IngredientId) ? sum + ingredient.Price : sum;
+            }, storeConstructor.sauceArray.find(el => el.Count == 1)!.Price + storeConstructor.pizzas.find(el => el.Active)!.Price) * cart.Count;
+        },
+
+        /* ----------- */
+
         getAllCount(): number {
             const storeDish = useDishStore();
-            return this.pizzas.length + storeDish.dishes.filter(el => el.Count > 0).length
+            return this.pizzas.length + storeDish.dishes.filter(el => el.Count > 0).length + this.constructors.length
         },
 
         getAllPrice(): number {
             const storeDish = useDishStore();
 
             return this.pizzas.reduce((sum, element) => {
-                return sum + this.getPrice(element)
-            }, storeDish.getDishesPrice)
-
-
+                return sum + this.getPizzaPrice(element)
+            }, this.constructors.reduce((sum, element) => {
+                return sum + this.getConstructorPrice(element)
+            }, storeDish.getDishesPrice))
         },
+
     }
 })
 

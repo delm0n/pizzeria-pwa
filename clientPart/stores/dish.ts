@@ -16,10 +16,12 @@ export const useDishStore = defineStore('dishStore', {
 
     }),
 
+
     actions: {
         async fetch() {
             try {
                 const response: string = await $fetch('http://localhost:1234/dishes');
+                const storeConstructor = useConstructorStore();
 
                 JSON.parse(response).forEach((element: any) => {
 
@@ -33,11 +35,22 @@ export const useDishStore = defineStore('dishStore', {
                         Structure: element.Structure,
                         Count: 0
                     });
+
+                    if (element.DishType == DishType.Sauce && !element.Name.includes('варенье')) {
+                        storeConstructor.sauceArray.push({
+                            DishId: element.DishId,
+                            Name: element.Name,
+                            UrlImg: element.UrlImg,
+                            Mass: element.Mass,
+                            Price: element.Price,
+                            DishType: element.DishType,
+                            Structure: element.Structure,
+                            Count: 0
+                        })
+
+                    }
                 });
 
-                //соусы для страницы конструктор
-                const storeConstructor = useConstructorStore();
-                storeConstructor.sauceArray = this.dishes.filter(el => el.DishType == DishType.Sauce && !el.Name.includes('варенье'));
                 if (!!storeConstructor.sauceArray) {
                     storeConstructor.setSauceById(storeConstructor.sauceArray[0].DishId)
                 }
@@ -46,14 +59,13 @@ export const useDishStore = defineStore('dishStore', {
             catch {
                 console.log('error dishStore');
             }
-
         },
 
         setDishesById(id: number) {
             this.dishes.find(el => el.DishId == id)!.Count = 1
 
             const storeNotification = useNotificationStore();
-            storeNotification.addNotification(this.dishes.find(el => el.DishId == id)!.Name);
+            storeNotification.addNotification("Добавлено", this.dishes.find(el => el.DishId == id)!.Name);
         },
 
         setDishCount(id: number, val: number) {

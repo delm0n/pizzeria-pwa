@@ -34,6 +34,8 @@
 </template>
 
 <script lang="ts" setup>
+import { defineEmits } from "vue";
+
 const props = withDefaults(
   defineProps<{
     count: number;

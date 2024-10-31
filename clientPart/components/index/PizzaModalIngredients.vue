@@ -4,15 +4,34 @@
       v-for="ingredient in storeIngredient.ingredients"
       :key="ingredient.IngredientId"
       :ingredient="ingredient"
+      @click="checkLimitOfCount"
     >
     </ingredient-item>
+
+    <warning-ingredient
+      :visible="!storeIngredient.checkCount && visibleTimeout"
+    />
   </div>
 </template>
 
 <script lang="ts" setup>
 import IngredientItem from "~/components/UI/IngredientItem.vue";
+import WarningIngredient from "~/components/UI/WarningIngredient.vue";
 
+import { ref } from "vue";
+
+const visibleTimeout = ref(false);
 const storeIngredient = useIngredientStore();
+
+const checkLimitOfCount = () => {
+  if (!visibleTimeout.value) {
+    visibleTimeout.value = true;
+
+    setTimeout(() => {
+      visibleTimeout.value = false;
+    }, 3000);
+  }
+};
 </script>
 
 <style lang="scss">

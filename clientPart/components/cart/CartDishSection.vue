@@ -57,24 +57,8 @@
 
 <script setup lang="ts">
 import CountCalculate from "../UI/CountCalculate.vue";
+import { afterEnter, leave } from "@/utils/animationCart";
 
 const storeCart = useCartStore();
 const storeDish = useDishStore();
-
-// анимация при удалении и добавлении
-const afterEnter = (o: any) => {
-  o.style.height = "auto";
-};
-
-const leave = (o: any) => {
-  let e = getComputedStyle(o).height;
-  (o.style.height = e),
-    getComputedStyle(o).height,
-    requestAnimationFrame(function () {
-      o.style.height = 0;
-      o.style.margin = 0;
-      o.style.padding = 0;
-    });
-};
-// анимация при удалении и добавлении
 </script>
