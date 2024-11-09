@@ -8,6 +8,7 @@
       >
         <article class="container addish-item">
           <button
+            aria-label="Удалить"
             class="remove-button"
             @click="storeDish.setDishCount(dish.DishId, 0)"
           >

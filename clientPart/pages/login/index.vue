@@ -11,7 +11,7 @@
         <password-input />
         <email-input />
 
-        <button :disabled="loading" class="main-button" type="submit">
+        <button :disabled="loading" class="main-button loading" type="submit">
           Регистрация
         </button>
 

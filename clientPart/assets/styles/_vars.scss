@@ -62,16 +62,8 @@
   }
 
   &:disabled {
-    animation: inProcessAnimation 3s infinite;
-    background-image: linear-gradient(
-      90deg,
-      #fff,
-      transparent,
-      #fff,
-      transparent,
-      #fff
-    ) !important;
-    background-size: 400% 100% !important;
+    opacity: 0.6;
+    cursor: default;
   }
 
   @media (max-width: 576px) {
@@ -80,17 +72,33 @@
     font-size: 14px;
     height: 37px;
   }
+}
 
-  @keyframes inProcessAnimation {
-    0% {
-      background-position: 0 33%;
-    }
-    50% {
-      background-position: 33% 66%;
-    }
-    100% {
-      background-position: 66% 100%;
-    }
+.loading {
+  &:disabled {
+    cursor: default;
+    animation: inProcessAnimation 3s infinite;
+    background-image: linear-gradient(
+      90deg,
+      var(--background),
+      transparent,
+      var(--overlay),
+      transparent,
+      var(--background)
+    ) !important;
+    background-size: 400% 100% !important;
+  }
+}
+
+@keyframes inProcessAnimation {
+  0% {
+    background-position: 0 33%;
+  }
+  50% {
+    background-position: 33% 66%;
+  }
+  100% {
+    background-position: 66% 100%;
   }
 }
 

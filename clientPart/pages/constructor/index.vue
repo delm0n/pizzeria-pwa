@@ -10,35 +10,51 @@
 
     <div class="container">
       <div class="constructor-wrapper">
-        <constructor-main
-          :ingredients="storeConstructor.getIngredientByType"
-          v-if="viewport.isGreaterOrEquals('tablet')"
-          :links="links"
-        />
-
-        <constructor-main-mobile
-          v-else
+        <component
+          v-if="ConstructorMain"
+          :is="ConstructorMain"
           :ingredients="storeConstructor.getIngredientByType"
           :links="links"
         />
-
         <div class="constructor-wrapper__result">
-          <constructor-result />
+          <component v-if="ConstructorResult" :is="ConstructorResult" />
         </div>
       </div>
     </div>
+    <cart-icon />
   </main>
 </template>
 
 <script setup lang="ts">
-import ConstructorMainMobile from "~/components/constructor/ConstructorMainMobile.vue";
-import ConstructorMain from "~/components/constructor/ConstructorMain.vue";
-import ConstructorResult from "~/components/constructor/ConstructorResult.vue";
 import NavBar from "~/components/UI/NavBar.vue";
+import CartIcon from "~/components/UI/CartIcon.vue";
+import { ref, defineAsyncComponent } from "vue";
 
-import { ref } from "vue";
-
+const viewport = useViewport();
 const storeConstructor = useConstructorStore();
+
+const ConstructorResult = ref<null | any>(null);
+ConstructorResult.value = defineAsyncComponent({
+  loader: () => import("~/components/constructor/ConstructorResult.vue"),
+  delay: 500,
+  timeout: 3000,
+});
+
+const ConstructorMain = ref<null | any>(null);
+if (viewport.isGreaterOrEquals("tablet")) {
+  ConstructorMain.value = defineAsyncComponent({
+    loader: () => import("~/components/constructor/ConstructorMain.vue"),
+    delay: 500,
+    timeout: 3000,
+  });
+} else {
+  ConstructorMain.value = defineAsyncComponent({
+    loader: () => import("~/components/constructor/ConstructorMainMobile.vue"),
+    delay: 500,
+    timeout: 3000,
+  });
+}
+
 const links: INavLink[] = [
   {
     id: "constructor-sauce",
@@ -54,13 +70,13 @@ const activeSection = ref(links[0].id);
 const updateActiveSection = (id: string) => {
   activeSection.value = id;
 };
-
-const viewport = useViewport();
 </script>
 
 <style lang="scss">
 .constructor-main {
+  margin-bottom: 100px;
   @media (max-width: 768px) {
+    margin-bottom: 50px;
     .container {
       padding: 0;
       margin: 0;

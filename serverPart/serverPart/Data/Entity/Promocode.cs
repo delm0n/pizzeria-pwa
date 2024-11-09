@@ -15,5 +15,9 @@ namespace serverPart.Data.Entity
 
         [MaxLength(6)]
         public string Value { get; set; }
+
+        public int Price { get; set; }
+
+        public int? Discount {  get; set; }
     }
 }

@@ -9,6 +9,7 @@
         format="avif,webp"
         sizes="xl:330px lg:300px md:290px sm:250px xs: 200px"
         :src="'/images/constructor/constructor.png'"
+        alt="Собрать пиццу"
       />
     </div>
 

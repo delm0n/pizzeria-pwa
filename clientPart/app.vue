@@ -3,7 +3,7 @@
     <VitePwaManifest />
     <NuxtLayout>
       <transition name="page" mode="out-in">
-        <NuxtPage class="page-content" />
+        <NuxtPage keepalive class="page-content" />
       </transition>
 
       <pizza-modal />
@@ -18,9 +18,15 @@ import EnterModal from "~/components/login/EnterModal.vue";
 
 useSeoMeta({
   title: "Pizzeria",
-  ogTitle: "Pizzeria",
+  ogTitle: "Пиццерия",
   description: "Pizzeria nuxt pwa application",
-  ogDescription: "Pizzeria nuxt pwa application",
+  ogDescription: "Пиццерия nuxt pwa application",
+});
+
+useHead({
+  htmlAttrs: {
+    lang: "ru",
+  },
 });
 
 const storeIngredient = useIngredientStore();
@@ -35,10 +41,6 @@ await callOnce(storeonstructor.fetch);
 </script>
 
 <style>
-main {
-  padding-bottom: 50px;
-}
-
 .page-enter-active,
 .page-leave-active {
   transition: opacity 0.5s;

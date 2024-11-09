@@ -36,7 +36,7 @@ export const useDishStore = defineStore('dishStore', {
                         Count: 0
                     });
 
-                    if (element.DishType == DishType.Sauce && !element.Name.includes('варенье')) {
+                    if (element.DishType == DishType.Sauce) {
                         storeConstructor.sauceArray.push({
                             DishId: element.DishId,
                             Name: element.Name,

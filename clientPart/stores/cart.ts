@@ -141,8 +141,33 @@ export const useCartStore = defineStore('cartStore', {
                 return sum + this.getPizzaPrice(element)
             }, this.constructors.reduce((sum, element) => {
                 return sum + this.getConstructorPrice(element)
-            }, storeDish.getDishesPrice))
+            }, storeDish.getDishesPrice));
+
+
         },
+
+
+        getLastPrice(): number {
+            const storePromocode = usePromocodeStore();
+
+            let price = this.getAllPrice;
+
+            if (!!storePromocode.promocode) {
+                if (price > storePromocode.promocode.Price) {
+                    storePromocode.promocodeFail = false;
+                    if (!!storePromocode.promocode.Discount) {
+                        return price - price * storePromocode.promocode.Discount * 0.01;
+                    }
+                }
+
+                else {
+                    //сообщение о то что скидка не применилась из-за маленькой суммы заказа
+                    storePromocode.promocodeFail = true;
+                }
+            }
+
+            return price;
+        }
 
     }
 })

@@ -96,8 +96,9 @@ img[data-loaded] {
 @import "./vars";
 @import "./components/nav-bar";
 @import "./components/addish-item";
-@import "./components/addish-cart";
-@import "./components/pizza-input";
 @import "./components/ingredient-item";
 
+@import "./components/addish-cart";
+@import "./components/pizza-input";
 @import "./components/pizza-modal";
+@import "./components/constructor-result";

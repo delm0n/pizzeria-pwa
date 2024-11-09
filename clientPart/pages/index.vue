@@ -47,6 +47,7 @@ const updateActiveSection = (id: string) => {
 <style lang="scss">
 .index-main {
   position: relative;
+  margin-bottom: 50px;
 
   section {
     padding-top: 120px;

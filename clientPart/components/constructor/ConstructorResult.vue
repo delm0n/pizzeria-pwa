@@ -1,7 +1,7 @@
 <template>
   <div class="constructor-result">
     <div class="constructor-result__container">
-      <button @click="reset()" class="result-reset">
+      <button aria-label="Очистить" @click="reset()" class="result-reset">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="41"
@@ -89,8 +89,19 @@
         @decrement="(i) => storeConstructor.setConstructorCount(i)"
       />
     </div>
-    <button @click="addToCart" class="main-button">
-      В корзину за {{ storeConstructor.getConstructorPrice }} ₽
+    <button
+      :disabled="!storeConstructor.ingredientMinValidate"
+      @click="addToCart"
+      class="main-button"
+    >
+      <transition-group>
+        <span v-show="storeConstructor.ingredientMinValidate">
+          В корзину за {{ storeConstructor.getConstructorPrice }} ₽
+        </span>
+        <span v-show="!storeConstructor.ingredientMinValidate">
+          мин. 3 ингредиента
+        </span>
+      </transition-group>
     </button>
   </div>
 </template>
@@ -127,102 +138,3 @@ const addToCart = () => {
   storeConstructor.isEditIndex = -1;
 };
 </script>
-
-<style lang="scss">
-.constructor-result {
-  @media (max-width: 768px) {
-    width: 90%;
-    max-width: 520px;
-    margin: 0 auto 20px;
-  }
-
-  .toggle-wrapper {
-    max-width: 400px;
-    margin: 0 auto 20px;
-  }
-
-  img {
-    width: 100%;
-  }
-
-  &__component {
-    position: absolute;
-    top: 0;
-    width: 100%;
-
-    &.sauce-img img {
-      opacity: 0.85;
-    }
-  }
-
-  &__container {
-    max-width: 420px;
-    aspect-ratio: 1/1;
-    width: 100%;
-    position: relative;
-    margin: 10px auto;
-  }
-
-  .result-description {
-    font-size: 14px;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-
-  .result-mass {
-    font-size: 20px;
-    font-weight: 500;
-    text-align: center;
-  }
-
-  .main-button {
-    margin: 20px auto 0;
-    max-width: 220px;
-    height: 42px;
-  }
-
-  .result-reset {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    height: 36px;
-    font-size: 18px;
-    border: 0;
-    padding: 0;
-    color: var(--accent);
-    cursor: pointer;
-    background-color: transparent;
-    z-index: 10;
-    font-weight: 600;
-
-    svg {
-      transition: all 0.6s;
-      display: block;
-      width: 20px;
-      height: 20px;
-
-      path {
-        stroke: var(--accent);
-        stroke-width: 4px;
-      }
-    }
-
-    &:hover {
-      svg {
-        transform: rotate(-360deg);
-      }
-    }
-  }
-
-  .result-row {
-    display: flex;
-    align-items: center;
-    gap: 30px;
-    margin-bottom: 20px;
-    justify-content: center;
-  }
-}
-</style>

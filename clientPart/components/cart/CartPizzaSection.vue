@@ -8,6 +8,7 @@
       >
         <article class="container addish-item">
           <button
+            aria-label="Удалить"
             @click="storeCart.removePizzaCart(index)"
             class="remove-button"
           >

@@ -1,6 +1,6 @@
 <template>
   <div class="calculate-wrapper">
-    <button @click="decrementCount">
+    <button aria-label="Уменьшить количество" @click="decrementCount">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="10"
@@ -16,7 +16,7 @@
       <p>{{ count }}</p>
     </div>
 
-    <button @click="incrementCount">
+    <button aria-label="Увеличить количество" @click="incrementCount">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="10"

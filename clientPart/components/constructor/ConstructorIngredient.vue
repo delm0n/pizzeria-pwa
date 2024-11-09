@@ -39,12 +39,8 @@ const checkLimitOfCount = () => {
   } else {
     if (!props.visibleTimeout) {
       emit("setVisibleTimeout", true);
-      // visibleTimeout.value = true;
-
       setTimeout(() => {
         emit("setVisibleTimeout", false);
-
-        // visibleTimeout.value = false;
       }, 3000);
     }
   }
@@ -53,7 +49,7 @@ const checkLimitOfCount = () => {
 
 <style lang="scss">
 .constructor-ingredient {
-  padding-top: 50px;
+  padding-top: 70px;
 
   @media (max-width: 768px) {
     width: 90%;
@@ -62,7 +58,7 @@ const checkLimitOfCount = () => {
   }
 
   @media (max-width: 576px) {
-    padding: 0 16px;
+    padding: 0 16px 10px 16px;
     width: 100%;
   }
 

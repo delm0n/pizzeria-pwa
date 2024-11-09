@@ -68,7 +68,7 @@ export const useConstructorStore = defineStore('constructorStore', {
         },
 
         getMinPrice(): number {
-            return !!this.pizzas ? this.pizzas[0].Price + this.sauceArray[0].Price : 340
+            return !!this.pizzas.length ? this.pizzas[0].Price + this.sauceArray[0].Price : 340
         },
 
         /* ----------- */
@@ -105,6 +105,14 @@ export const useConstructorStore = defineStore('constructorStore', {
                 return pizza.Active ? sum + pizza.Mass : sum;
             }, 0)))
         },
+
+        ingredientMinValidate(): boolean {
+            const storeIngredient = useIngredientStore();
+
+            return storeIngredient.ingredients.reduce(function (sum, ingredient) {
+                return ingredient.Active ? sum + 1 : sum;
+            }, 0) >= 3
+        }
 
     },
 

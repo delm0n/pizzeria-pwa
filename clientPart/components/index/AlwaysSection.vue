@@ -17,6 +17,7 @@
                 format="avif,webp"
                 sizes="90px"
                 :src="'/images/pizzas/' + pizza.UrlImg + '.png'"
+                :alt="pizza.PizzaName"
               />
             </div>
 

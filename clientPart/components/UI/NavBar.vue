@@ -54,6 +54,7 @@ export default defineNuxtComponent({
   data() {
     return {
       isFixed: false,
+      lastActiveSection: "",
     };
   },
 
@@ -64,6 +65,7 @@ export default defineNuxtComponent({
   },
 
   watch: {
+    // горизонтальная прокрутка на мобильных устрйоствах
     activeSection(newValue: string, oldValue: string) {
       let box = document.querySelector(".link-box") as HTMLElement;
 
@@ -93,21 +95,30 @@ export default defineNuxtComponent({
     handleScroll() {
       if (this.$router.currentRoute.value.path == this.navKey) {
         this.isFixed = window.pageYOffset < 120 ? false : true;
-        this.links.forEach((element) => {
+        this.links.forEach((element, index) => {
           let hgt =
             document.getElementById(element.id)!.getBoundingClientRect().top +
             window.innerHeight / 2;
 
           if (hgt <= window.innerHeight) {
-            this.$emit("updateActiveSection", element.id);
+            this.lastActiveSection = element.id;
           }
         });
+
+        if (this.activeSection !== this.lastActiveSection) {
+          this.$emit("updateActiveSection", this.lastActiveSection);
+        }
       }
     },
   },
 
   beforeMount() {
     window.addEventListener("scroll", this.handleScroll);
+  },
+
+  mounted() {
+    this.handleScroll;
+    this.lastActiveSection = this.activeSection;
   },
 
   beforeDestroy() {
