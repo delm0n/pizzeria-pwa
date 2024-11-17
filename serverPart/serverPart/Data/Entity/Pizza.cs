@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 using System.Threading.Tasks;
 using NPOI.XWPF.UserModel;
+using System.Security.Cryptography.X509Certificates;
 
 
 namespace serverPart.Data.Entity
@@ -27,14 +28,9 @@ namespace serverPart.Data.Entity
 
         public ICollection<PizzaSize> PizzaSizes { get; set; }
 
-        public TypesPizzaEnum PizzaType { get; set; }
+        public string Type { get; set; } = "";
 
-        public enum TypesPizzaEnum
-        {
-            Usual = 0,
-            Spicy = 1,
-            Meatless = 2,
-        }
+       
 
     }
 }

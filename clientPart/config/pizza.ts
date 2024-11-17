@@ -6,6 +6,15 @@ export interface IPizza {
     MinPrice: number;
     PizzaSizes: IPizzaSize[];
     СountOrder: number;
+    Type: Array<PizzaType>;
+    Visible: boolean
+}
+
+export enum PizzaType {
+    NoOnion = "0",
+    Spicy = "1",
+    NoMeat = "2",
+    Mushroom = "3"
 }
 
 export interface IPizzaSize {
@@ -39,3 +48,4 @@ export interface IPizzaConstructorCart {
     Count: number;
     SauceId: number
 }
+

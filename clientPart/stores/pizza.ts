@@ -2,12 +2,37 @@
 type State = {
     pizzas: IPizza[];
     pizzasByСountOrder: IPizza[];
+
+    filters: filterPizza
+}
+
+type filterPizza = {
+    [PizzaType.NoOnion]: boolean,
+    [PizzaType.Spicy]: boolean,
+    [PizzaType.NoMeat]: boolean,
+    [PizzaType.Mushroom]: boolean,
+}
+
+const setType = (value: string | null) => {
+    if (value == null) {
+        return []
+    }
+    else {
+        return JSON.parse(value)
+    }
 }
 
 export const usePizzaStore = defineStore('pizzaStore', {
     state: (): State => ({
         pizzas: [],
-        pizzasByСountOrder: []
+        pizzasByСountOrder: [],
+
+        filters: {
+            [PizzaType.NoOnion]: false,
+            [PizzaType.Spicy]: false,
+            [PizzaType.NoMeat]: false,
+            [PizzaType.Mushroom]: false,
+        }
     }),
 
     getters: {
@@ -47,6 +72,40 @@ export const usePizzaStore = defineStore('pizzaStore', {
                 }
             };
         },
+
+        getPizzasByFilter(): IPizza[] {
+
+            if (!this.filters[PizzaType.NoOnion]
+                && !this.filters[PizzaType.Spicy]
+                && !this.filters[PizzaType.NoMeat]
+                && !this.filters[PizzaType.Mushroom]) {
+
+                this.pizzas.forEach(pizza => { pizza.Visible = true });
+
+            }
+            else {
+
+                this.pizzas.forEach(pizza => {
+
+                    if ((this.filters[PizzaType.NoOnion] ? pizza.Type.includes(PizzaType.NoOnion) : true)
+                        && (this.filters[PizzaType.Spicy] ? pizza.Type.includes(PizzaType.Spicy) : true)
+                        && (this.filters[PizzaType.NoMeat] ? pizza.Type.includes(PizzaType.NoMeat) : true)
+                        && (this.filters[PizzaType.Mushroom] ? pizza.Type.includes(PizzaType.Mushroom) : true)) {
+                        pizza.Visible = true;
+                    }
+                    else {
+                        pizza.Visible = false;
+                    }
+
+                });
+            }
+
+            return this.pizzas;
+        },
+
+        getFilterCount(): number {
+            return Object.values(this.filters).filter(value => value === true).length;
+        }
     },
 
     actions: {
@@ -74,8 +133,11 @@ export const usePizzaStore = defineStore('pizzaStore', {
                         Structure: element.Structure,
                         MinPrice: element.MinPrice,
                         PizzaSizes: sizeArray,
-                        СountOrder: element.СountOrder
+                        СountOrder: element.СountOrder,
+                        Type: setType(element.Type),
+                        Visible: true
                     });
+
                 });
 
                 //для блока always чаще всего заказывают
@@ -86,6 +148,13 @@ export const usePizzaStore = defineStore('pizzaStore', {
                 console.log('error pizzaStore');
             }
         },
+
+        // Устанавливаем значение false во все filters
+        setFilterFalse() {
+            Object.keys(this.filters).forEach(key => {
+                this.filters[key as PizzaType] = false;
+            });
+        }
     }
 })
 

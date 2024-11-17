@@ -1,0 +1,76 @@
+.pizza-checkbox {
+  .checkbox {
+    position: relative;
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+    width: max-content;
+    max-width: 100%;
+    cursor: pointer;
+
+    input {
+      position: absolute;
+      visibility: hidden;
+      width: 1px;
+      height: 1px;
+    }
+
+    div.box {
+      width: 20px;
+      height: 20px;
+      border: 1px solid #bbbbbb;
+      border-radius: 2px;
+      background-color: var(--background);
+      transition: 0.3s all;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+
+      svg {
+        width: 14px;
+        height: 12px;
+      }
+
+      @media (max-width: 576px) {
+        width: 16px;
+        height: 16px;
+
+        svg {
+          width: 12px;
+          height: 10px;
+        }
+      }
+
+      svg path {
+        display: none;
+      }
+    }
+
+    &:hover {
+      input[type="checkbox"]:not(:checked) + div {
+        background-color: var(--input-background-hover);
+      }
+    }
+
+    input[type="checkbox"]:checked + div {
+      background-color: var(--accent);
+      border: 1px solid var(--accent);
+      svg path {
+        display: block;
+        stroke-dasharray: 700;
+        animation: dash 2s linear alternate 1;
+      }
+    }
+  }
+
+  @keyframes dash {
+    0% {
+      stroke-dashoffset: 822;
+    }
+
+    100% {
+      stroke-dashoffset: 0;
+    }
+  }
+}

@@ -15,13 +15,7 @@
         Войти
       </button>
 
-      <p class="policy">
-        Продолжая, вы соглашаетесь
-        <span
-          >со сбором и обработкой персональных данных и пользовательским
-          соглашением</span
-        >
-      </p>
+      <policy />
     </form>
   </section>
 </template>
@@ -29,6 +23,8 @@
 <script setup lang="ts">
 import PhoneInput from "./PhoneInput.vue";
 import PasswordInput from "./PasswordInput.vue";
+import Policy from "~/components/UI/Policy.vue";
+
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
@@ -55,17 +51,25 @@ const handleSubmit = async () => {
 
     let responseValue = await response.json();
 
-    if (!!responseValue) {
-      storeClient.badTryEnter = false;
+    storeClient.badTryEnter = false;
+    storeClient.badPassword = false;
 
-      storeClient.autorizationClient(
-        responseValue.ClientId,
-        responseValue.FirstName,
-        responseValue.Telephone,
-        responseValue.Email,
-        responseValue.Password
-      );
+    if (!!responseValue) {
+      // пришло 1
+      if (responseValue == 1) {
+        storeClient.badPassword = true;
+        router.push({ name: "login" });
+      } else {
+        storeClient.autorizationClient(
+          responseValue.ClientId,
+          responseValue.FirstName,
+          responseValue.Telephone,
+          responseValue.Email,
+          responseValue.Password
+        );
+      }
     } else {
+      // пришло 0
       storeClient.badTryEnter = true;
       router.push({ name: "login" });
     }

@@ -1,83 +1,24 @@
 <template>
   <main class="login-main">
     <div class="container">
-      <h2>
-        {{ storeClient.badTryEnter ? "Не нашли вас :(" : "Регистрация" }}
-      </h2>
+      <template v-if="storeClient.badPassword">
+        <h2>Неверный пароль</h2>
+        <reset-password />
+      </template>
 
-      <form @submit.prevent="handleSubmit">
-        <name-input />
-        <phone-input />
-        <password-input />
-        <email-input />
-
-        <button :disabled="loading" class="main-button loading" type="submit">
-          Регистрация
-        </button>
-
-        <p class="policy">
-          Продолжая, вы соглашаетесь
-          <span
-            >со сбором и обработкой персональных данных и пользовательским
-            соглашением</span
-          >
-        </p>
-      </form>
+      <template v-else>
+        <h2>Регистрация</h2>
+        <registration />
+      </template>
     </div>
   </main>
 </template>
 
 <script setup lang="ts">
-import PhoneInput from "~/components/login/PhoneInput.vue";
-import PasswordInput from "~/components/login/PasswordInput.vue";
-import NameInput from "~/components/login/NameInput.vue";
-import EmailInput from "~/components/login/EmailInput.vue";
-import { ref } from "vue";
-import { useRouter } from "vue-router";
+import Registration from "~/components/login/Registration.vue";
+import ResetPassword from "~/components/login/ResetPassword.vue";
 
 const storeClient = useClientStore();
-const router = useRouter();
-
-const loading = ref(false);
-
-const handleSubmit = async () => {
-  loading.value = true;
-
-  try {
-    const response = await fetch("http://localhost:1234/registration", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        Password: storeClient.client.Password,
-        Telephone: storeClient.client.Telephone,
-        Email: storeClient.client.Email,
-        FirstName: storeClient.client.FirstName,
-      }),
-    });
-
-    let responseValue = await response.json();
-    console.log(responseValue);
-
-    if (!!responseValue) {
-      storeClient.autorizationClient(
-        responseValue.ClientId,
-        responseValue.FirstName,
-        responseValue.Telephone,
-        responseValue.Email,
-        responseValue.Password
-      );
-      router.push({ name: "account" });
-    } else {
-      console.log("такой номер уже есть");
-    }
-  } catch (err) {
-    console.log(err);
-  } finally {
-    loading.value = false;
-  }
-};
 </script>
 
 <style lang="scss">
@@ -86,8 +27,31 @@ const handleSubmit = async () => {
   width: 100%;
   margin: 30px auto 0;
 
-  h2 {
+  h2,
+  h3 {
     text-align: center;
+  }
+
+  // h3 {
+  //   font-size: 28px;
+  //   margin-bottom: 30px;
+
+  //   &.first {
+  //     margin-top: 40px;
+  //   }
+
+  //   &.second {
+  //     margin-top: 80px;
+  //   }
+
+  //   @media (max-width: 768px) {
+  //     font-size: 24px;
+  //     margin-bottom: 20px;
+  //   }
+  // }
+
+  form:last-child {
+    margin-bottom: 120px;
   }
 
   .main-button {

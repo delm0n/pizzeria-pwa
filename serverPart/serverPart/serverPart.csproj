@@ -176,6 +176,14 @@
     <Compile Include="Migrations\202411051623491_Updatepromocode3.Designer.cs">
       <DependentUpon>202411051623491_Updatepromocode3.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202411140742382_typesNull.cs" />
+    <Compile Include="Migrations\202411140742382_typesNull.Designer.cs">
+      <DependentUpon>202411140742382_typesNull.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202411140752187_types.cs" />
+    <Compile Include="Migrations\202411140752187_types.Designer.cs">
+      <DependentUpon>202411140752187_types.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -220,6 +228,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202411051623491_Updatepromocode3.resx">
       <DependentUpon>202411051623491_Updatepromocode3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202411140742382_typesNull.resx">
+      <DependentUpon>202411140742382_typesNull.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202411140752187_types.resx">
+      <DependentUpon>202411140752187_types.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -135,7 +135,7 @@ namespace serverPart.RouterModule
                                     UrlImg = pizza.UrlImg,
                                     Size = pizzaSize,
                                     Ingredients = ingredients,
-                                    PizzaType = (PizzaCart.TypesPizzaEnum)pizza.PizzaType
+                                   // PizzaType = (PizzaCart.TypesPizzaEnum)pizza.PizzaType
                                 });
                             }
 

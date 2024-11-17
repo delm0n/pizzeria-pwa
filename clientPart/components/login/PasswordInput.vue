@@ -1,6 +1,6 @@
 <template>
   <label class="pizza-input">
-    <span> Пароль:</span>
+    <span>{{ isReset ? "Новый пароль" : "Пароль" }}:</span>
 
     <div class="input-container">
       <input
@@ -52,8 +52,17 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
+const props = withDefaults(
+  defineProps<{
+    isReset?: boolean;
+  }>(),
+  {
+    isReset: false,
+  }
+);
+
 const storeClient = useClientStore();
-const passwordType = ref(true);
+const passwordType = ref(props.isReset ? false : true);
 
 const switchVisibility = () => {
   passwordType.value = !passwordType.value;

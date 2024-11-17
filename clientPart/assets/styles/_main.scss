@@ -99,6 +99,8 @@ img[data-loaded] {
 @import "./components/ingredient-item";
 
 @import "./components/addish-cart";
-@import "./components/pizza-input";
 @import "./components/pizza-modal";
 @import "./components/constructor-result";
+
+@import "./UI/pizza-input";
+@import "./UI/pizza-checkbox";

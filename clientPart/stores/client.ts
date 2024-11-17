@@ -3,13 +3,14 @@ type State = {
     client: IClient;
 
     badTryEnter: boolean;
+    badPassword: boolean;
 }
 
 export const useClientStore = defineStore('clientStore', {
     state: (): State => ({
 
         badTryEnter: false,
-
+        badPassword: false,
         client: {
             ClientId: 0,
             FirstName: "",

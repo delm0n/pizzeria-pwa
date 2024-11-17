@@ -32,15 +32,20 @@ namespace serverPart.RouterModule
 
                 using ( var dbContext = new ApplicationContext ( ) )
                 {
-                    client = await dbContext.Clients.FirstOrDefaultAsync ( c => c.Telephone == tel && c.Password == passw );
+                    client = await dbContext.Clients.FirstOrDefaultAsync ( c => c.Telephone == tel );
                 }
 
                 if ( client == null ) //если клиент не зарегистрирован
-                    return "false";
+                    return "0";
 
                 else
                 {
-                    return JsonSerializer.Serialize ( client );
+                    if ( client.Password != passw ) //если пароль не подошёл
+                    {
+                        return "1";
+                    }
+                    else
+                        return JsonSerializer.Serialize ( client );
                 }
             };
 
@@ -48,7 +53,7 @@ namespace serverPart.RouterModule
             Post["/registration", runAsync: true] = async ( x, token ) =>
             {
                 x = this.Bind<Client> ( );
-                Client client = new Client(); string tel = x.Telephone; string email = x.Email;
+                Client client = new Client(); string tel = x.Telephone;
 
                 using ( var dbContext = new ApplicationContext ( ) )
                 {
@@ -69,6 +74,30 @@ namespace serverPart.RouterModule
                 }
 
                 return JsonSerializer.Serialize ( client );
+            };
+
+            Post["/reset-password", runAsync: true] = async ( x, token ) =>
+            {
+                x = this.Bind<Client> ( );
+                Client client = new Client();
+                string tel = x.Telephone;
+
+                using ( var dbContext = new ApplicationContext ( ) )
+                {
+                    client = await dbContext.Clients.FirstOrDefaultAsync ( c => c.Telephone == tel );
+
+                    if ( client == null ) //если клиент не зарегистрирован
+                        return "false";
+
+                    else
+                    {
+                        client.Password = x.Password;
+                        return JsonSerializer.Serialize ( client );
+                    }
+
+                }
+
+
             };
 
             Get["/promocode/{id}-{code}", runAsync: true] = async ( x, token ) =>

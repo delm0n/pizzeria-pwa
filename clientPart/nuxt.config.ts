@@ -15,7 +15,7 @@ export default defineNuxtConfig({
   ],
 
   plugins: [
-    { src: '~/plugins/vue-the-mask.ts' }
+    { src: '~/plugins/vue-the-mask.ts' },
   ],
 
   viewport: {

@@ -1,5 +1,5 @@
 <template>
-  <article class="addish-item" v-if="!!pizza">
+  <article class="addish-item" v-if="!!pizza" v-show="pizza.Visible">
     <div
       class="addish-item__img"
       @click="storeModal.openModalPizza(pizza.PizzaId)"
@@ -52,3 +52,14 @@ const props = defineProps<{
   pizza: IPizza;
 }>();
 </script>
+
+<style lang="scss">
+.test-enter-active,
+.test-leave-active {
+  transition: opacity 0.5s, transform 0.5s;
+}
+.test-enter, .test-leave-to /* .test-leave-active в <2.1.8 */ {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+</style>
