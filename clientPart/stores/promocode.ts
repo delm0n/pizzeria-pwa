@@ -1,12 +1,14 @@
 type State = {
     promocode: IPromocode | null;
     promocodeFail: boolean;
+    message: string
 }
 
 export const usePromocodeStore = defineStore('promocodeStore', {
     state: (): State => ({
         promocode: null,
-        promocodeFail: false
+        promocodeFail: false,
+        message: ""
     }),
 
     actions: {
@@ -20,6 +22,18 @@ export const usePromocodeStore = defineStore('promocodeStore', {
                 Price: price,
                 Discount: discount
             }
+        },
+
+        setPromocodeDefault() {
+            this.promocode = null;
+            this.promocodeFail = false;
+            this.message = "";
+        }
+    },
+
+    getters: {
+        getValuePromocode(): string {
+            return this.promocode !== null ? this.promocode.Value : ""
         }
     }
 })

@@ -1,11 +1,23 @@
 <template>
   <form @submit.prevent="handleSubmit">
     <name-input />
+
+    <p class="phone-error" v-show="phoneError">Такой номер уже есть!</p>
+
     <phone-input />
     <password-input />
     <email-input />
 
-    <button :disabled="loading" class="main-button loading" type="submit">
+    <button
+      :disabled="loading"
+      :class="[
+        'main-button loading',
+        storeClient.invalidClient || storeClient.isEmptyName
+          ? 'button-unactive'
+          : '',
+      ]"
+      type="submit"
+    >
       Регистрация
     </button>
 
@@ -27,6 +39,14 @@ const storeClient = useClientStore();
 const router = useRouter();
 const loading = ref(false);
 
+const phoneError = ref(false);
+const setPhoneError = () => {
+  phoneError.value = true;
+  setTimeout(() => {
+    phoneError.value = false;
+  }, 3000);
+};
+
 const handleSubmit = async () => {
   loading.value = true;
 
@@ -45,7 +65,6 @@ const handleSubmit = async () => {
     });
 
     let responseValue = await response.json();
-    console.log(responseValue);
 
     if (!!responseValue) {
       storeClient.autorizationClient(
@@ -57,7 +76,7 @@ const handleSubmit = async () => {
       );
       router.push({ name: "account" });
     } else {
-      console.log("такой номер уже есть");
+      setPhoneError();
     }
   } catch (err) {
     console.log(err);
@@ -66,3 +85,12 @@ const handleSubmit = async () => {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.message-promocode {
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: var(--accent);
+  font-weight: 500;
+}
+</style>

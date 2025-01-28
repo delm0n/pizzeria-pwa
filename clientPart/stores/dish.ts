@@ -1,7 +1,6 @@
 
 type State = {
     dishes: IDish[];
-
 }
 
 type myDish = {
@@ -13,9 +12,7 @@ type myDish = {
 export const useDishStore = defineStore('dishStore', {
     state: (): State => ({
         dishes: [],
-
     }),
-
 
     actions: {
         async fetch() {
@@ -63,13 +60,18 @@ export const useDishStore = defineStore('dishStore', {
 
         setDishesById(id: number) {
             this.dishes.find(el => el.DishId == id)!.Count = 1
-
             const storeNotification = useNotificationStore();
             storeNotification.addNotification("Добавлено", this.dishes.find(el => el.DishId == id)!.Name);
         },
 
         setDishCount(id: number, val: number) {
             this.dishes.find(el => el.DishId == id)!.Count = val;
+        },
+
+        setDishDefault() {
+            this.dishes.forEach(element => {
+                element.Count = 0;
+            });
         }
     },
 
@@ -128,6 +130,15 @@ export const useDishStore = defineStore('dishStore', {
             return this.dishes.reduce(function (sum, item) {
                 return item.Count > 0 ? sum + item.Price * item.Count : sum;
             }, 0)
+        },
+
+        getDishesJSON(): string {
+            return JSON.stringify(this.dishes
+                .filter((item) => item.Count > 0)
+                .map((item) => ({
+                    DishId: item.DishId,
+                    Count: item.Count,
+                })))
         }
     }
 })

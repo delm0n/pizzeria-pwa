@@ -6,7 +6,7 @@
         :key="dish.DishId"
         class="addish-cart__container"
       >
-        <article class="container addish-item">
+        <article class="container-small addish-item">
           <button
             aria-label="Удалить"
             class="remove-button"
@@ -45,8 +45,8 @@
 
             <count-calculate
               :count="dish.Count"
-              @increment="(i) => storeDish.setDishCount(dish.DishId, i)"
-              @decrement="(i) => storeDish.setDishCount(dish.DishId, i)"
+              @increment="(i: number) => storeDish.setDishCount(dish.DishId, i)"
+              @decrement="(i: number) => storeDish.setDishCount(dish.DishId, i)"
               @remove="storeDish.setDishCount(dish.DishId, 0)"
             />
           </div>

@@ -21,7 +21,7 @@
         </div>
       </div>
     </div>
-    <cart-icon />
+    <cart-icon v-if="!viewport.isGreaterOrEquals('mobileWide')" />
   </main>
 </template>
 
@@ -35,7 +35,7 @@ const storeConstructor = useConstructorStore();
 
 const ConstructorResult = ref<null | any>(null);
 ConstructorResult.value = defineAsyncComponent({
-  loader: () => import("~/components/constructor/ConstructorResult.vue"),
+  loader: () => import("~/components/constructor/Result.vue"),
   delay: 500,
   timeout: 3000,
 });
@@ -43,13 +43,13 @@ ConstructorResult.value = defineAsyncComponent({
 const ConstructorMain = ref<null | any>(null);
 if (viewport.isGreaterOrEquals("tablet")) {
   ConstructorMain.value = defineAsyncComponent({
-    loader: () => import("~/components/constructor/ConstructorMain.vue"),
+    loader: () => import("~/components/constructor/Main.vue"),
     delay: 500,
     timeout: 3000,
   });
 } else {
   ConstructorMain.value = defineAsyncComponent({
-    loader: () => import("~/components/constructor/ConstructorMainMobile.vue"),
+    loader: () => import("~/components/constructor/MainMobile.vue"),
     delay: 500,
     timeout: 3000,
   });

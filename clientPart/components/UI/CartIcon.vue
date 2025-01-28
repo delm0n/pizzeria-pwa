@@ -1,10 +1,6 @@
 <template>
-  <div class="cart-box">
-    <NuxtLink
-      v-if="!viewport.isGreaterOrEquals('mobileWide')"
-      to="/cart"
-      class="cart-box__icon"
-    >
+  <div class="cart-iconbox">
+    <NuxtLink to="/cart" class="cart-iconbox__icon">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="40"
@@ -33,7 +29,7 @@
         </defs>
       </svg>
 
-      <span v-show="!!cartStore.getAllCount" class="cart-box__count">
+      <span v-show="!!cartStore.getAllCount" class="cart-iconbox__count">
         {{ cartStore.getAllCount }}
       </span>
     </NuxtLink>
@@ -41,64 +37,70 @@
 </template>
 
 <script setup lang="ts">
-const viewport = useViewport();
 const cartStore = useCartStore();
 </script>
 
 <style lang="scss">
-.cart-box {
+.cart-iconbox {
+  position: fixed;
+  z-index: 5;
+  bottom: 120px;
+  right: 60px;
+
+  @media (max-width: 992px) {
+    bottom: 75px;
+    right: 40px;
+  }
   @media (max-width: 576px) {
-    position: fixed;
-    z-index: 5;
     bottom: 35px;
     right: 24px;
+  }
 
-    &__icon {
-      position: relative;
-      cursor: pointer;
-      width: 56px;
-      height: 56px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      user-select: none;
-      background: rgb(252 252 253);
+  &__icon {
+    position: relative;
+    cursor: pointer;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    background: rgb(252 252 253);
 
-      box-shadow: 0 0.4rem 1rem var(--shadow);
-      border-radius: 100%;
-      padding: 10px;
+    box-shadow: 0 0.4rem 1rem var(--shadow);
+    border-radius: 100%;
+    padding: 10px;
 
-      svg {
-        width: 30px;
-        height: 30px;
+    svg {
+      width: 30px;
+      height: 30px;
 
-        path {
-          fill: var(--accent);
-        }
+      path {
+        fill: var(--accent);
       }
     }
+  }
 
-    &__count {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2px;
-      text-align: center;
+  &__count {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px;
+    text-align: center;
 
-      background: var(--accent);
-      color: rgb(252 252 253);
+    background: var(--accent);
+    color: rgb(252 252 253);
 
-      width: 20px;
-      height: 20px;
-      font-size: 13px;
-      font-weight: 500;
-      border-radius: 100%;
+    width: 20px;
+    height: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: 100%;
 
-      position: absolute;
-      right: 0;
-      top: 0px;
-      transform: translateY(-28%);
-    }
+    position: absolute;
+    right: 0;
+    top: 0px;
+    transform: translateY(-28%);
   }
 }
 </style>

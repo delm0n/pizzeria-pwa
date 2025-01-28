@@ -2,14 +2,14 @@
   <section class="addish-cart">
     <transition-group name="expand" @after-enter="afterEnter" @leave="leave">
       <div
-        v-for="(cart, index) in storeCart.constructors"
+        v-for="(cart, index) in storeCart.pizzas"
         :key="index"
         class="addish-cart__container"
       >
-        <article class="container addish-item">
+        <article class="container-small addish-item">
           <button
             aria-label="Удалить"
-            @click="storeCart.removeConstructorCart(index)"
+            @click="storeCart.removePizzaCart(index)"
             class="remove-button"
           >
             <svg
@@ -28,16 +28,29 @@
             <NuxtPicture
               format="avif,webp"
               sizes="90px"
-              :src="'/images/constructor/constructor.png'"
+              :src="
+                '/images/pizzas/' +
+                storePizza.getPizza(cart.PizzaId).UrlImg +
+                '.png'
+              "
             />
           </div>
 
           <div class="addish-item__content">
-            <p class="content-name">Конструктор пиццы</p>
+            <p
+              class="content-name"
+              v-html="storePizza.getPizza(cart.PizzaId).PizzaName"
+            ></p>
 
             <p
               class="content-description"
-              v-html="storeConstructor.getConstructorSizeDescription(cart)"
+              v-html="
+                storePizza.getPizzaSizeDescription(
+                  cart.PizzaId,
+                  cart.PizzaSizeId,
+                  cart.IngredientsId
+                )
+              "
             ></p>
 
             <p class="content-ingredient" v-show="!!cart.IngredientsId.length">
@@ -62,24 +75,19 @@
 
           <div class="addish-item__bottom">
             <b class="price">
-              {{ storeCart.getConstructorPrice(cart) }}
+              {{ storeCart.getPizzaPrice(cart) }}
               ₽
             </b>
 
             <div class="bottom-controller">
-              <p
-                @click="
-                  storeConstructor.setConstructorCart(cart, index, router)
-                "
-                class="edit"
-              >
+              <p @click="storeModal.setModalCart(cart, index)" class="edit">
                 Изменить
               </p>
               <count-calculate
                 :count="cart.Count"
-                @increment="(i) => storeCart.setConstructorCount(cart, i)"
-                @decrement="(i) => storeCart.setConstructorCount(cart, i)"
-                @remove="storeCart.removeConstructorCart(index)"
+                @increment="(i: number) => storeCart.setPizzaCount(cart, i)"
+                @decrement="(i: number) => storeCart.setPizzaCount(cart, i)"
+                @remove="storeCart.removePizzaCart(index)"
               />
             </div>
           </div>
@@ -91,12 +99,9 @@
 
 <script setup lang="ts">
 import CountCalculate from "../UI/CountCalculate.vue";
-import { computed } from "vue";
 import { afterEnter, leave } from "@/utils/animationCart";
-import { useRouter } from "vue-router";
-
-const router = useRouter();
 
 const storeCart = useCartStore();
-const storeConstructor = useConstructorStore();
+const storeModal = useModalStore();
+const storePizza = usePizzaStore();
 </script>

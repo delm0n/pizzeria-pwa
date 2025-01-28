@@ -24,7 +24,11 @@
         </ul>
 
         <div v-if="viewport.isGreaterOrEquals('mobileWide')" class="cart-box">
-          <NuxtLink to="/cart" class="main-button">Корзина</NuxtLink>
+          <sort-addish />
+
+          <NuxtLink to="/cart" class="main-button"
+            >Корзина {{ cartCount }}</NuxtLink
+          >
           <nav-bar-notification />
         </div>
       </div>
@@ -32,101 +36,113 @@
   </nav>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 import NavBarNotification from "./NavBarNotification.vue";
+import SortAddish from "./SortAddish.vue";
 
-export default defineNuxtComponent({
-  setup() {
-    const viewport = useViewport();
-    const scrollTo = (targetId: string) => {
-      const element = document.getElementById(targetId);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
+import { useRoute } from "vue-router";
+import {
+  watch,
+  ref,
+  onBeforeMount,
+  onMounted,
+  defineEmits,
+  computed,
+} from "vue";
+
+const cartStore = useCartStore();
+const route = useRoute();
+const viewport = useViewport();
+const emit = defineEmits();
+
+const isFixed = ref(false);
+const lastActiveSection = ref("");
+
+const cartCount = computed(() =>
+  !!cartStore.getAllCount ? " | " + cartStore.getAllCount : ""
+);
+
+const props = defineProps<{
+  links: Array<INavLink>;
+  activeSection: string;
+  navKey: string;
+}>();
+
+const scrollTo = (targetId: string) => {
+  const element = document.getElementById(targetId);
+  if (element) {
+    element.scrollIntoView({ behavior: "smooth" });
+  }
+};
+
+const handleScroll = () => {
+  if (route.path == props.navKey) {
+    const nav = document.querySelector("nav");
+    if (!!nav) {
+      isFixed.value = nav.getBoundingClientRect().top == 0 ? true : false;
+    }
+
+    props.links.forEach((element, index) => {
+      if (!!document.getElementById(element.id)) {
+        let hgt =
+          document.getElementById(element.id)!.getBoundingClientRect().top +
+          window.innerHeight / 2;
+
+        if (hgt <= window.innerHeight) {
+          lastActiveSection.value = element.id;
+        }
       }
-    };
+    });
 
-    return {
-      scrollTo,
-      viewport,
-    };
-  },
+    if (props.activeSection !== lastActiveSection.value) {
+      emit("updateActiveSection", lastActiveSection.value);
+    }
+  }
+};
 
-  data() {
-    return {
-      isFixed: false,
-      lastActiveSection: "",
-    };
-  },
+onBeforeMount(() => {
+  window.addEventListener("scroll", handleScroll);
+});
 
-  props: {
-    links: { type: Array<INavLink>, required: true },
-    activeSection: { type: String, required: true },
-    navKey: { type: String, required: true },
-  },
+onMounted(() => {
+  handleScroll();
+  lastActiveSection.value = props.activeSection;
+});
 
-  watch: {
-    // горизонтальная прокрутка на мобильных устрйоствах
-    activeSection(newValue: string, oldValue: string) {
-      let box = document.querySelector(".link-box") as HTMLElement;
+// Горизонтальная прокрутка на мобильных устройствах
+watch(
+  () => props.activeSection,
+  (newValue: string, oldValue: string) => {
+    const box = document.querySelector(".link-box") as HTMLElement;
 
-      //вызывается только если у элемента есть скролл
-      if (box.scrollWidth > box.clientWidth) {
-        let active = document.querySelector(
-          ".link-box__item--active"
-        ) as HTMLElement;
+    // вызывается только если у элемента есть скролл
+    if (box.scrollWidth > box.clientWidth) {
+      const active = document.querySelector(
+        ".link-box__item--active"
+      ) as HTMLElement;
 
-        let indexNew = this.links.findIndex((el) => el.id == newValue);
-        let indexOld = this.links.findIndex((el) => el.id == oldValue);
+      if (!!active) {
+        const indexNew = props.links.findIndex((el) => el.id == newValue);
+        const indexOld = props.links.findIndex((el) => el.id == oldValue);
 
-        let scroll =
+        const scroll =
           indexNew > indexOld
             ? active.offsetLeft
             : active.getBoundingClientRect().left - 20;
 
         box.scrollTo({
-          left: indexNew == 0 ? 0 : scroll,
+          left: indexNew === 0 ? 0 : scroll,
           behavior: "smooth",
         });
       }
-    },
-  },
+    }
+  }
+);
 
-  methods: {
-    handleScroll() {
-      if (this.$router.currentRoute.value.path == this.navKey) {
-        this.isFixed = window.pageYOffset < 120 ? false : true;
-        this.links.forEach((element, index) => {
-          let hgt =
-            document.getElementById(element.id)!.getBoundingClientRect().top +
-            window.innerHeight / 2;
-
-          if (hgt <= window.innerHeight) {
-            this.lastActiveSection = element.id;
-          }
-        });
-
-        if (this.activeSection !== this.lastActiveSection) {
-          this.$emit("updateActiveSection", this.lastActiveSection);
-        }
-      }
-    },
-  },
-
-  beforeMount() {
-    window.addEventListener("scroll", this.handleScroll);
-  },
-
-  mounted() {
-    this.handleScroll;
-    this.lastActiveSection = this.activeSection;
-  },
-
-  beforeDestroy() {
-    window.removeEventListener("scroll", this.handleScroll);
-  },
-
-  components: {
-    NavBarNotification,
-  },
-});
+watch(
+  () => route.path,
+  () => {
+    isFixed.value = false;
+  }
+);
 </script>

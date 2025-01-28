@@ -4,7 +4,10 @@
       <div class="title-row">
         <h2>Пиццы</h2>
 
-        <pizza-filter />
+        <div class="icons-box">
+          <sort-addish v-if="!viewport.isGreaterOrEquals('mobileWide')" />
+          <pizza-filter />
+        </div>
       </div>
 
       <div class="addish-wrapper">
@@ -25,7 +28,9 @@
 import PizzaSectionItem from "./PizzaSectionItem.vue";
 import PizzaConstructorLink from "./PizzaConstructorLink.vue";
 import PizzaFilter from "./PizzaFilter.vue";
+import SortAddish from "~/components/UI/SortAddish.vue";
 
+const viewport = useViewport();
 const storePizza = usePizzaStore();
 </script>
 
@@ -35,7 +40,6 @@ const storePizza = usePizzaStore();
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     margin-bottom: 32px;
 
     @media (max-width: 768px) {
@@ -44,6 +48,11 @@ const storePizza = usePizzaStore();
 
     h2 {
       margin-bottom: 0 !important;
+    }
+
+    .icons-box {
+      display: flex;
+      align-items: center;
     }
   }
 

@@ -1,6 +1,6 @@
 <template>
   <section class="header-cart">
-    <div class="container">
+    <div class="container-small">
       <h2 v-if="cartStore.getAllCount != 0">
         {{ formTovar(cartStore.getAllCount) }} на
         {{ cartStore.getLastPrice }}&nbsp;₽

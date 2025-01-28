@@ -95,6 +95,7 @@ export const useCartStore = defineStore('cartStore', {
     },
 
     getters: {
+
         getCartDishes(): IDish[] {
             const storeDish = useDishStore();
             return storeDish.dishes.filter(el => el.Count > 0).sort((a, b) => b.DishType - a.DishType)
@@ -149,7 +150,6 @@ export const useCartStore = defineStore('cartStore', {
 
         getLastPrice(): number {
             const storePromocode = usePromocodeStore();
-
             let price = this.getAllPrice;
 
             if (!!storePromocode.promocode) {
@@ -166,8 +166,19 @@ export const useCartStore = defineStore('cartStore', {
                 }
             }
 
-            return price;
-        }
+            return Math.ceil(price);
+        },
+
+        /* ----------- */
+
+
+        getPizzasJSON(): string {
+            return JSON.stringify(this.pizzas);
+        },
+
+        getConstructorPizzasJson(): string {
+            return JSON.stringify(this.constructors);
+        },
 
     }
 })

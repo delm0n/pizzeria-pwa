@@ -23,7 +23,7 @@ namespace serverPart.RouterModule
 
                 using ( var dbContext = new ApplicationContext ( ) )
                 {
-                    pizzas = await dbContext.Pizzas.OrderBy(p => p.MinPrice).ToListAsync(); //все пиццы
+                    pizzas = await dbContext.Pizzas.OrderBy(p => p.PizzaName ).ToListAsync(); //все пиццы
                     List<PizzaSize> pizzaSize = await dbContext.PizzaSizes.ToListAsync(); //все размеры всех пицц
 
                     for ( int i = 0; i < pizzas.Count; i++ )

@@ -35,7 +35,7 @@
         </defs>
       </svg>
 
-      <span v-show="!!storePizza.getFilterCount" class="caption-count">
+      <span v-if="!!storePizza.getFilterCount" class="caption-count">
         {{ storePizza.getFilterCount }}
       </span>
     </div>
@@ -47,12 +47,13 @@
           :key="item.key"
           class="body-list__item pizza-checkbox"
         >
-          <label class="checkbox">
-            <input
-              type="checkbox"
-              :checked="storePizza.filters[item.key]"
-              @click="setValue(item.key)"
-            />
+          <div
+            @click="setValue(item.key)"
+            :class="[
+              'checkbox',
+              storePizza.filters[item.key] ? 'checkbox-active' : '',
+            ]"
+          >
             <div class="box">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -71,7 +72,7 @@
               </svg>
             </div>
             <span v-text="item.title"></span>
-          </label>
+          </div>
         </div>
       </div>
 
@@ -86,16 +87,18 @@
 export default defineNuxtComponent({
   mounted() {
     // Элемент, за которым мы следим
-    const elem = document.querySelector(".filter")!;
+    const elem = document.querySelector(".filter");
 
-    // Настраиваем обработку кликов
-    document.addEventListener("click", (e) => {
-      const target = e.target as Node;
+    if (!!elem) {
+      // Настраиваем обработку кликов
+      document.addEventListener("click", (e) => {
+        const target = e.target as Node;
 
-      if (!elem.contains(target)) {
-        this.setBody(false);
-      }
-    });
+        if (!elem.contains(target)) {
+          this.setBody(false);
+        }
+      });
+    }
   },
 
   setup() {
@@ -141,79 +144,3 @@ export default defineNuxtComponent({
   },
 });
 </script>
-
-<style lang="scss">
-.filter {
-  position: relative;
-
-  .caption {
-    cursor: pointer;
-    position: relative;
-    svg {
-      circle {
-        stroke: var(--text-color);
-      }
-
-      path {
-        fill: var(--text-color);
-      }
-    }
-
-    &-count {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2px;
-      text-align: center;
-
-      background: var(--accent);
-      color: rgb(252 252 253);
-
-      width: 20px;
-      height: 20px;
-      font-size: 13px;
-      font-weight: 500;
-      border-radius: 100%;
-
-      position: absolute;
-      right: -3px;
-      top: 0;
-      transform: translateY(-55%);
-    }
-  }
-
-  .body {
-    background: var(--background-vs-opacity);
-    transition: all 0.2s;
-    position: absolute;
-    right: 0;
-    padding: 15px;
-    z-index: 9;
-    border-radius: 5px;
-    box-shadow: 0 15px 15px -10px var(--shadow);
-    width: 200px;
-    top: calc(100% + 5px);
-
-    &-list {
-      &__item {
-        &:not(:last-child) {
-          margin-bottom: 10px;
-        }
-
-        span {
-          font-size: 16px;
-          color: var(--placeholder);
-        }
-      }
-    }
-
-    .clear {
-      color: var(--accent);
-      cursor: pointer;
-      margin-top: 20px;
-      font-weight: 500;
-      text-align: center;
-    }
-  }
-}
-</style>

@@ -7,7 +7,7 @@ export interface IPizza {
     PizzaSizes: IPizzaSize[];
     СountOrder: number;
     Type: Array<PizzaType>;
-    Visible: boolean
+    Visible: boolean;
 }
 
 export enum PizzaType {
@@ -46,6 +46,6 @@ export interface IPizzaConstructorCart {
     PizzaId: number;
     IngredientsId: number[];
     Count: number;
-    SauceId: number
+    SauceId: number;
 }
 

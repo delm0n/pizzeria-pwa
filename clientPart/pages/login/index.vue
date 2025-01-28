@@ -32,24 +32,6 @@ const storeClient = useClientStore();
     text-align: center;
   }
 
-  // h3 {
-  //   font-size: 28px;
-  //   margin-bottom: 30px;
-
-  //   &.first {
-  //     margin-top: 40px;
-  //   }
-
-  //   &.second {
-  //     margin-top: 80px;
-  //   }
-
-  //   @media (max-width: 768px) {
-  //     font-size: 24px;
-  //     margin-bottom: 20px;
-  //   }
-  // }
-
   form:last-child {
     margin-bottom: 120px;
   }

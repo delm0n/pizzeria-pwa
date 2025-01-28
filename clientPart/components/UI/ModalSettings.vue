@@ -50,6 +50,7 @@ const store = useModalStore();
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  backdrop-filter: blur(4px);
 }
 
 .modal-content {

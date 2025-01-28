@@ -122,7 +122,6 @@
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Data\ApplicationContext.cs" />
-    <Compile Include="Data\Entity\Cart.cs" />
     <Compile Include="Data\Entity\Client.cs" />
     <Compile Include="Data\Entity\ConstructorPizza.cs" />
     <Compile Include="Data\Entity\Dish.cs" />
@@ -133,9 +132,8 @@
     <Compile Include="Data\Entity\Promocode.cs" />
     <Compile Include="Data\Helper\DishCart.cs" />
     <Compile Include="Data\Helper\EmailBetween.cs" />
+    <Compile Include="Data\Helper\PizzaConstructorCart.cs" />
     <Compile Include="Data\Helper\PizzaCart.cs" />
-    <Compile Include="Data\Helper\PizzaRate.cs" />
-    <Compile Include="Data\Helper\SynhCart.cs" />
     <Compile Include="Migrations\202206171133283_start.cs" />
     <Compile Include="Migrations\202206171133283_start.designer.cs">
       <DependentUpon>202206171133283_start.cs</DependentUpon>
@@ -184,14 +182,29 @@
     <Compile Include="Migrations\202411140752187_types.Designer.cs">
       <DependentUpon>202411140752187_types.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202501251435546_TestDeleteOrderCart.cs" />
+    <Compile Include="Migrations\202501251435546_TestDeleteOrderCart.Designer.cs">
+      <DependentUpon>202501251435546_TestDeleteOrderCart.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202501251619172_AddOrder.cs" />
+    <Compile Include="Migrations\202501251619172_AddOrder.Designer.cs">
+      <DependentUpon>202501251619172_AddOrder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202501251708155_AddOrder2.cs" />
+    <Compile Include="Migrations\202501251708155_AddOrder2.Designer.cs">
+      <DependentUpon>202501251708155_AddOrder2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202501271827050_StatusToOrder.cs" />
+    <Compile Include="Migrations\202501271827050_StatusToOrder.Designer.cs">
+      <DependentUpon>202501271827050_StatusToOrder.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RouterModule\Account.cs" />
+    <Compile Include="RouterModule\OrderService.cs" />
     <Compile Include="RouterModule\Addishes.cs" />
-    <Compile Include="RouterModule\CartService.cs" />
     <Compile Include="PersonalToken.cs" />
-    <Compile Include="RouterModule\Search.cs" />
     <Compile Include="Test-conn.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -234,6 +247,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202411140752187_types.resx">
       <DependentUpon>202411140752187_types.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202501251435546_TestDeleteOrderCart.resx">
+      <DependentUpon>202501251435546_TestDeleteOrderCart.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202501251619172_AddOrder.resx">
+      <DependentUpon>202501251619172_AddOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202501251708155_AddOrder2.resx">
+      <DependentUpon>202501251708155_AddOrder2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202501271827050_StatusToOrder.resx">
+      <DependentUpon>202501271827050_StatusToOrder.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

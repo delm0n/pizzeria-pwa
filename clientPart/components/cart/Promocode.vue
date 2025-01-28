@@ -11,7 +11,7 @@
         v-on:keyup.enter="checkPromocode"
         autocomplete="off"
         placeholder="Промокод"
-        maxlength="6"
+        maxlength="16"
         :disabled="isPromoApplied"
       />
 
@@ -39,11 +39,17 @@
           !storePromocode.promocodeFail && isPromoApplied ? 'noerror' : '',
         ]"
       >
-        <span v-show="!!message">
-          {{ message }}
+        <span v-show="!!storePromocode.message">
+          {{ storePromocode.message }}
         </span>
 
-        <span v-if="storePromocode.promocodeFail && isPromoApplied">
+        <span
+          v-if="
+            storePromocode.promocodeFail &&
+            isPromoApplied &&
+            !!storePromocode.promocode
+          "
+        >
           (действует от
           {{ storePromocode.promocode.Price }}
           ₽)
@@ -57,26 +63,27 @@
 import { ref, computed } from "vue";
 
 const storePromocode = usePromocodeStore();
-const cartStore = useCartStore();
 const clientStore = useClientStore();
 const storeClient = useClientStore();
 
 const promocode = ref<string>("");
 const loading = ref(false);
-const message = ref<string>("");
-const isPromoApplied = computed(() => message.value === "Промокод применён");
+// const message = ref<string>("");
+const isPromoApplied = computed(
+  () => storePromocode.message === "Промокод применён"
+);
 import { watch } from "vue";
 
 // Удаляем все символы, кроме цифр
 const filterInput = (event: Event) => {
   const input = event.target as HTMLInputElement;
   promocode.value = input.value.replace(/\D/g, "");
-  message.value = "";
+  storePromocode.message = "";
 };
 
 //отмена ввода промокода
 const cancelPromocode = () => {
-  message.value = "";
+  storePromocode.message = "";
   promocode.value = "";
   storePromocode.promocode = null;
 };
@@ -86,7 +93,7 @@ const checkPromocode = async () => {
   loading.value = true;
 
   try {
-    message.value = "";
+    storePromocode.message = "";
     const response = await fetch(
       `http://localhost:1234/promocode/${clientStore.client.ClientId}-${promocode.value}`,
       {
@@ -103,7 +110,7 @@ const checkPromocode = async () => {
     if (!!respond) {
       //если это сообщение об ошибке
       if (!!respond.errorMessage) {
-        message.value = respond.errorMessage;
+        storePromocode.message = respond.errorMessage;
       } else {
         //если это промокод
         if (!!respond.Id) {
@@ -114,20 +121,23 @@ const checkPromocode = async () => {
             respond.Discount
           );
 
-          message.value = "Промокод применён";
+          storePromocode.message = "Промокод применён";
         }
       }
     }
   } catch (err) {
-    message.value = "Ошибка";
+    storePromocode.message = "Ошибка";
   } finally {
     setTimeout(() => {
       loading.value = false;
-    }, 250);
+    }, 400);
   }
 };
 
-watch(() => storeClient.isAutorization, checkPromocode);
+watch(
+  () => storeClient.isAutorization,
+  () => (promocode.value.length > 0 ? checkPromocode : "")
+);
 </script>
 
 <style lang="scss" scoped>
@@ -162,12 +172,16 @@ watch(() => storeClient.isAutorization, checkPromocode);
     top: -25px;
     width: 100%;
 
-    font-size: 14px;
     color: var(--accent);
     font-weight: 500;
 
     span {
+      font-size: 14px;
       display: inline;
+
+      @media (max-width: 576px) {
+        font-size: 12px;
+      }
     }
 
     &.noerror {

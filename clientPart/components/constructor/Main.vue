@@ -12,11 +12,11 @@
 </template>
 
 <script setup lang="ts">
-import ConstructorSauce from "~/components/constructor/ConstructorSauce.vue";
-import ConstructorIngredient from "~/components/constructor/ConstructorIngredient.vue";
+import ConstructorSauce from "~/components/constructor/Sauce.vue";
+import ConstructorIngredient from "~/components/constructor/Ingredient.vue";
 
 const props = defineProps<{
-  ingredients: IIngredientByType;
+  ingredients: IIngredientByType[];
   links: INavLink[];
 }>();
 </script>

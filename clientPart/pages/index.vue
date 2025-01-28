@@ -1,12 +1,13 @@
 <template>
   <main class="index-main">
+    <banner />
     <nav-bar
       @updateActiveSection="updateActiveSection"
       :activeSection="activeSection"
       :navKey="$route.path"
       :links="links"
     />
-    <always-section />
+
     <pizza-section />
     <dish-section
       v-for="(item, index) in storeDish.getDishByType"
@@ -16,18 +17,20 @@
       :title="item.title"
     />
 
-    <cart-icon />
+    <cart-icon v-if="!viewport.isGreaterOrEquals('mobileWide')" />
   </main>
 </template>
 
 <script setup lang="ts">
 import PizzaSection from "~/components/index/PizzaSection.vue";
 import DishSection from "~/components/index/DishSection.vue";
-import AlwaysSection from "~/components/index/AlwaysSection.vue";
+import Banner from "~/components/index/Banner.vue";
+
 import NavBar from "~/components/UI/NavBar.vue";
 import CartIcon from "~/components/UI/CartIcon.vue";
 
 import { ref } from "vue";
+const viewport = useViewport();
 
 const storeDish = useDishStore();
 const links: INavLink[] = [

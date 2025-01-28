@@ -6,7 +6,7 @@ export interface IDish {
     Price: number;
     Mass: number;
     DishType: DishType;
-    Count: number
+    Count: number;
 }
 
 export enum DishType {
@@ -15,4 +15,9 @@ export enum DishType {
     Snacks = 2,
     Coffee = 3,
     Sauce = 4
+}
+
+export interface IDishCart {
+    DishId: number;
+    Count: number;
 }

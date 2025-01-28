@@ -8,6 +8,7 @@
 
       <pizza-modal />
       <enter-modal />
+      <order-modal />
     </NuxtLayout>
   </div>
 </template>
@@ -15,6 +16,7 @@
 <script setup lang="ts">
 import PizzaModal from "~/components/index/PizzaModal.vue";
 import EnterModal from "~/components/login/EnterModal.vue";
+import OrderModal from "~/components/order/OrderModal.vue";
 
 useSeoMeta({
   title: "Pizzeria",
@@ -27,17 +29,26 @@ useHead({
   htmlAttrs: {
     lang: "ru",
   },
+
+  link: [
+    {
+      rel: "preload",
+      href: "/images/banner/banner-1.png",
+      as: "image",
+      type: "image/png",
+    },
+  ],
 });
 
 const storeIngredient = useIngredientStore();
 const storeDish = useDishStore();
 const storePizza = usePizzaStore();
-const storeonstructor = useConstructorStore();
+const storeСonstructor = useConstructorStore();
 
 await callOnce(storePizza.fetch);
 await callOnce(storeIngredient.fetch);
 await callOnce(storeDish.fetch);
-await callOnce(storeonstructor.fetch);
+await callOnce(storeСonstructor.fetch);
 </script>
 
 <style>

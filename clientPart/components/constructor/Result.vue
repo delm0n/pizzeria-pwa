@@ -1,7 +1,11 @@
 <template>
   <div class="constructor-result">
     <div class="constructor-result__container">
-      <button aria-label="Очистить" @click="reset()" class="result-reset">
+      <button
+        aria-label="Очистить"
+        @click="reset()"
+        class="update-icon result-reset"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="41"
@@ -28,7 +32,7 @@
 
       <NuxtPicture
         format="avif,webp"
-        sizes="xl:500px lg:500px md:420px sm:400px"
+        sizes="500px"
         :src="'/images/constructor/testo.png'"
         alt="Пицца"
       />
@@ -42,7 +46,7 @@
         >
           <NuxtPicture
             format="avif,webp"
-            sizes="xl:500px lg:500px md:420px sm:400px"
+            sizes="500px"
             :src="'/images/constructor/' + item.UrlImg + '.png'"
             :alt="'соус' + item.Name"
           />
@@ -58,7 +62,7 @@
         >
           <NuxtPicture
             format="avif,webp"
-            sizes="xl:500px lg:500px md:500px sm:500px"
+            sizes="500px"
             :src="'/images/constructor/' + item.UrlImg + '.png'"
             :alt="item.Name"
           />
@@ -69,7 +73,7 @@
     <size-toggle
       :activeIndex="storeConstructor.getActiveIndex"
       :arrayToggle="storeConstructor.pizzas"
-      @click-toggle="(i) => storeConstructor.setPizzaSize(i)"
+      @click-toggle="(i: number) => storeConstructor.setPizzaSize(i)"
     />
 
     <div class="result-description">
@@ -85,8 +89,8 @@
       <count-calculate
         :count="storeConstructor.count"
         :isRemove="false"
-        @increment="(i) => storeConstructor.setConstructorCount(i)"
-        @decrement="(i) => storeConstructor.setConstructorCount(i)"
+        @increment="(i: number) => storeConstructor.setConstructorCount(i)"
+        @decrement="(i: number) => storeConstructor.setConstructorCount(i)"
       />
     </div>
     <button

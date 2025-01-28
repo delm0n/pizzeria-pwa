@@ -30,7 +30,7 @@
                 storePizza.getPizzaSizeDescription(
                   storeModal.pizzaModal.PizzaId,
                   storeModal.pizzaModal.PizzaSizes.find(
-                    (element) => element.Active
+                    (element: IPizzaSize) => element.Active
                   ).PizzaSizeId,
                   storeIngredient.getActiveIndexArray
                 )
@@ -45,7 +45,7 @@
             <size-toggle
               :activeIndex="storeModal.getActiveIndexPizzaSizesModal"
               :arrayToggle="storeModal.pizzaModal.PizzaSizes"
-              @click-toggle="(i) => storeModal.setPizzaSizeModal(i)"
+              @click-toggle="(i: number) => storeModal.setPizzaSizeModal(i)"
             />
 
             <p class="content-ingredients__title">Добавить к пицце</p>
@@ -57,8 +57,8 @@
             v-if="viewport.isGreaterOrEquals('mobileMedium')"
             :count="storeModal.pizzaCountModal"
             :isRemove="false"
-            @increment="(i) => storeModal.setPizzaCountModal(i)"
-            @decrement="(i) => storeModal.setPizzaCountModal(i)"
+            @increment="(i: number) => storeModal.setPizzaCountModal(i)"
+            @decrement="(i: number) => storeModal.setPizzaCountModal(i)"
           />
 
           <button @click="addToCart" class="main-button">

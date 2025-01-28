@@ -14,23 +14,15 @@ namespace serverPart.Data.Entity
 {
     public class Pizza
     {
+        [Key]
         public int PizzaId { get; set; }
-
         public string UrlImg { get; set; }
-
         public string PizzaName { get; set; }
-
         public string Structure { get; set; }
-
         public decimal MinPrice { get; set; }
-
         public int СountOrder { get; set; } = 0; //количество заказов пиццы
-
         public ICollection<PizzaSize> PizzaSizes { get; set; }
-
         public string Type { get; set; } = "";
-
-       
 
     }
 }

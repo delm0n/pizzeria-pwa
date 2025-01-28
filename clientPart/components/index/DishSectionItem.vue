@@ -3,7 +3,7 @@
     <div class="addish-item__img">
       <NuxtPicture
         format="avif,webp"
-        sizes="xl:100vw lg:100vw md:100vw sm:100vw"
+        sizes="330px"
         :src="'/images/dishes/' + dish.UrlImg + '.png'"
         loading="lazy"
         :alt="dish.Name"
@@ -50,8 +50,8 @@
             <div class="button-box__bottom-text">
               <count-calculate
                 :count="dish.Count"
-                @increment="(i) => storeDish.setDishCount(dish.DishId, i)"
-                @decrement="(i) => storeDish.setDishCount(dish.DishId, i)"
+                @increment="(i: number) => storeDish.setDishCount(dish.DishId, i)"
+                @decrement="(i: number) => storeDish.setDishCount(dish.DishId, i)"
                 @remove="storeDish.setDishCount(dish.DishId, 0)"
               />
             </div>

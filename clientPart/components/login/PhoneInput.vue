@@ -9,6 +9,7 @@
         v-model="storeClient.client.Telephone"
         autocomplete="off"
         required
+        :disabled="!edit"
       />
     </div>
   </label>
@@ -16,4 +17,13 @@
 
 <script setup lang="ts">
 const storeClient = useClientStore();
+
+const props = withDefaults(
+  defineProps<{
+    edit?: boolean;
+  }>(),
+  {
+    edit: true,
+  }
+);
 </script>

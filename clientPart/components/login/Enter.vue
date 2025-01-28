@@ -11,7 +11,14 @@
       <phone-input />
       <password-input />
 
-      <button :disabled="loading" class="main-button loading" type="submit">
+      <button
+        :disabled="loading"
+        :class="[
+          'main-button loading',
+          storeClient.invalidClient ? 'button-unactive' : '',
+        ]"
+        type="submit"
+      >
         Войти
       </button>
 
@@ -79,7 +86,7 @@ const handleSubmit = async () => {
     setTimeout(() => {
       loading.value = false;
       storeModal.setModalVisible(false);
-    }, 250);
+    }, 400);
   }
 };
 </script>

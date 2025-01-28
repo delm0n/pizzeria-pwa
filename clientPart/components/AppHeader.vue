@@ -91,7 +91,7 @@
             />
           </svg>
 
-          <p v-html="storeClient.client.FirstName"></p>
+          <p v-html="'Профиль'"></p>
         </NuxtLink>
       </div>
     </header>
@@ -121,6 +121,10 @@ const viewport = useViewport();
 
   @media (max-width: 576px) {
     padding: 12px 0;
+  }
+
+  * {
+    user-select: none;
   }
 
   .logo {
@@ -154,7 +158,7 @@ const viewport = useViewport();
       path {
         fill: var(--icons);
         stroke: var(--icons);
-        stroke-width: 0.35px;
+        stroke-width: 0.15px;
       }
     }
 
@@ -178,7 +182,7 @@ const viewport = useViewport();
         color: var(--text-color);
       }
 
-      @media (min-width: 769px) {
+      @media (hover: hover) {
         &:hover {
           svg {
             transform: translateY(-3px);

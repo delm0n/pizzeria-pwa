@@ -23,16 +23,9 @@ namespace serverPart.Data.Entity
 
         public string Password { get; set; }
 
-        public string PizzaOrderJson { get; set; } = ""; //пиццы, которые заказывал клиент
-        public string PromocodeJson { get; set; } = ""; //промокоды, которые использовал клиент
-
-        public ICollection<Order> Orders { get; set; }
-
-        public Client()
-        { 
-            Orders = new List<Order>();
-        }
-              
+        public string PizzaOrderJson { get; set; } = ""; //массив id пицц, которые заказывал клиент
+        public string PromocodeJson { get; set; } = ""; //массив id промокодов, которые использовал клиент
+            
         
     }
 }

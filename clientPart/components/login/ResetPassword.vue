@@ -27,7 +27,7 @@ const handleSubmit = async () => {
   loading.value = true;
 
   try {
-    const response = await fetch("http://localhost:1234/reset-password", {
+    const response = await fetch("http://localhost:1234/rewrite-account", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -39,7 +39,6 @@ const handleSubmit = async () => {
     });
 
     let responseValue = await response.json();
-    console.log(responseValue);
 
     if (!!responseValue) {
       storeClient.autorizationClient(

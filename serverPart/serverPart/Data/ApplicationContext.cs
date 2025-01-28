@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using serverPart.Data.Entity;
+using System.Data.Entity.ModelConfiguration;
 
 namespace serverPart.Data
 {
@@ -15,7 +16,6 @@ namespace serverPart.Data
         public DbSet<PizzaSize> PizzaSizes { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<Dish> Dishes { get; set; }
-        public DbSet<Cart> Carts { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<ConstructorPizza> ConstructorPizzas { get; set; }
         public DbSet<Promocode> Promocodes { get; set; }

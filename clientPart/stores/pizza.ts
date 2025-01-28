@@ -36,7 +36,6 @@ export const usePizzaStore = defineStore('pizzaStore', {
     }),
 
     getters: {
-
         getPizza: (state) => (pizzaId: number): IPizza => {
             return state.pizzas.find(el => el.PizzaId == pizzaId)!;
         },

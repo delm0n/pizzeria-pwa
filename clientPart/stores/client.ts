@@ -23,6 +23,22 @@ export const useClientStore = defineStore('clientStore', {
     getters: {
         isAutorization(): boolean {
             return this.client.ClientId !== 0
+        },
+
+        isEmptyName(): boolean {
+            return this.client.FirstName.length < 3
+        },
+
+        isEmptyPassword(): boolean {
+            return this.client.Password.length < 1
+        },
+
+        isEmptyTelephone(): boolean {
+            return this.client.Telephone.length < 18
+        },
+
+        invalidClient(): boolean {
+            return this.isEmptyPassword || this.isEmptyTelephone
         }
     },
 

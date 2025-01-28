@@ -70,10 +70,18 @@
     &:hover,
     &:active,
     &:has(> input:focus),
-    &:has(> input:focus-visible) &:has(> textarea:focus),
+    &:has(> input:focus-visible),
+    &:has(> textarea:focus),
     &:has(> textarea:focus-visible) {
       transition: 0.2s all;
       background: var(--input-background-hover);
+    }
+
+    &:has(> input:disabled),
+    &:has(> textarea:disabled) {
+      cursor: default;
+      background: var(--input-background-hover);
+      opacity: 0.8;
     }
   }
 }

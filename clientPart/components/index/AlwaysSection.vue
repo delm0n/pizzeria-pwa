@@ -1,33 +1,35 @@
 <template>
   <section id="always">
-    <div class="container">
+    <div class="container-small">
       <h2>Выбор клиентов</h2>
 
-      <Swiper :slides-per-view="'auto'" :loop="false" class="always-wrapper">
-        <SwiperSlide
-          v-for="pizza in storePizza.pizzasByСountOrder"
-          :key="pizza.PizzaId"
-        >
-          <div
-            class="always-item"
-            @click="storeModal.openModalPizza(pizza.PizzaId)"
+      <ClientOnly>
+        <Swiper :slides-per-view="'auto'" :loop="false" class="always-wrapper">
+          <SwiperSlide
+            v-for="pizza in storePizza.pizzasByСountOrder"
+            :key="pizza.PizzaId"
           >
-            <div class="always-item__img">
-              <NuxtPicture
-                format="avif,webp"
-                sizes="90px"
-                :src="'/images/pizzas/' + pizza.UrlImg + '.png'"
-                :alt="pizza.PizzaName"
-              />
-            </div>
+            <div
+              class="always-item"
+              @click="storeModal.openModalPizza(pizza.PizzaId)"
+            >
+              <div class="always-item__img">
+                <NuxtPicture
+                  format="avif,webp"
+                  sizes="90px"
+                  :src="'/images/pizzas/' + pizza.UrlImg + '.png'"
+                  :alt="pizza.PizzaName"
+                />
+              </div>
 
-            <div class="always-item__content">
-              <p v-html="pizza.PizzaName"></p>
-              <b> от {{ pizza.MinPrice }} ₽ </b>
+              <div class="always-item__content">
+                <p v-html="pizza.PizzaName"></p>
+                <b> от {{ pizza.MinPrice }} ₽ </b>
+              </div>
             </div>
-          </div>
-        </SwiperSlide>
-      </Swiper>
+          </SwiperSlide>
+        </Swiper>
+      </ClientOnly>
     </div>
   </section>
 </template>
@@ -40,10 +42,10 @@ const storePizza = usePizzaStore();
 <style lang="scss">
 #always {
   overflow: hidden;
-  padding-top: 60px;
+  padding: 40px 0;
 
   @media (max-width: 576px) {
-    padding-top: 30px;
+    padding: 20px 0;
   }
 
   h2 {
@@ -73,7 +75,7 @@ const storePizza = usePizzaStore();
       display: flex;
       align-items: center;
       padding: 8px 12px;
-      background: var(--background);
+      background: var(--background-secondary);
       box-shadow: var(--shadow) 0px 2px 15px -2px;
       transition: all 0.25s ease-out;
       border-radius: 10px;
