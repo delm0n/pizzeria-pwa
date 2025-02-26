@@ -24,10 +24,10 @@
     align-items: center;
 
     margin-bottom: 20px;
-    padding: 20px;
+    padding: 20px 20px 30px;
 
     @media (max-width: 576px) {
-      padding: 12px 16px;
+      padding: 12px 16px 20px;
     }
 
     &__img {

@@ -67,6 +67,7 @@ const offerClick = () => {
     router.push({ name: "order" });
   } else {
     storeModal.openModalEnter();
+    storeModal.makeOrder = true;
   }
 };
 </script>

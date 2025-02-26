@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace serverPart.Data.Helper
 {
-    public class PizzaCart
+    public class PizzaConstructorCart
     {
         public int PizzaId { get; set; }
-        public int PizzaSizeId { get; set; }    
+        public int SauceId { get; set; }    
         public int Count { get; set; }
         public string IngredientsId { get; set; }
 

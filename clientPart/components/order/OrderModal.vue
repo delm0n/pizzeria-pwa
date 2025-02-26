@@ -95,7 +95,7 @@ const storeModal = useModalStore();
   }
 
   .cart-icon {
-    animation: cart 2s ease-in 1.1s forwards;
+    animation: cart 1.6s ease-in 1.1s forwards;
     width: 100%;
     background: var(--background);
     position: relative;

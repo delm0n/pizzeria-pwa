@@ -104,7 +104,40 @@ export const usePizzaStore = defineStore('pizzaStore', {
 
         getFilterCount(): number {
             return Object.values(this.filters).filter(value => value === true).length;
+        },
+
+        getPizzasByСountOrder(): IPizza[] {
+            if (!!this.pizzas.length) {
+                //для блока always чаще всего заказывают
+                let array = this.pizzas.slice(0);
+                return array.sort((a, b) => b.СountOrder - a.СountOrder).slice(0, 3);
+            }
+            return [];
+        },
+
+        getPizzasByClient(): IPizza[] {
+            const storeClient = useClientStore();
+
+            try {
+                if (!!this.pizzas.length && storeClient.client.ClientId != 0) {
+                    let array: IPizza[] = [];
+                    this.pizzas.forEach(pizza => {
+                        JSON.parse(
+                            storeClient.client.PizzaOrderJson
+                        ).forEach((id: number) => {
+                            pizza.PizzaId == id ? array.push(pizza) : ''
+                        });
+                    });
+                    return array;
+                }
+            }
+            catch {
+            }
+
+            return [];
         }
+
+
     },
 
     actions: {
@@ -139,9 +172,7 @@ export const usePizzaStore = defineStore('pizzaStore', {
 
                 });
 
-                //для блока always чаще всего заказывают
-                let array = this.pizzas.slice(0);
-                this.pizzasByСountOrder = array.sort((a, b) => b.СountOrder - a.СountOrder).slice(0, 3)
+
             }
             catch {
                 console.log('error pizzaStore');

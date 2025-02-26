@@ -2,32 +2,34 @@
   <section class="personal">
     <h2>Личные данные</h2>
 
-    <phone-input :edit="false" />
-    <name-input />
-    <password-input />
-    <email-input />
+    <form @submit.prevent="handleSubmit">
+      <phone-input :edit="false" />
+      <name-input />
+      <password-input />
+      <email-input />
 
-    <button
-      :class="[
-        'button',
-        'loading',
-        storeClient.invalidClient || storeClient.isEmptyName
-          ? 'button-unactive'
-          : '',
-      ]"
-      :disabled="loading || textButton == 'Данные обновлены'"
-      @click="handleSubmit"
-    >
-      {{ textButton }}
-    </button>
+      <button
+        :class="[
+          'button',
+          'loading',
+          storeClient.invalidClient || storeClient.isEmptyName
+            ? 'button-unactive'
+            : '',
+        ]"
+        :disabled="loading || textButton == 'Данные обновлены'"
+        type="submit"
+      >
+        {{ textButton }}
+      </button>
+    </form>
   </section>
 </template>
 
 <script setup lang="ts">
 import PhoneInput from "~/components/login/PhoneInput.vue";
 import PasswordInput from "~/components/login/PasswordInput.vue";
-import NameInput from "~/components/login/NameInput.vue";
 import EmailInput from "~/components/login/EmailInput.vue";
+import NameInput from "~/components/login/NameInput.vue";
 
 const storeClient = useClientStore();
 const textButton = ref("Обновить данные");
@@ -59,7 +61,8 @@ const handleSubmit = async () => {
         responseValue.FirstName,
         responseValue.Telephone,
         responseValue.Email,
-        responseValue.Password
+        responseValue.Password,
+        responseValue.PizzaOrderJson
       );
 
       textButton.value = "Данные обновлены";

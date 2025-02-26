@@ -6,7 +6,7 @@
       <ClientOnly>
         <Swiper :slides-per-view="'auto'" :loop="false" class="always-wrapper">
           <SwiperSlide
-            v-for="pizza in storePizza.pizzasByСountOrder"
+            v-for="pizza in storePizza.getPizzasByСountOrder"
             :key="pizza.PizzaId"
           >
             <div
@@ -51,7 +51,7 @@ const storePizza = usePizzaStore();
   h2 {
     font-size: 24px;
     font-weight: 600;
-
+    margin-bottom: 20px;
     @media (max-width: 768px) {
       font-size: 18px;
     }

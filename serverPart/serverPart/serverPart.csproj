@@ -132,8 +132,8 @@
     <Compile Include="Data\Entity\Promocode.cs" />
     <Compile Include="Data\Helper\DishCart.cs" />
     <Compile Include="Data\Helper\EmailBetween.cs" />
-    <Compile Include="Data\Helper\PizzaConstructorCart.cs" />
     <Compile Include="Data\Helper\PizzaCart.cs" />
+    <Compile Include="Data\Helper\PizzaConstructorCart.cs" />
     <Compile Include="Migrations\202206171133283_start.cs" />
     <Compile Include="Migrations\202206171133283_start.designer.cs">
       <DependentUpon>202206171133283_start.cs</DependentUpon>
@@ -198,6 +198,22 @@
     <Compile Include="Migrations\202501271827050_StatusToOrder.Designer.cs">
       <DependentUpon>202501271827050_StatusToOrder.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202502011545302_updateOrder.cs" />
+    <Compile Include="Migrations\202502011545302_updateOrder.Designer.cs">
+      <DependentUpon>202502011545302_updateOrder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202502200637131_updateOrder1.cs" />
+    <Compile Include="Migrations\202502200637131_updateOrder1.Designer.cs">
+      <DependentUpon>202502200637131_updateOrder1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202502241321483_addPickup.cs" />
+    <Compile Include="Migrations\202502241321483_addPickup.Designer.cs">
+      <DependentUpon>202502241321483_addPickup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202502241334432_addNewTypeToCol.cs" />
+    <Compile Include="Migrations\202502241334432_addNewTypeToCol.Designer.cs">
+      <DependentUpon>202502241334432_addNewTypeToCol.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -259,6 +275,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202501271827050_StatusToOrder.resx">
       <DependentUpon>202501271827050_StatusToOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202502011545302_updateOrder.resx">
+      <DependentUpon>202502011545302_updateOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202502200637131_updateOrder1.resx">
+      <DependentUpon>202502200637131_updateOrder1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202502241321483_addPickup.resx">
+      <DependentUpon>202502241321483_addPickup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202502241334432_addNewTypeToCol.resx">
+      <DependentUpon>202502241334432_addNewTypeToCol.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

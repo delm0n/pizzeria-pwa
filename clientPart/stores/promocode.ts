@@ -33,7 +33,7 @@ export const usePromocodeStore = defineStore('promocodeStore', {
 
     getters: {
         getValuePromocode(): string {
-            return this.promocode !== null ? this.promocode.Value : ""
+            return this.promocode !== null && !this.promocodeFail ? this.promocode.Value : ""
         }
     }
 })

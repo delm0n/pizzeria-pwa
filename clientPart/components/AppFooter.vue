@@ -19,6 +19,7 @@
 <style lang="scss">
 footer {
   box-shadow: var(--shadow) 0px 2px 15px -2px;
+  background: var(--background-secondary);
 
   .footer-wrapper {
     padding: 20px;

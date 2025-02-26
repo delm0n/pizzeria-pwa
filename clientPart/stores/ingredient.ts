@@ -17,7 +17,7 @@ export const useIngredientStore = defineStore('ingredientStore', {
         checkCount(): boolean {
             return this.ingredients.reduce(function (sum, ingredient) {
                 return ingredient.Active ? sum + 1 : sum;
-            }, 0) <= 8;
+            }, 0) <= 9;
         },
     },
 

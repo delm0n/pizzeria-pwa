@@ -28,7 +28,7 @@ const emit = defineEmits();
 
 const props = defineProps<{
   activeIndex: number;
-  arrayToggle: IPizzaSize[] | IPizzaConstructor[];
+  arrayToggle: IPizzaSize[] | IPizzaConstructor[] | IAddress[];
 }>();
 
 const clickToggle = (index: number) => {

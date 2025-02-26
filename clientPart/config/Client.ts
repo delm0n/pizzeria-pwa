@@ -4,4 +4,5 @@ export interface IClient {
     Telephone: string;
     Email: string;
     Password: string;
+    PizzaOrderJson: string;
 }

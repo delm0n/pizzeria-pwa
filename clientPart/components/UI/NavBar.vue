@@ -115,25 +115,27 @@ watch(
   (newValue: string, oldValue: string) => {
     const box = document.querySelector(".link-box") as HTMLElement;
 
-    // вызывается только если у элемента есть скролл
-    if (box.scrollWidth > box.clientWidth) {
-      const active = document.querySelector(
-        ".link-box__item--active"
-      ) as HTMLElement;
+    if (!!box) {
+      // вызывается только если у элемента есть скролл
+      if (box.scrollWidth > box.clientWidth) {
+        const active = document.querySelector(
+          ".link-box__item--active"
+        ) as HTMLElement;
 
-      if (!!active) {
-        const indexNew = props.links.findIndex((el) => el.id == newValue);
-        const indexOld = props.links.findIndex((el) => el.id == oldValue);
+        if (!!active) {
+          const indexNew = props.links.findIndex((el) => el.id == newValue);
+          const indexOld = props.links.findIndex((el) => el.id == oldValue);
 
-        const scroll =
-          indexNew > indexOld
-            ? active.offsetLeft
-            : active.getBoundingClientRect().left - 20;
+          const scroll =
+            indexNew > indexOld
+              ? active.offsetLeft
+              : active.getBoundingClientRect().left - 20;
 
-        box.scrollTo({
-          left: indexNew === 0 ? 0 : scroll,
-          behavior: "smooth",
-        });
+          box.scrollTo({
+            left: indexNew === 0 ? 0 : scroll,
+            behavior: "smooth",
+          });
+        }
       }
     }
   }

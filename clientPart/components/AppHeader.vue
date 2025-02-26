@@ -2,13 +2,35 @@
   <div class="container">
     <header id="header" class="header-wrapper">
       <div class="logo">
-        <NuxtLink to="/"> <h1>Pizzeria</h1></NuxtLink>
+        <NuxtLink to="/">
+          <h1 v-if="!logo">Pizzeria</h1>
+          <svg
+            v-else
+            class="arrow"
+            width="3em"
+            height="1.4em"
+            viewBox="0 0 9 15"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M8.6 12.701L3.299 7.493 8.6 2.285A1.337 1.337 0 009 1.338a1.317 1.317 0 00-.4-.946A1.365 1.365 0 007.638 0a1.384 1.384 0 00-.963.392L.4 6.553a1.32 1.32 0 000 1.893l6.274 6.161a1.363 1.363 0 00.963.393 1.384 1.384 0 00.964-.393 1.348 1.348 0 000-1.906z"
+              fill="#50A684"
+            ></path>
+          </svg>
+        </NuxtLink>
 
         <theme-toggle />
       </div>
 
       <div class="icon-box">
-        <NuxtLink to="/bonus" class="icon-box__coin">
+        <NuxtLink
+          :to="storeClient.isAutorization ? '/bonus' : ''"
+          class="icon-box__coin"
+          @click="
+            !storeClient.isAutorization ? storeModal.openModalEnter() : ''
+          "
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="45"
@@ -101,9 +123,15 @@
 <script setup lang="ts">
 import ThemeToggle from "~/components/UI/ThemeToggle.vue";
 
+const route = useRoute();
+const viewport = useViewport();
+
+const logo = computed(() => {
+  return route.path != "/" && viewport.isLessThan("mobileWide");
+});
+
 const storeClient = useClientStore();
 const storeModal = useModalStore();
-const viewport = useViewport();
 </script>
 
 <style lang="scss">
@@ -138,6 +166,10 @@ const viewport = useViewport();
       @media (max-width: 576px) {
         margin-right: 5px;
       }
+    }
+
+    svg.arrow path {
+      fill: var(--accent);
     }
   }
 

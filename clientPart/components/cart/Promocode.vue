@@ -62,6 +62,9 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 
+const router = useRouter();
+const route = useRoute();
+
 const storePromocode = usePromocodeStore();
 const clientStore = useClientStore();
 const storeClient = useClientStore();

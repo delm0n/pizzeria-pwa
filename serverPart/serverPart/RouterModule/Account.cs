@@ -107,8 +107,8 @@ namespace serverPart.RouterModule
 
             Get["/promocode/{id}-{code}", runAsync: true] = async ( x, token ) =>
             {
-                int id = x.id;
-                string code = x.code;
+                int id = x.id; // клиента
+                string code = x.code; // промокод
                 Client client = new Client();
                 Promocode promocode = new Promocode();
 

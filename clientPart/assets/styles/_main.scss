@@ -11,6 +11,10 @@ picture {
   display: flex;
 }
 
+img {
+  user-select: none;
+}
+
 body {
   display: flex;
   flex-direction: column;
@@ -108,6 +112,16 @@ img {
 .v-enter-from,
 .v-leave-to {
   opacity: 0;
+}
+
+.drop-enter-active,
+.drop-leave-active {
+  overflow: hidden;
+}
+
+.drop-enter,
+.drop-leave-to {
+  height: 0;
 }
 
 img[data-loaded] {

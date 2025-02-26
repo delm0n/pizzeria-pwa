@@ -6,18 +6,22 @@ type State = {
     badPassword: boolean;
 }
 
+const clientDefault = {
+    ClientId: 0,
+    FirstName: "",
+    Telephone: "+7",
+    Email: "",
+    Password: "",
+    PizzaOrderJson: ""
+}
+
+
 export const useClientStore = defineStore('clientStore', {
     state: (): State => ({
 
         badTryEnter: false,
         badPassword: false,
-        client: {
-            ClientId: 0,
-            FirstName: "",
-            Telephone: "+7",
-            Email: "",
-            Password: ""
-        }
+        client: clientDefault,
     }),
 
     getters: {
@@ -44,12 +48,22 @@ export const useClientStore = defineStore('clientStore', {
 
     actions: {
         autorizationClient(clientId: number, firstName: string,
-            telephone: string, email: string, password: string) {
+            telephone: string, email: string, password: string, pizzaOrderJson: string) {
             this.client.ClientId = clientId;
             this.client.FirstName = firstName;
             this.client.Telephone = telephone;
             this.client.Email = email;
             this.client.Password = password;
+            this.client.PizzaOrderJson = pizzaOrderJson;
+
+            const orderStore = useOrderStore();
+            orderStore.orderName = firstName;
+            orderStore.orderTelephone = telephone;
+
+        },
+
+        setClientDefault() {
+            this.client = clientDefault;
         }
     }
 })

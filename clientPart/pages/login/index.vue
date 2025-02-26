@@ -17,8 +17,31 @@
 <script setup lang="ts">
 import Registration from "~/components/login/Registration.vue";
 import ResetPassword from "~/components/login/ResetPassword.vue";
-
+const route = useRoute();
+const router = useRouter();
 const storeClient = useClientStore();
+// onMounted(() => {
+//   if (storeClient.client != null) {
+//     router.push("/account");
+//   } else {
+//     if (storeClient.client == null) {
+//       router.push("/");
+//     }
+//   }
+// });
+
+// watch(
+//   () => route.path,
+//   () => {
+//     if (storeClient.client != null) {
+//       router.push("/account");
+//     } else {
+//       if (storeClient.client == null) {
+//         router.push("/");
+//       }
+//     }
+//   }
+// );
 </script>
 
 <style lang="scss">

@@ -136,3 +136,21 @@
     }
   }
 }
+
+.pizza-error {
+  position: absolute;
+  top: -25px;
+  width: 100%;
+
+  color: var(--accent);
+  font-weight: 500;
+
+  span {
+    font-size: 14px;
+    display: inline;
+
+    @media (max-width: 576px) {
+      font-size: 12px;
+    }
+  }
+}

@@ -114,6 +114,7 @@
 import SizeToggle from "../UI/SizeToggle.vue";
 import CountCalculate from "../UI/CountCalculate.vue";
 
+const router = useRouter();
 const storeIngredient = useIngredientStore();
 const storeConstructor = useConstructorStore();
 const storeCart = useCartStore();
@@ -140,5 +141,6 @@ const addToCart = () => {
 
   reset();
   storeConstructor.isEditIndex = -1;
+  router.push("/cart");
 };
 </script>

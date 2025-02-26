@@ -32,13 +32,16 @@
       </button>
     </div>
 
-    <div v-if="!loading" class="history-wrapper">
+    <div
+      v-if="!loading && viewport.isGreaterThan('mobileWide')"
+      class="history-wrapper"
+    >
       <div class="history-wrapper__header">
         <p>№</p>
         <p>Дата</p>
         <p>Сумма</p>
         <p>Способ оплаты</p>
-        <p>Статус</p>
+        <p class="status">Статус</p>
         <p>Детали заказа</p>
       </div>
 
@@ -51,7 +54,28 @@
         <p>{{ item.OrderDate }}</p>
         <p>{{ item.LastPrice }} ₽</p>
         <p>{{ item.TypeOfPay }}</p>
-        <p>{{ item.Status }}</p>
+        <p class="status">{{ item.Status }}</p>
+        <div class="more-button"><p>Посмотреть</p></div>
+      </div>
+    </div>
+
+    <div
+      v-if="!loading && !viewport.isGreaterThan('mobileWide')"
+      class="history-mobile"
+    >
+      <div
+        v-for="(item, index) in orderStore.orders"
+        :key="index"
+        class="history-mobile__row"
+      >
+        <div class="flex">
+          <p>Заказ № {{ item.OrderId }}</p>
+          <p>{{ item.OrderDate }}</p>
+        </div>
+
+        <p>
+          Сумма заказа: <span> {{ item.LastPrice }} ₽</span>
+        </p>
         <div class="more-button"><p>Посмотреть</p></div>
       </div>
     </div>
@@ -61,11 +85,13 @@
 <script lang="ts" setup>
 const loading = ref(false);
 const orderStore = useOrderStore();
+const storeClient = useClientStore();
+const viewport = useViewport();
 
 const fetchData = async () => {
   try {
     loading.value = true;
-    orderStore.loadData();
+    orderStore.loadData(storeClient.client.ClientId);
   } catch {
     console.log("error orderStore");
   } finally {
@@ -103,16 +129,18 @@ onMounted(() => {
       display: grid;
       grid-template-columns: 40px 21% 13% 1fr 16% 150px;
 
+      @media (max-width: 992px) {
+        grid-template-columns: 40px 1fr 18% 1fr 150px;
+
+        .status {
+          display: none;
+        }
+      }
+
       p {
         display: block;
         text-align: left;
         padding: 16px 8px 16px 8px;
-      }
-
-      .more-button p {
-        color: var(--accent);
-        font-weight: 600;
-        cursor: pointer;
       }
     }
 
@@ -125,6 +153,50 @@ onMounted(() => {
     &__row {
       &:nth-child(2n) {
         background-color: var(--background-secondary);
+      }
+    }
+  }
+
+  .more-button p {
+    color: var(--accent);
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .history-mobile {
+    &__row {
+      border-bottom: 1px solid var(--placeholder);
+      padding: 15px 0;
+
+      p {
+        span {
+          font-weight: 600;
+        }
+      }
+
+      .flex {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        p {
+          margin-bottom: 5px;
+          &:first-child {
+            font-weight: 600;
+          }
+
+          &:last-child {
+            color: var(--text-description);
+
+            @media (max-width: 576px) {
+              font-size: 12px;
+            }
+          }
+        }
+      }
+
+      .more-button {
+        margin-top: 10px;
       }
     }
   }

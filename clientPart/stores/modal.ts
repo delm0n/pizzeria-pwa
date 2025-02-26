@@ -8,6 +8,7 @@ type State = {
     pizzaModal: IPizza | null;
     enterModal: boolean;
     orderModal: boolean;
+    makeOrder: boolean;
 }
 
 export const useModalStore = defineStore('modalStore', {
@@ -18,7 +19,9 @@ export const useModalStore = defineStore('modalStore', {
         pizzaCountModal: 1,
         isEditIndex: -1,
         enterModal: false,
-        orderModal: false
+        orderModal: false,
+
+        makeOrder: false
     }),
 
     getters: {

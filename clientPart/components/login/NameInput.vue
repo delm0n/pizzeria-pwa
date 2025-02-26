@@ -6,8 +6,9 @@
         name="name"
         type="text"
         v-model="storeClient.client.FirstName"
-        autocomplete="off"
         required
+        autocomplete="off"
+        maxlength="20"
       />
     </div>
   </label>

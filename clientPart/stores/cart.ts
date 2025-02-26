@@ -156,7 +156,7 @@ export const useCartStore = defineStore('cartStore', {
                 if (price > storePromocode.promocode.Price) {
                     storePromocode.promocodeFail = false;
                     if (!!storePromocode.promocode.Discount) {
-                        return price - price * storePromocode.promocode.Discount * 0.01;
+                        price = price - price * storePromocode.promocode.Discount * 0.01;
                     }
                 }
 
@@ -166,7 +166,12 @@ export const useCartStore = defineStore('cartStore', {
                 }
             }
 
-            return Math.ceil(price);
+            else {
+                price = Math.ceil(price);
+            }
+
+            return price;
+
         },
 
         /* ----------- */

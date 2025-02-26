@@ -2,9 +2,23 @@
   <form @submit.prevent="handleSubmit">
     <name-input />
 
-    <p class="phone-error" v-show="phoneError">Такой номер уже есть!</p>
+    <label class="pizza-input">
+      <span :class="[phoneError ? 'phone-error' : '']">
+        {{ phoneError ? "Такой номер уже есть!" : "Телефон:" }}</span
+      >
 
-    <phone-input />
+      <div class="input-container">
+        <input
+          name="phone"
+          type="text"
+          v-mask="'+7 (###) ###-##-##'"
+          v-model="storeClient.client.Telephone"
+          autocomplete="off"
+          required
+        />
+      </div>
+    </label>
+
     <password-input />
     <email-input />
 
@@ -26,7 +40,6 @@
 </template>
 
 <script setup lang="ts">
-import PhoneInput from "~/components/login/PhoneInput.vue";
 import PasswordInput from "~/components/login/PasswordInput.vue";
 import NameInput from "~/components/login/NameInput.vue";
 import EmailInput from "~/components/login/EmailInput.vue";
@@ -48,40 +61,43 @@ const setPhoneError = () => {
 };
 
 const handleSubmit = async () => {
-  loading.value = true;
+  if (!storeClient.isEmptyName && !storeClient.invalidClient) {
+    loading.value = true;
 
-  try {
-    const response = await fetch("http://localhost:1234/registration", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        Password: storeClient.client.Password,
-        Telephone: storeClient.client.Telephone,
-        Email: storeClient.client.Email,
-        FirstName: storeClient.client.FirstName,
-      }),
-    });
+    try {
+      const response = await fetch("http://localhost:1234/registration", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          Password: storeClient.client.Password,
+          Telephone: storeClient.client.Telephone,
+          Email: storeClient.client.Email,
+          FirstName: storeClient.client.FirstName,
+        }),
+      });
 
-    let responseValue = await response.json();
+      let responseValue = await response.json();
 
-    if (!!responseValue) {
-      storeClient.autorizationClient(
-        responseValue.ClientId,
-        responseValue.FirstName,
-        responseValue.Telephone,
-        responseValue.Email,
-        responseValue.Password
-      );
-      router.push({ name: "account" });
-    } else {
-      setPhoneError();
+      if (!!responseValue) {
+        storeClient.autorizationClient(
+          responseValue.ClientId,
+          responseValue.FirstName,
+          responseValue.Telephone,
+          responseValue.Email,
+          responseValue.Password,
+          responseValue.PizzaOrderJson
+        );
+        router.push({ name: "account" });
+      } else {
+        setPhoneError();
+      }
+    } catch (err) {
+      console.log(err);
+    } finally {
+      loading.value = false;
     }
-  } catch (err) {
-    console.log(err);
-  } finally {
-    loading.value = false;
   }
 };
 </script>
@@ -92,5 +108,15 @@ const handleSubmit = async () => {
   font-size: 14px;
   color: var(--accent);
   font-weight: 500;
+}
+
+.phone-error {
+  color: var(--accent);
+  font-weight: 500;
+  font-size: 16px;
+
+  @media (max-width: 576px) {
+    font-size: 14px;
+  }
 }
 </style>
