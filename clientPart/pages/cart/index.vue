@@ -7,11 +7,6 @@
     <component v-if="CartDishSection" :is="CartDishSection" />
 
     <always-section />
-
-    <component
-      v-if="storeClient.client.ClientId != 0 && Recommendation"
-      :is="Recommendation"
-    />
     <component v-if="CartOfferSection" :is="CartOfferSection" />
   </main>
 </template>
@@ -19,9 +14,7 @@
 <script setup lang="ts">
 import CartHeaderSection from "~/components/cart/Header.vue";
 import { ref, defineAsyncComponent } from "vue";
-import AlwaysSection from "~/components/index/AlwaysSection.vue";
-
-const storeClient = useClientStore();
+import AlwaysSection from "~/components/cart/AlwaysSection.vue";
 
 const CartConstructorSection = ref<null | any>(null);
 CartConstructorSection.value = defineAsyncComponent({
@@ -51,12 +44,12 @@ CartOfferSection.value = defineAsyncComponent({
   timeout: 3000,
 });
 
-const Recommendation = ref<null | any>(null);
-Recommendation.value = defineAsyncComponent({
-  loader: () => import("~/components/cart/Recommendation.vue"),
-  delay: 500,
-  timeout: 3000,
-});
+// const Recommendation = ref<null | any>(null);
+// Recommendation.value = defineAsyncComponent({
+//   loader: () => import("~/components/cart/Recommendation.vue"),
+//   delay: 500,
+//   timeout: 3000,
+// });
 </script>
 
 <style lang="scss">

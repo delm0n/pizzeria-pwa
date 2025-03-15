@@ -7,7 +7,7 @@
           <svg
             v-else
             class="arrow"
-            width="3em"
+            width="20px"
             height="1.4em"
             viewBox="0 0 9 15"
             fill="none"
@@ -23,14 +23,13 @@
         <theme-toggle />
       </div>
 
-      <div class="icon-box">
-        <NuxtLink
-          :to="storeClient.isAutorization ? '/bonus' : ''"
-          class="icon-box__coin"
-          @click="
+      <!--  :to="storeClient.isAutorization ? '/bonus' : ''" 
+       @click="
             !storeClient.isAutorization ? storeModal.openModalEnter() : ''
           "
-        >
+      -->
+      <div class="icon-box">
+        <NuxtLink :to="'/bonus'" class="icon-box__coin">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="45"
@@ -59,6 +58,9 @@
               fill="black"
             />
           </svg>
+          <div class="balance" v-if="storeClient.client.Bonus > 0">
+            {{ storeClient.client.Bonus }}
+          </div>
 
           <p v-if="viewport.isGreaterOrEquals('mobileWide')">Бонусы</p>
         </NuxtLink>
@@ -168,8 +170,13 @@ const storeModal = useModalStore();
       }
     }
 
-    svg.arrow path {
-      fill: var(--accent);
+    svg.arrow {
+      display: block;
+      margin-right: 15px;
+
+      path {
+        fill: var(--accent);
+      }
     }
   }
 
@@ -199,6 +206,24 @@ const storeModal = useModalStore();
       flex-direction: column;
       align-items: center;
       cursor: pointer;
+      position: relative;
+
+      .balance {
+        position: absolute;
+        background: var(--accent);
+        color: rgb(252, 252, 253);
+        border-radius: 100px;
+        padding: 3px 6px;
+        top: -6px;
+        left: calc(50% + 4px);
+        font-size: 12px;
+
+        @media (max-width: 576px) {
+          padding: 2px 4px;
+          top: -2px;
+          font-size: 10px;
+        }
+      }
 
       svg {
         transition: transform 0.3s;

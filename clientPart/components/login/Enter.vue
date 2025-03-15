@@ -80,7 +80,8 @@ const handleSubmit = async () => {
             responseValue.Telephone,
             responseValue.Email,
             responseValue.Password,
-            responseValue.PizzaOrderJson
+            responseValue.PizzaOrderJson,
+            responseValue.Bonus
           );
         }
       } else {

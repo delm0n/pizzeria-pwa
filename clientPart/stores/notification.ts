@@ -21,7 +21,7 @@ export const useNotificationStore = defineStore('notificationStore', {
 
             setTimeout(() => {
                 this.notifications.splice(0, 1)
-            }, 5000);
+            }, 4000);
         }
     }
 })

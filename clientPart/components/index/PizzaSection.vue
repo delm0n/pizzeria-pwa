@@ -36,6 +36,12 @@ const storePizza = usePizzaStore();
 
 <style lang="scss">
 #pizza {
+  padding-top: 60px;
+
+  @media (max-width: 768px) {
+    padding-top: 20px;
+  }
+
   .title-row {
     display: flex;
     align-items: center;

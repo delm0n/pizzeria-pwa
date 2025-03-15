@@ -115,9 +115,9 @@ namespace serverPart.RouterModule
                 using ( var dbContext = new ApplicationContext ( ) )
                 {
                     client = await dbContext.Clients.Where ( c => c.ClientId == id ).FirstOrDefaultAsync ( );
-                    promocode = await dbContext.Promocodes.Where ( c => c.Value == code ).FirstOrDefaultAsync ( );
+                    promocode = await dbContext.Promocodes.Where ( p => p.Value == code ).FirstOrDefaultAsync ( );
 
-                    if ( id == 0 || client == null )
+                    if (  client == null )
                     {
                         return JsonSerializer.Serialize ( new { errorMessage = "Войдите, чтобы использовать" } );
                     }
@@ -129,11 +129,11 @@ namespace serverPart.RouterModule
                         }
                         else
                         {
-                            if ( client.PromocodeJson != "" )
+                            if ( client.PromocodeJson != "[]" )
                             {
-                                String[] items = JsonSerializer.Deserialize<String[]>( client.PromocodeJson );
+                                int[] items = JsonSerializer.Deserialize<int[]>( client.PromocodeJson );
 
-                                if ( items.Contains ( code ) )
+                                if ( items.Contains ( promocode.PromocodeId ) )
                                 {
                                     return JsonSerializer.Serialize ( new { errorMessage = "Вы уже использовали этот промокод" } );
                                 }

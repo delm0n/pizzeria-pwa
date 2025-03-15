@@ -40,7 +40,8 @@ const beforeLeave = (o: any) => {
   width: 300px;
   right: 20px;
   transform: translateY(100%);
-  bottom: -30px;
+  bottom: -20px;
+  z-index: 40;
 
   .notification-continer {
     overflow: hidden;

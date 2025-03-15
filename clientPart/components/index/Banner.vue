@@ -18,7 +18,7 @@
         <SwiperSlide>
           <div class="banner-item">
             <picture>
-              <source srcset="/images/banner/banner-item-1.webp" />
+              <!-- <source srcset="/images/banner/banner-item-1.webp" /> -->
               <img
                 src="/images/banner/banner-item-1.png"
                 alt="скидка по промокоду"
@@ -30,7 +30,7 @@
         <SwiperSlide>
           <NuxtLink to="/constructor" class="banner-item">
             <picture>
-              <source srcset="/images/banner/banner-item-2.webp" />
+              <!-- <source srcset="/images/banner/banner-item-2.webp" /> -->
               <img
                 src="/images/banner/banner-item-2.png"
                 alt="скидка по промокоду"
@@ -44,7 +44,7 @@
     <div v-if="!isLoaded" class="banner-plug">
       <div class="banner-item">
         <picture>
-          <source srcset="/images/banner/banner-item-1.webp" />
+          <!-- <source srcset="/images/banner/banner-item-1.webp" /> -->
           <img
             src="/images/banner/banner-item-1.png"
             alt="скидка по промокоду"
@@ -71,6 +71,8 @@
 
 <script setup lang="ts">
 import { Autoplay } from "swiper/modules";
+const storeOrder = useOrderStore();
+
 const viewport = useViewport();
 
 const isLoaded = ref(false);
@@ -94,7 +96,7 @@ const features = [
 
   {
     title: "Стоимость доставки",
-    text: "400 ₽",
+    text: storeOrder.priceDelivery + " ₽",
     svg: `
       <svg
                 xmlns="http://www.w3.org/2000/svg"

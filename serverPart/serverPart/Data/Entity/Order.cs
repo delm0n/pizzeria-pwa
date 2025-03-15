@@ -13,17 +13,27 @@ namespace serverPart.Data.Entity
     {
         [Key]
         public int OrderId { get; set; }
-        public int ClientId { get; set; } 
+
+        [ForeignKey ( "Client" )]
+        public int? ClientId { get; set; }
+        public Client Client { get; set; }
 
         public string OrderName { get; set; } = "";
+        
+        [Required]
         public string OrderTelephone { get; set; }
 
         public string Time { get; set; } // доставка ко времени
         public string TypeOfPay { get; set; } // тип оплаты
         public string OrderDate { get; set; } // дата, время
 
-        public string Promocode { get; set; } = "";
-        public double LastPrice { get; set; }
+        [ForeignKey ( "Promocode" )]
+        public int? PromocodeId { get; set; }
+        public Promocode Promocode { get; set; }
+        public int Bonus { get; set; } // для истории списания/пополнения
+
+        [Required]
+        public double LastPrice { get; set; } 
 
         public string PizzasJson { get; set; } = "[]";
         public string ConstructorPizzasJson { get; set; } = "[]";
@@ -32,8 +42,9 @@ namespace serverPart.Data.Entity
         public string Comment { get; set; } = "";
         public string Status { get; set; }
 
-        public string Address { get; set; } = ""; // адрес доставки если есть
-        public string Pickup { get; set; } = ""; // адрес самовывоза если есть
+        public string Address { get; set; }  // адрес доставки если есть
+        public string Pickup { get; set; } // адрес самовывоза если есть
+
 
     }
 }

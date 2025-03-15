@@ -37,7 +37,6 @@
           </span>
         </p>
       </div>
-
       <div
         v-for="(pizza, index) in storeCart.pizzas"
         :key="index"
@@ -82,7 +81,6 @@
           "
         ></p>
       </div>
-
       <div
         v-for="dish in storeCart.getCartDishes"
         :key="dish.DishId"
@@ -105,10 +103,35 @@
         </p>
       </div>
 
-      <div
-        v-if="storeOrder.isDeliveryPrice(storeCart.getLastPrice)"
-        class="order-list__item"
-      >
+      <div class="order-list__item" v-if="storeCart.getSaleByPromocode > 0">
+        <p class="content-name">
+          <span style="display: flex; align-items: center; gap: 5px">
+            Промокод
+          </span>
+
+          <span class="content-name__price">
+            -{{ storeCart.getSaleByPromocode }}
+            ₽
+          </span>
+        </p>
+      </div>
+
+      <div class="order-list__item" v-if="storeBonus.isSpendBonus">
+        <p class="content-name">
+          <span style="display: flex; align-items: center; gap: 5px">
+            Оплата бонусами
+          </span>
+
+          <span class="content-name__price">
+            -{{ storeCart.getSaleByBonus }}
+            ₽
+          </span>
+        </p>
+      </div>
+    </div>
+
+    <div class="order-list__offer">
+      <div class="order-list__item">
         <p class="content-name">
           <span style="display: flex; align-items: center; gap: 5px">
             Доставка
@@ -165,31 +188,18 @@
             </svg>
           </span>
 
-          <span class="content-name__price"> 400 ₽ </span>
+          <span class="content-name__price">
+            {{
+              storeOrder.isDeliveryPrice(storeCart.getLastPrice)
+                ? storeOrder.priceDelivery
+                : 0
+            }}
+            ₽
+          </span>
         </p>
       </div>
-    </div>
 
-    <div class="order-list__offer">
-      <div
-        v-if="
-          !!storePromocode.promocode &&
-          !!storePromocode.promocode.Discount &&
-          !storePromocode.promocodeFail
-        "
-        class="content-promocode"
-      >
-        {{ storePromocode.message }}
-        <span class="accent">-{{ storePromocode.promocode.Discount }}%</span>
-      </div>
-      <div v-if="storeClient.isAutorization" class="content-bonus">
-        Начислим бонусов:
-        <span class="accent"
-          >{{ Math.floor(storeCart.getLastPrice / 20) }} ₽</span
-        >
-      </div>
-
-      <div v-else class="content-bonus">
+      <div v-if="!storeClient.isAutorization" class="content-bonus">
         <span
           style="cursor: pointer"
           class="accent"
@@ -199,25 +209,27 @@
         и начислим
 
         <span class="accent"
-          >{{ Math.floor(storeCart.getLastPrice / 20) }} ₽</span
+          >{{ Math.round(storeCart.getLastPrice * 0.05) }} ₽</span
         >
         бонусами
       </div>
+
       <div
-        class="content-price"
-        :style="
-          !!storePromocode.promocode &&
-          !!storePromocode.promocode.Discount &&
-          !storePromocode.promocodeFail
-            ? 'margin: 20px 0 0;'
-            : ''
-        "
+        v-else-if="storeBonus.promocode == null && storeBonus.bonus == false"
+        class="content-bonus"
       >
+        Начислим бонусов:
+        <span class="accent"
+          >{{ Math.round(storeCart.getLastPrice * 0.05) }} ₽</span
+        >
+      </div>
+
+      <div class="content-price">
         Сумма заказа:
         <span class="accent"
           >&nbsp;{{
             storeOrder.isDeliveryPrice(storeCart.getLastPrice)
-              ? storeCart.getLastPrice + 400
+              ? storeCart.getLastPrice + storeOrder.priceDelivery
               : storeCart.getLastPrice
           }}
           ₽</span
@@ -231,7 +243,7 @@
 const storeCart = useCartStore();
 const storeDish = useDishStore();
 const storePizza = usePizzaStore();
-const storePromocode = usePromocodeStore();
+const storeBonus = useBonusStore();
 const storeConstructor = useConstructorStore();
 const storeClient = useClientStore();
 const storeModal = useModalStore();
@@ -303,7 +315,9 @@ const storeOrder = useOrderStore();
     font-size: 16px;
     margin-bottom: 5px;
   }
-
+  .content-bonus {
+    margin: 10px 0 0;
+  }
   .content-price {
     font-weight: 600;
     .accent {

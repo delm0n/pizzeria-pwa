@@ -5,7 +5,15 @@
         {{ formTovar(cartStore.getAllCount) }} на
         {{ cartStore.getLastPrice }}&nbsp;₽
       </h2>
-      <h2 v-else>Ваша корзина пуста <span class="emoji">:(</span></h2>
+
+      <div v-else class="empty-cart">
+        <h2>
+          Ваша корзина пуста
+          <span class="emoji">:(</span>
+        </h2>
+
+        <NuxtLink to="/" class="button">Вернуться в меню</NuxtLink>
+      </div>
     </div>
   </section>
 </template>
@@ -33,6 +41,27 @@ const cartStore = useCartStore();
 
     @media (max-width: 426px) {
       font-size: 24px;
+    }
+  }
+
+  .empty-cart {
+    padding: 50px 0 100px;
+
+    @media (max-width: 568px) {
+      padding: 30px 0 60px;
+    }
+    h2 {
+      text-align: center;
+      padding-bottom: 30px;
+
+      @media (max-width: 568px) {
+        padding-bottom: 20px;
+      }
+    }
+
+    .button {
+      width: 200px;
+      margin: 0 auto;
     }
   }
 }

@@ -17,6 +17,8 @@ namespace serverPart.Data.Entity
         [Key]
         public int PizzaId { get; set; }
         public string UrlImg { get; set; }
+
+        [Required]
         public string PizzaName { get; set; }
         public string Structure { get; set; }
         public decimal MinPrice { get; set; }

@@ -56,8 +56,10 @@ footer {
         opacity: 0.7;
         transition: all 0.2s;
 
-        &:hover {
-          color: var(--accent);
+        @media (hover: hover) {
+          &:hover {
+            color: var(--accent);
+          }
         }
 
         &:not(:last-child) {

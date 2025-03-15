@@ -46,19 +46,10 @@ const storePizza = usePizzaStore();
 <style lang="scss">
 #recommendation {
   overflow: hidden;
-  padding: 30px 0 40px;
+  margin-bottom: 40px;
 
-  @media (max-width: 576px) {
-    padding: 10px 0 20px;
-  }
-
-  h2 {
-    font-size: 24px;
-    font-weight: 600;
+  @media (max-width: 768px) {
     margin-bottom: 20px;
-    @media (max-width: 768px) {
-      font-size: 18px;
-    }
   }
 
   .recommendation-wrapper {

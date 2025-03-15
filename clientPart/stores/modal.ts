@@ -9,6 +9,7 @@ type State = {
     enterModal: boolean;
     orderModal: boolean;
     makeOrder: boolean;
+    gameModal: boolean;
 }
 
 export const useModalStore = defineStore('modalStore', {
@@ -21,7 +22,9 @@ export const useModalStore = defineStore('modalStore', {
         enterModal: false,
         orderModal: false,
 
-        makeOrder: false
+        makeOrder: false,
+
+        gameModal: false
     }),
 
     getters: {
@@ -110,6 +113,11 @@ export const useModalStore = defineStore('modalStore', {
         },
 
         openModalOrder() {
+            this.gameModal = true;
+            this.setModalVisible(true);
+        },
+
+        openModalGame() {
             this.orderModal = true;
             this.setModalVisible(true);
         },

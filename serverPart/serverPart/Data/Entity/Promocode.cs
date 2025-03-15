@@ -11,13 +11,13 @@ namespace serverPart.Data.Entity
     public class Promocode
     {
         [Key]
-        public int Id { get; set; }
+        public int PromocodeId { get; set; }
 
         [MaxLength(6)]
         public string Value { get; set; }
-
+               
         public decimal Price { get; set; }
 
-        public int? Discount {  get; set; }
+        public int Discount {  get; set; }
     }
 }

@@ -12,14 +12,17 @@ namespace serverPart.Data.Entity
         [Key]
         public int DishId { get; set; }
 
+        [Required]
         public string Name { get; set; }
 
         public string UrlImg { get; set; }
 
         public string Structure { get; set; }
 
+        [Required]
         public decimal Price { get; set; }
-        
+
+        [Required]
         public int Mass { get; set; }
 
         public TypesEnum DishType { get; set; }

@@ -2,7 +2,7 @@
   <section class="order-pay">
     <h2>Способ оплаты</h2>
 
-    <size-toggle
+    <toggle
       class="pay-array-toggle"
       :activeIndex="orderStore.getToggleActiveIndex(orderStore.pay)"
       :arrayToggle="orderStore.pay"
@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import SizeToggle from "~/components/UI/SizeToggle.vue";
+import Toggle from "~/components/UI/Toggle.vue";
 const orderStore = useOrderStore();
 </script>
 

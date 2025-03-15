@@ -33,7 +33,7 @@ useHead({
   link: [
     {
       rel: "preload",
-      href: "/images/banner/banner-1.png",
+      href: "/images/banner/banner-item-1.png",
       as: "image",
       type: "image/png",
     },

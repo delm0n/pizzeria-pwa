@@ -42,7 +42,7 @@ const storePizza = usePizzaStore();
 <style lang="scss">
 #always {
   overflow: hidden;
-  padding: 40px 0;
+  padding: 30px 0;
 
   @media (max-width: 576px) {
     padding: 20px 0;

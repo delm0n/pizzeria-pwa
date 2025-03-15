@@ -16,9 +16,20 @@ type State = {
     orderAddress: IAddress;
     places: IPlace[];
 
-    pay: ISizeToggleDefault[];
-    address: ISizeToggleDefault[];
+    pay: IToggleDefault[];
+    address: IToggleDefault[];
+
+    priceDelivery: number;
 }
+
+const orderAddressDefault = {
+    locality: '',
+    street: '',
+    house: '',
+    flat: '',
+    floor: '',
+} as IAddress;
+
 export const useOrderStore = defineStore('orderStore', {
 
     state: (): State => ({
@@ -28,13 +39,7 @@ export const useOrderStore = defineStore('orderStore', {
         orderTelephone: '',
         orderComment: '',
 
-        orderAddress: {
-            locality: '',
-            street: '',
-            house: '',
-            flat: '',
-            floor: '',
-        },
+        orderAddress: orderAddressDefault,
 
         places: [
             { text: "Пиццерия 1. Главная точка", active: true },
@@ -64,11 +69,14 @@ export const useOrderStore = defineStore('orderStore', {
                 NameSize: "Самовывоз",
                 Active: false,
             },
-        ]
+        ],
+
+        priceDelivery: 400,
+
     }),
 
     getters: {
-        getToggleActiveIndex: (state) => (array: ISizeToggleDefault[]): number => {
+        getToggleActiveIndex: (state) => (array: IToggleDefault[]): number => {
             return array.findIndex((el) => el.Active);
         },
 
@@ -119,7 +127,8 @@ export const useOrderStore = defineStore('orderStore', {
 
         isDeliveryPrice: (state) => (price: number): boolean => {
             return state.address[0].Active && price < 1000;
-        }
+        },
+
     },
 
     actions: {
@@ -150,16 +159,24 @@ export const useOrderStore = defineStore('orderStore', {
 
         },
 
-        setToggleElement(array: ISizeToggleDefault[], i: number) {
+        setToggleElement(array: IToggleDefault[], i: number) {
             array.forEach((element, index) => {
-                i == index ? (element.Active = true) : (element.Active = false);
+                element.Active = index === i;
             });
         },
 
         setPlaceActive(i: number) {
             this.places.forEach((element, index) => {
-                index == i ? (element.active = true) : (element.active = false);
+                element.active = index === i;
             });
+        },
+
+        setOrderDefault() {
+            this.orders = [];
+            this.orderName = '';
+            this.orderTelephone = '';
+            this.orderComment = '';
+            this.orderAddress = orderAddressDefault;
         }
     },
 })

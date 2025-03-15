@@ -1,5 +1,10 @@
 <template>
   <main class="account-main">
+    <component
+      v-if="Recommendation && storePizza.getPizzasByClient.length > 0"
+      :is="Recommendation"
+    />
+
     <div class="container-small">
       <personal />
       <history />
@@ -23,11 +28,14 @@ const router = useRouter();
 const route = useRoute();
 
 const storeClient = useClientStore();
-const storePromocode = usePromocodeStore();
+const storeBonus = useBonusStore();
+const storePizza = usePizzaStore();
+const storeOrder = useOrderStore();
 
 const exitClient = () => {
   storeClient.setClientDefault();
-  storePromocode.setPromocodeDefault();
+  storeBonus.setPromocodeDefault();
+  storeOrder.setOrderDefault();
   router.push("/");
 };
 
@@ -45,6 +53,13 @@ watch(
     }
   }
 );
+
+const Recommendation = ref<null | any>(null);
+Recommendation.value = defineAsyncComponent({
+  loader: () => import("~/components/account/Recommendation.vue"),
+  delay: 500,
+  timeout: 3000,
+});
 </script>
 
 <style lang="scss">

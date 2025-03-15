@@ -1,6 +1,9 @@
 <template>
   <NuxtLink
-    @click="storeIngredient.setIngredientsFalse()"
+    @click="
+      pageClick();
+      storeIngredient.setIngredientsFalse();
+    "
     to="/constructor"
     class="addish-item"
   >
@@ -41,6 +44,8 @@
 </template>
 
 <script setup lang="ts">
+import { pageClick } from "@/utils/pageClick";
+
 const storeIngredient = useIngredientStore();
 const viewport = useViewport();
 const storeConstructor = useConstructorStore();

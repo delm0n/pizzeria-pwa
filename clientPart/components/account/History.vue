@@ -91,7 +91,9 @@ const viewport = useViewport();
 const fetchData = async () => {
   try {
     loading.value = true;
-    orderStore.loadData(storeClient.client.ClientId);
+    storeClient.client.ClientId !== null
+      ? orderStore.loadData(storeClient.client.ClientId)
+      : "";
   } catch {
     console.log("error orderStore");
   } finally {

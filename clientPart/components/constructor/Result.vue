@@ -70,7 +70,7 @@
       </transition-group>
     </div>
 
-    <size-toggle
+    <toggle
       :activeIndex="storeConstructor.getActiveIndex"
       :arrayToggle="storeConstructor.pizzas"
       @click-toggle="(i: number) => storeConstructor.setPizzaSize(i)"
@@ -111,7 +111,7 @@
 </template>
 
 <script setup lang="ts">
-import SizeToggle from "../UI/SizeToggle.vue";
+import Toggle from "../UI/Toggle.vue";
 import CountCalculate from "../UI/CountCalculate.vue";
 
 const router = useRouter();

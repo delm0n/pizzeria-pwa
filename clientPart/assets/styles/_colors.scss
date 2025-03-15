@@ -28,14 +28,15 @@
   --shadow: rgba(6, 5, 50, 0.1);
 
   --input-background-hover: rgba(238, 238, 238, 0.6);
+  --cart-hover-shadow: rgba(0, 0, 0, 0.175);
 }
 
-[data-dark="true"] {
+[data-theme="dark"] {
   color-scheme: dark;
 
-  --background: #252122;
-  --background-secondary: #2c2829;
-  --background-opacity: rgba(37, 33, 34, 0.75);
+  --background: #1f1c1d;
+  --background-secondary: #272525;
+  --background-opacity: #1f1c1dbf;
   --background-vs-opacity: rgba(252, 252, 253, 0.95);
 
   --icons: rgb(230 221 221);
@@ -55,4 +56,5 @@
   --shadow: rgba(209, 209, 228, 0);
 
   --input-background-hover: rgb(31, 29, 29);
+  --cart-hover-shadow: rgba(255, 255, 255, 0.2);
 }

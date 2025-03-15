@@ -119,7 +119,7 @@ export const usePizzaStore = defineStore('pizzaStore', {
             const storeClient = useClientStore();
 
             try {
-                if (!!this.pizzas.length && storeClient.client.ClientId != 0) {
+                if (!!this.pizzas.length && storeClient.isAutorization) {
                     let array: IPizza[] = [];
                     this.pizzas.forEach(pizza => {
                         JSON.parse(

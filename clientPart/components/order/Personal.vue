@@ -30,7 +30,7 @@
       </label>
     </div>
 
-    <size-toggle
+    <toggle
       id="order-address"
       class="address-array-toggle"
       :activeIndex="orderStore.getToggleActiveIndex(orderStore.address)"
@@ -41,7 +41,7 @@
 </template>
 
 <script setup lang="ts">
-import SizeToggle from "~/components/UI/SizeToggle.vue";
+import Toggle from "~/components/UI/Toggle.vue";
 const orderStore = useOrderStore();
 </script>
 

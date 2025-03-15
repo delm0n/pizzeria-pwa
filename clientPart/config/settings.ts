@@ -5,13 +5,13 @@ export interface INavLink {
 };
 
 export interface IPromocode {
-    Id: number;
+    PromocodeId: number;
     Value: string;
     Price: number;
-    Discount?: number;
+    Discount: number;
 }
 
-export interface ISizeToggleDefault {
+export interface IToggleDefault {
     NameSize: string;
     Active: boolean;
 }

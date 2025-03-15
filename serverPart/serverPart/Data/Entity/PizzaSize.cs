@@ -13,8 +13,13 @@ namespace serverPart.Data.Entity
     {
         [Key]
         public int PizzaSizeId { get; set;}
+        [Required]
         public string NameSize { get; set; }
+
+        [Required] 
         public decimal Price { get; set; }
+
+        [Required] 
         public int Mass { get; set; }
 
         public int PizzaId { get; set;}

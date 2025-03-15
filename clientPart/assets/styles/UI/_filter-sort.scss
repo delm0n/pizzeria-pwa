@@ -51,7 +51,7 @@
     border-radius: 5px;
     box-shadow: 0 15px 15px -10px var(--shadow);
     width: 210px;
-    top: calc(100% + 5px);
+    user-select: none;
 
     &-list {
       &__item {
@@ -74,4 +74,12 @@
       text-align: center;
     }
   }
+}
+
+.filter .body {
+  top: calc(100% + 15px);
+}
+
+.sort .body {
+  top: calc(100% + 25px);
 }

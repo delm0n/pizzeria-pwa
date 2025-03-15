@@ -135,6 +135,7 @@ export const useCartStore = defineStore('cartStore', {
             return this.pizzas.length + storeDish.dishes.filter(el => el.Count > 0).length + this.constructors.length
         },
 
+        // общая сумма 
         getAllPrice(): number {
             const storeDish = useDishStore();
 
@@ -147,31 +148,57 @@ export const useCartStore = defineStore('cartStore', {
 
         },
 
-
+        // общая сумма с учётом бонусов 
         getLastPrice(): number {
-            const storePromocode = usePromocodeStore();
+            const storeBonus = useBonusStore();
+            const storeClient = useClientStore();
+
             let price = this.getAllPrice;
 
-            if (!!storePromocode.promocode) {
-                if (price > storePromocode.promocode.Price) {
-                    storePromocode.promocodeFail = false;
-                    if (!!storePromocode.promocode.Discount) {
-                        price = price - price * storePromocode.promocode.Discount * 0.01;
-                    }
+            if (storeBonus.promocode !== null) {
+                if (price > storeBonus.promocode.Price) {
+                    storeBonus.promocodeFail = false;
+                    price = price - price * storeBonus.promocode.Discount * 0.01;
                 }
-
                 else {
                     //сообщение о то что скидка не применилась из-за маленькой суммы заказа
-                    storePromocode.promocodeFail = true;
+                    storeBonus.promocodeFail = true;
                 }
             }
 
             else {
-                price = Math.ceil(price);
+                if (storeBonus.bonus) {
+                    if (price >= storeClient.client.Bonus) {
+                        price = price - storeClient.client.Bonus;
+                    }
+                    else {
+                        price = 0;
+                    }
+                }
+                // else {
+                //     price = Math.ceil(price);
+                // }
+            }
+            return price;
+        },
+
+        getSaleByPromocode(): number {
+            const storeBonus = useBonusStore();
+            let price = this.getAllPrice;
+
+            if (storeBonus.promocode !== null && price >= 1000) {
+                return price / 100 * storeBonus.promocode.Discount
             }
 
-            return price;
+            return 0;
+        },
 
+
+        getSaleByBonus(): number {
+            const storeClient = useClientStore();
+            let price = this.getAllPrice;
+
+            return price >= storeClient.client.Bonus ? storeClient.client.Bonus : price
         },
 
         /* ----------- */

@@ -1,6 +1,6 @@
 <template>
   <div class="cart-iconbox">
-    <NuxtLink to="/cart" class="cart-iconbox__icon">
+    <NuxtLink @click="pageClick()" to="/cart" class="cart-iconbox__icon">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="40"
@@ -38,12 +38,13 @@
 
 <script setup lang="ts">
 const cartStore = useCartStore();
+import { pageClick } from "@/utils/pageClick";
 </script>
 
 <style lang="scss">
 .cart-iconbox {
   position: fixed;
-  z-index: 5;
+  z-index: 11;
   bottom: 120px;
   right: 60px;
 
@@ -66,10 +67,16 @@ const cartStore = useCartStore();
     align-items: center;
     user-select: none;
     background: rgb(252 252 253);
-
-    box-shadow: 0 0.4rem 1rem var(--shadow);
+    box-shadow: 0 6px 30px var(--cart-hover-shadow);
     border-radius: 100%;
     padding: 10px;
+    transition: all 0.3s;
+
+    @media (hover: hover) {
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
 
     svg {
       width: 30px;

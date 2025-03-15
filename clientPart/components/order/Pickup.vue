@@ -125,8 +125,10 @@ const title = computed(() => {
           font-size: 14px;
           font-weight: 500;
           color: #3f3f3f;
-          &:hover {
-            opacity: 0.8;
+          @media (hover: hover) {
+            &:hover {
+              opacity: 0.8;
+            }
           }
 
           @media (max-width: 576px) {

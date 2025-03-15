@@ -1,6 +1,11 @@
 <template>
-  <div @click="onClickToggle" class="switch">
-    <div :class="['switch-rounded', darkTheme ? 'switch-rounded--active' : '']">
+  <div @click="toggleTheme" class="switch">
+    <div
+      :class="[
+        'switch-rounded',
+        currentTheme == 'dark' ? 'switch-rounded--active' : '',
+      ]"
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="20"
@@ -24,20 +29,19 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      darkTheme: false,
-    };
-  },
+<script setup lang="ts">
+import { useTheme } from "~/utils/theme";
 
-  methods: {
-    onClickToggle() {
-      this.darkTheme = !this.darkTheme;
-      document.querySelector("html").dataset.dark = this.darkTheme;
-    },
-  },
+const { getTheme, setTheme } = useTheme();
+const currentTheme = useState<string>("theme", () => getTheme());
+
+const toggleTheme = () => {
+  const newTheme = currentTheme.value === "light" ? "dark" : "light";
+  currentTheme.value = newTheme;
+  setTheme(newTheme);
+
+  // Применяем тему на стороне клиента
+  document.documentElement.setAttribute("data-theme", newTheme);
 };
 </script>
 

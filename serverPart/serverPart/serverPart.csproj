@@ -214,6 +214,18 @@
     <Compile Include="Migrations\202502241334432_addNewTypeToCol.Designer.cs">
       <DependentUpon>202502241334432_addNewTypeToCol.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202503121526528_updateConstraint.cs" />
+    <Compile Include="Migrations\202503121526528_updateConstraint.Designer.cs">
+      <DependentUpon>202503121526528_updateConstraint.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202503151842385_updOrderAndClient.cs" />
+    <Compile Include="Migrations\202503151842385_updOrderAndClient.Designer.cs">
+      <DependentUpon>202503151842385_updOrderAndClient.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202503151919532_updOrderAddPromocodeFK.cs" />
+    <Compile Include="Migrations\202503151919532_updOrderAddPromocodeFK.Designer.cs">
+      <DependentUpon>202503151919532_updOrderAddPromocodeFK.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -287,6 +299,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202502241334432_addNewTypeToCol.resx">
       <DependentUpon>202502241334432_addNewTypeToCol.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202503121526528_updateConstraint.resx">
+      <DependentUpon>202503121526528_updateConstraint.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202503151842385_updOrderAndClient.resx">
+      <DependentUpon>202503151842385_updOrderAndClient.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202503151919532_updOrderAddPromocodeFK.resx">
+      <DependentUpon>202503151919532_updOrderAddPromocodeFK.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

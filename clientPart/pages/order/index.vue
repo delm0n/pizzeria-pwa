@@ -10,7 +10,7 @@ const route = useRoute();
 const storeCart = useCartStore();
 const storeDish = useDishStore();
 const storeClient = useClientStore();
-const storePromocode = usePromocodeStore();
+const storeBonus = useBonusStore();
 const router = useRouter();
 const loading = ref(false);
 const storeOrder = useOrderStore();
@@ -34,10 +34,11 @@ const handleOrder = async () => {
 
             Time: "Как можно скорее",
             TypeOfPay: storeOrder.getTypeOfPay,
-            Promocode: storePromocode.getValuePromocode,
-            LastPrice: storeOrder.isDeliveryPrice(storeCart.getLastPrice)
-              ? storeCart.getLastPrice + 400
-              : storeCart.getLastPrice,
+
+            PromocodeId: storeBonus.getValuePromocode,
+            Bonus: storeBonus.getValueBonus,
+
+            LastPrice: storeCart.getLastPrice,
 
             PizzasJson: storeCart.getPizzasJSON,
             ConstructorPizzasJson: storeCart.getConstructorPizzasJson,
@@ -56,8 +57,10 @@ const handleOrder = async () => {
         storeCart.constructors = [];
         storeDish.setDishDefault();
 
-        storePromocode.setPromocodeDefault();
-        storeOrder.loadData(storeClient.client.ClientId);
+        storeBonus.setPromocodeDefault();
+        // storeClient.client.ClientId !== null
+        //   ? storeOrder.loadData(storeClient.client.ClientId)
+        //   : "";
       } catch (err) {
         console.log(err);
       } finally {

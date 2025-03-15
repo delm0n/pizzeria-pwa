@@ -8,13 +8,14 @@
       :links="links"
     />
 
-    <pizza-section />
+    <pizza-section class="sp" />
     <dish-section
       v-for="(item, index) in storeDish.getDishByType"
       :key="index"
       :dishes="storeDish.dishes.filter((el) => el.DishType == item.type)"
       :id="item.id"
       :title="item.title"
+      class="sp"
     />
 
     <cart-icon v-if="!viewport.isGreaterOrEquals('mobileWide')" />
@@ -25,7 +26,6 @@
 import PizzaSection from "~/components/index/PizzaSection.vue";
 import DishSection from "~/components/index/DishSection.vue";
 import Banner from "~/components/index/Banner.vue";
-
 import NavBar from "~/components/UI/NavBar.vue";
 import CartIcon from "~/components/UI/CartIcon.vue";
 
@@ -52,7 +52,7 @@ const updateActiveSection = (id: string) => {
   position: relative;
   margin-bottom: 50px;
 
-  section {
+  section.sp {
     padding-top: 120px;
 
     @media (max-width: 992px) {

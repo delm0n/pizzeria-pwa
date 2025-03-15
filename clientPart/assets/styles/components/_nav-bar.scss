@@ -63,8 +63,10 @@ nav {
         &--active {
           color: var(--accent);
 
-          &:hover {
-            color: var(--accent-hover);
+          @media (hover: hover) {
+            &:hover {
+              color: var(--accent-hover);
+            }
           }
         }
 

@@ -1,6 +1,10 @@
 <template>
   <section class="addish-cart">
-    <transition-group name="expand" @after-enter="afterEnter" @leave="leave">
+    <transition-group
+      name="expand"
+      @after-enter="afterEnterCart"
+      @leave="leaveCart"
+    >
       <div
         v-for="(cart, index) in storeCart.constructors"
         :key="index"
@@ -91,7 +95,7 @@
 
 <script setup lang="ts">
 import CountCalculate from "../UI/CountCalculate.vue";
-import { afterEnter, leave } from "@/utils/animationCart";
+import { afterEnterCart, leaveCart } from "@/utils/animationCart";
 import { useRouter } from "vue-router";
 
 const router = useRouter();

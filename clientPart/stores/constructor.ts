@@ -69,12 +69,18 @@ export const useConstructorStore = defineStore('constructorStore', {
 
         getMinPrice(): number {
             const storeIngredient = useIngredientStore();
+            let def = 440;
 
-            let array = storeIngredient.ingredients.slice(0);
-            array.sort((a, b) => a.Price - b.Price);
-            let val = array[0].Price + array[1].Price + array[2].Price;
+            try {
+                let array = storeIngredient.ingredients.slice(0);
+                array.sort((a, b) => a.Price - b.Price);
+                let val = array[0].Price + array[1].Price + array[2].Price;
 
-            return !!this.pizzas.length ? this.pizzas[0].Price + this.sauceArray[0].Price + val : 440
+                return !!this.pizzas.length ? this.pizzas[0].Price + this.sauceArray[0].Price + val : def;
+            }
+            catch {
+            }
+            return def;
         },
 
         /* ----------- */

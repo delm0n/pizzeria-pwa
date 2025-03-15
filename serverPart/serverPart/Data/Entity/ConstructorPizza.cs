@@ -14,8 +14,10 @@ namespace serverPart.Data.Entity
 
         public string NameSize { get; set; }
 
+        [Required]
         public decimal Price { get; set; }
 
+        [Required]
         public int Mass { get; set; }
 
     }

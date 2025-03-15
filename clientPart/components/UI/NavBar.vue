@@ -25,10 +25,7 @@
 
         <div v-if="viewport.isGreaterOrEquals('mobileWide')" class="cart-box">
           <sort-addish />
-
-          <NuxtLink to="/cart" class="main-button"
-            >Корзина {{ cartCount }}</NuxtLink
-          >
+          <cart-hover :cartCount="cartCount" />
           <nav-bar-notification />
         </div>
       </div>
@@ -37,6 +34,7 @@
 </template>
 
 <script lang="ts" setup>
+import CartHover from "~/components/UI/CartHover.vue";
 import NavBarNotification from "./NavBarNotification.vue";
 import SortAddish from "./SortAddish.vue";
 

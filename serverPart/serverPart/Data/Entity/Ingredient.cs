@@ -12,12 +12,15 @@ namespace serverPart.Data.Entity
         [Key]
         public int IngredientId { get; set; }
 
+        [Required]
         public string Name { get; set; }
 
         public string UrlImg { get; set; }
 
+        [Required]
         public decimal Price { get; set; }
 
+        [Required]
         public int Mass { get; set; }
 
         public TypesIngredient Type { get; set; }

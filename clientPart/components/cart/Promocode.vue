@@ -36,22 +36,20 @@
       <div
         :class="[
           'message-promocode',
-          !storePromocode.promocodeFail && isPromoApplied ? 'noerror' : '',
+          !storeBonus.promocodeFail && isPromoApplied ? 'noerror' : '',
         ]"
       >
-        <span v-show="!!storePromocode.message">
-          {{ storePromocode.message }}
+        <span v-show="!!storeBonus.message">
+          {{ storeBonus.message }}
         </span>
 
         <span
           v-if="
-            storePromocode.promocodeFail &&
-            isPromoApplied &&
-            !!storePromocode.promocode
+            storeBonus.promocodeFail && isPromoApplied && !!storeBonus.promocode
           "
         >
           (действует от
-          {{ storePromocode.promocode.Price }}
+          {{ storeBonus.promocode.Price }}
           ₽)
         </span>
       </div>
@@ -62,10 +60,7 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 
-const router = useRouter();
-const route = useRoute();
-
-const storePromocode = usePromocodeStore();
+const storeBonus = useBonusStore();
 const clientStore = useClientStore();
 const storeClient = useClientStore();
 
@@ -73,7 +68,7 @@ const promocode = ref<string>("");
 const loading = ref(false);
 // const message = ref<string>("");
 const isPromoApplied = computed(
-  () => storePromocode.message === "Промокод применён"
+  () => storeBonus.message === "Промокод применён"
 );
 import { watch } from "vue";
 
@@ -81,59 +76,68 @@ import { watch } from "vue";
 const filterInput = (event: Event) => {
   const input = event.target as HTMLInputElement;
   promocode.value = input.value.replace(/\D/g, "");
-  storePromocode.message = "";
+  storeBonus.message = "";
 };
 
 //отмена ввода промокода
 const cancelPromocode = () => {
-  storePromocode.message = "";
+  storeBonus.message = "";
   promocode.value = "";
-  storePromocode.promocode = null;
+  storeBonus.promocode = null;
 };
 
 //проверка на сервере
 const checkPromocode = async () => {
-  loading.value = true;
+  if (promocode.value.length > 0) {
+    loading.value = true;
 
-  try {
-    storePromocode.message = "";
-    const response = await fetch(
-      `http://localhost:1234/promocode/${clientStore.client.ClientId}-${promocode.value}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    if (clientStore.isAutorization) {
+      try {
+        storeBonus.message = "";
+        const response = await fetch(
+          `http://localhost:1234/promocode/${clientStore.client.ClientId}-${promocode.value}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
-    let respond = await response.json();
+        let respond = await response.json();
 
-    //если пришёл ответ
-    if (!!respond) {
-      //если это сообщение об ошибке
-      if (!!respond.errorMessage) {
-        storePromocode.message = respond.errorMessage;
-      } else {
-        //если это промокод
-        if (!!respond.Id) {
-          storePromocode.setPromocode(
-            respond.Id,
-            respond.Value,
-            respond.Price,
-            respond.Discount
-          );
+        //если пришёл ответ
+        if (!!respond) {
+          //если это сообщение об ошибке
+          if (!!respond.errorMessage) {
+            storeBonus.message = respond.errorMessage;
+          } else {
+            //если это промокод
+            if (!!respond.PromocodeId) {
+              storeBonus.setPromocode(
+                respond.PromocodeId,
+                respond.Value,
+                respond.Price,
+                respond.Discount
+              );
 
-          storePromocode.message = "Промокод применён";
+              storeBonus.message = "Промокод применён";
+            }
+          }
         }
+      } catch (err) {
+        storeBonus.message = "Войдите, чтобы использовать";
+      } finally {
+        setTimeout(() => {
+          loading.value = false;
+        }, 400);
       }
+    } else {
+      storeBonus.message = "Войдите, чтобы использовать";
+      setTimeout(() => {
+        loading.value = false;
+      }, 400);
     }
-  } catch (err) {
-    storePromocode.message = "Ошибка";
-  } finally {
-    setTimeout(() => {
-      loading.value = false;
-    }, 400);
   }
 };
 
@@ -148,6 +152,7 @@ watch(
   .input-container {
     overflow: visible;
     width: 100%;
+    opacity: 1 !important;
 
     &__loading {
       animation: inProcessAnimation 3s infinite;
@@ -174,7 +179,7 @@ watch(
     position: absolute;
     top: -25px;
     width: 100%;
-
+    left: 0;
     color: var(--accent);
     font-weight: 500;
 

@@ -42,7 +42,7 @@
               v-html="storeModal.pizzaModal.Structure"
             ></p>
 
-            <size-toggle
+            <toggle
               :activeIndex="storeModal.getActiveIndexPizzaSizesModal"
               :arrayToggle="storeModal.pizzaModal.PizzaSizes"
               @click-toggle="(i: number) => storeModal.setPizzaSizeModal(i)"
@@ -73,7 +73,7 @@
 <script lang="ts" setup>
 import ModalSettings from "../UI/ModalSettings.vue";
 import CountCalculate from "../UI/CountCalculate.vue";
-import SizeToggle from "../UI/SizeToggle.vue";
+import Toggle from "../UI/Toggle.vue";
 import PizzaModalIngredients from "./PizzaModalIngredients.vue";
 import { defineEmits } from "vue";
 

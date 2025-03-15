@@ -1,8 +1,7 @@
-<script setup lang="ts">
-import Game from "~/components/game/Game.vue";
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <main class="bonus-main">bonus</main>
-  <game />
+  <main class="bonus-main">
+    <NuxtLink to="/game">к игре </NuxtLink>
+  </main>
 </template>
