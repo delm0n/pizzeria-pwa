@@ -55,7 +55,12 @@
         <p>{{ item.LastPrice }} ₽</p>
         <p>{{ item.TypeOfPay }}</p>
         <p class="status">{{ item.Status }}</p>
-        <div class="more-button"><p>Посмотреть</p></div>
+        <NuxtLink
+          @click="checkPromocode(item.PromocodeId)"
+          :to="'/account/cheque-' + item.OrderId"
+          class="more-button"
+          ><p>Посмотреть</p></NuxtLink
+        >
       </div>
     </div>
 
@@ -84,8 +89,11 @@
 
 <script lang="ts" setup>
 const loading = ref(false);
+// const wasMount = ref(false);
+
 const orderStore = useOrderStore();
 const storeClient = useClientStore();
+
 const viewport = useViewport();
 
 const fetchData = async () => {
@@ -101,6 +109,10 @@ const fetchData = async () => {
       loading.value = false;
     }, 400);
   }
+};
+
+const checkPromocode = (id: number | undefined) => {
+  !!id ? orderStore.getPromocode(id) : "";
 };
 
 onMounted(() => {

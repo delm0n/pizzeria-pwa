@@ -1,41 +1,31 @@
 ﻿using Nancy.Hosting.Self;
-using serverPart.Data;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WebSocketSharp.Server;
-using WebSocketSharp;
-using serverPart.Data.Entity;
 using serverPart.Data.Helper;
-using System.Data.Entity;
-using Newtonsoft.Json;
 
 namespace serverPart
 {
 
     internal class Program
     {
-        static void Main(string[] args)
+        static void Main ( string[] args )
         {
             var uri = new Uri("http://localhost:1234");
 
             HostConfiguration hostConfiguration = new HostConfiguration();
             hostConfiguration.UrlReservations.CreateAutomatically = true;
-      
 
-            using (var host = new NancyHost(hostConfiguration, uri))
+            WebSocketServer wss = new WebSocketServer("ws://127.0.0.1:7890");
+            wss.AddWebSocketService<OrderStatus> ( "/OrderStatusWebsocket" );
+
+            using ( var host = new NancyHost ( hostConfiguration, uri ) )
             {
-                host.Start();
-               
+                host.Start ( ); wss.Start ( );
 
-                Console.WriteLine("Your application is running on " + uri);
-                Console.WriteLine("Press any [Enter] to close the host.");
-                Console.ReadLine();
-
-                host.Stop();
-              
+                Console.WriteLine ( "Your application is running on " + uri + " and ws://127.0.0.1:7890" );
+                Console.WriteLine ( "Press any [Enter] to close the host." );
+                Console.ReadLine ( );
+                host.Stop ( ); wss.Stop ( );
             }
         }
     }

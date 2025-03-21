@@ -36,11 +36,16 @@ export const useCartStore = defineStore('cartStore', {
         },
 
         setPizzaCount(newPizza: IPizzaCart, val: number) {
-            this.pizzas.find(pizza =>
+            const pizza = this.pizzas.find(pizza =>
                 pizza.PizzaId === newPizza.PizzaId &&
                 pizza.PizzaSizeId === newPizza.PizzaSizeId &&
                 JSON.stringify(pizza.IngredientsId) === JSON.stringify(newPizza.IngredientsId)
-            )!.Count = val
+            );
+
+            if (!pizza) {
+                throw new Error(`${newPizza.PizzaId} not found`);
+            }
+            pizza.Count = val
         },
 
         removePizzaCart(index: number) {
@@ -74,11 +79,17 @@ export const useCartStore = defineStore('cartStore', {
         },
 
         setConstructorCount(newPizza: IPizzaConstructorCart, val: number) {
-            this.constructors.find(pizza =>
+
+            const pizza = this.constructors.find(pizza =>
                 pizza.PizzaId === newPizza.PizzaId &&
                 pizza.SauceId === newPizza.SauceId &&
                 JSON.stringify(pizza.IngredientsId) === JSON.stringify(newPizza.IngredientsId)
-            )!.Count = val
+            );
+
+            if (!pizza) {
+                throw new Error(`${newPizza.PizzaId} not found`);
+            }
+            pizza.Count = val;
         },
 
         removeConstructorCart(index: number) {
@@ -123,9 +134,16 @@ export const useCartStore = defineStore('cartStore', {
             const storeIngredient = useIngredientStore();
             const storeConstructor = useConstructorStore();
 
+            const constructor = storeConstructor.pizzas.find(el => el.PizzaId == cart.PizzaId);
+            const sauce = storeConstructor.sauceArray.find(el => el.Count == 1);
+
+            if (!constructor || !sauce) {
+                throw new Error(`active not found`);
+            }
+
             return storeIngredient.ingredients.reduce(function (sum, ingredient) {
                 return cart.IngredientsId.includes(ingredient.IngredientId) ? sum + ingredient.Price : sum;
-            }, storeConstructor.sauceArray.find(el => el.Count == 1)!.Price + storeConstructor.pizzas.find(el => el.Active)!.Price) * cart.Count;
+            }, sauce.Price + constructor.Price) * cart.Count;
         },
 
         /* ----------- */
@@ -144,8 +162,6 @@ export const useCartStore = defineStore('cartStore', {
             }, this.constructors.reduce((sum, element) => {
                 return sum + this.getConstructorPrice(element)
             }, storeDish.getDishesPrice));
-
-
         },
 
         // общая сумма с учётом бонусов 
@@ -175,9 +191,6 @@ export const useCartStore = defineStore('cartStore', {
                         price = 0;
                     }
                 }
-                // else {
-                //     price = Math.ceil(price);
-                // }
             }
             return price;
         },
@@ -193,7 +206,6 @@ export const useCartStore = defineStore('cartStore', {
             return 0;
         },
 
-
         getSaleByBonus(): number {
             const storeClient = useClientStore();
             let price = this.getAllPrice;
@@ -202,7 +214,6 @@ export const useCartStore = defineStore('cartStore', {
         },
 
         /* ----------- */
-
 
         getPizzasJSON(): string {
             return JSON.stringify(this.pizzas);

@@ -1,6 +1,9 @@
 <template>
-  <label class="pizza-input">
-    <span>{{ isReset ? "Новый пароль" : "Пароль" }}:</span>
+  <label
+    :class="['pizza-input', error ? 'pizza-input--error' : '']"
+    class="pizza-input"
+  >
+    <span>{{ error ? "Неверный пароль" : "Пароль:" }}</span>
 
     <div class="input-container">
       <input
@@ -50,21 +53,32 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-
 const props = withDefaults(
   defineProps<{
-    isReset?: boolean;
+    error?: boolean;
   }>(),
   {
-    isReset: false,
+    error: false,
   }
 );
 
 const storeClient = useClientStore();
-const passwordType = ref(props.isReset ? false : true);
+const passwordType = ref(false);
 
 const switchVisibility = () => {
   passwordType.value = !passwordType.value;
 };
 </script>
+
+<style lang="scss" scoped>
+.pizza-input--error {
+  .input-container {
+    border: 1px solid var(--accent);
+    outline: 2px solid var(--accent);
+  }
+
+  span {
+    color: var(--accent);
+  }
+}
+</style>

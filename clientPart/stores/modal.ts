@@ -19,11 +19,10 @@ export const useModalStore = defineStore('modalStore', {
         pizzaModal: null,
         pizzaCountModal: 1,
         isEditIndex: -1,
+
         enterModal: false,
         orderModal: false,
-
         makeOrder: false,
-
         gameModal: false
     }),
 
@@ -40,10 +39,12 @@ export const useModalStore = defineStore('modalStore', {
         getLastPriceModal(): number {
             if (!!this.pizzaModal) {
                 const storeIngredient = useIngredientStore();
-
-                return storeIngredient.ingredients.reduce(function (sum, ingredient) {
-                    return ingredient.Active ? sum + ingredient.Price : sum;
-                }, this.pizzaModal!.PizzaSizes.find(element => element.Active)!.Price) * this.pizzaCountModal;
+                const size = this.pizzaModal.PizzaSizes.find(element => element.Active)
+                if (!!size) {
+                    return storeIngredient.ingredients.reduce(function (sum, ingredient) {
+                        return ingredient.Active ? sum + ingredient.Price : sum;
+                    }, size.Price) * this.pizzaCountModal;
+                }
             }
 
             return 0
@@ -99,12 +100,13 @@ export const useModalStore = defineStore('modalStore', {
 
         openModalPizza(id: number) {
             const storePizza = usePizzaStore();
-            this.pizzaModal = storePizza.pizzas.find(el => el.PizzaId == id)!;
-
-            const storeIngredient = useIngredientStore();
-            storeIngredient.setIngredientsFalse();
-
-            this.setModalVisible(true);
+            const pizza = storePizza.pizzas.find(el => el.PizzaId == id);
+            if (!!pizza) {
+                this.pizzaModal = pizza;
+                const storeIngredient = useIngredientStore();
+                storeIngredient.setIngredientsFalse();
+                this.setModalVisible(true);
+            }
         },
 
         openModalEnter() {
@@ -112,12 +114,12 @@ export const useModalStore = defineStore('modalStore', {
             this.setModalVisible(true);
         },
 
-        openModalOrder() {
-            this.gameModal = true;
-            this.setModalVisible(true);
+        setModalGame(modal: boolean) {
+            this.gameModal = modal;
+            this.setModalVisible(modal);
         },
 
-        openModalGame() {
+        openModalOrder() {
             this.orderModal = true;
             this.setModalVisible(true);
         },
@@ -134,19 +136,25 @@ export const useModalStore = defineStore('modalStore', {
 
         setModalCart(cart: IPizzaCart, index: number) {
             const storePizza = usePizzaStore();
-            this.pizzaModal = storePizza.pizzas.find(el => el.PizzaId == cart.PizzaId)!;
-            this.pizzaModal.PizzaSizes.forEach((element) => {
-                element.PizzaSizeId == cart.PizzaSizeId ? (element.Active = true) : (element.Active = false)
-            });
+            const pizza = storePizza.pizzas.find(el => el.PizzaId == cart.PizzaId);
 
-            const storeIngredient = useIngredientStore();
-            storeIngredient.setIngredientsByIdArray(cart.IngredientsId);
+            if (!!pizza) {
+                this.pizzaModal = pizza;
+                this.pizzaModal.PizzaSizes.forEach((element) => {
+                    element.PizzaSizeId == cart.PizzaSizeId ? (element.Active = true) : (element.Active = false)
+                });
 
-            this.isEditIndex = index;
-            this.setModalVisible(true);
+                const storeIngredient = useIngredientStore();
+                storeIngredient.setIngredientsByIdArray(cart.IngredientsId);
 
-            //переприсваивание setModalVisible
-            this.pizzaCountModal = cart.Count
+                this.isEditIndex = index;
+                this.setModalVisible(true);
+
+                //переприсваивание setModalVisible
+                this.pizzaCountModal = cart.Count
+            }
+
+
         }
 
     }

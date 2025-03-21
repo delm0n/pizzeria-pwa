@@ -56,27 +56,12 @@ export const useBonusStore = defineStore('bonusStore', {
             return this.promocode !== null ? this.promocode.PromocodeId : null
         },
 
-        bonusCanUse(): boolean {
-            // если пользователь вошёл, если есть баллы
-            // тогда переключатель копить/списать отображается
-            const storeClient = useClientStore();
-
-            return (
-                storeClient.isAutorization &&
-                storeClient.client.Bonus > 0
-            )
-        },
-
-        isSpendBonus(): boolean {
-            return this.bonus;
-        },
-
         getValueBonus(): number {
             const storeCart = useCartStore();
-            if (this.promocode == null) {
-                if (this.bonus) { //-
-                    const storeClient = useClientStore();
+            const storeClient = useClientStore();
 
+            if (this.promocode == null && storeClient.isAutorization) {
+                if (this.bonus) { // изменение бонусного баланса
                     let price = storeCart.getAllPrice;
                     if (price >= storeClient.client.Bonus) {
                         return -storeClient.client.Bonus;
@@ -86,10 +71,11 @@ export const useBonusStore = defineStore('bonusStore', {
                     }
                 }
 
-                else { //+
+                else { // просто + 5% от суммы заказа
                     return Math.round(storeCart.getAllPrice * 0.05)
                 }
             }
+
             return 0
         },
     }

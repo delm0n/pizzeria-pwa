@@ -27,7 +27,11 @@ export const useConstructorStore = defineStore('constructorStore', {
         },
 
         getActiveId(): number {
-            return this.pizzas.find(el => el.Active)!.PizzaId;
+            const pizza = this.pizzas.find(el => el.Active);
+            if (!pizza) {
+                throw new Error(`pizza not found`);
+            }
+            return pizza.PizzaId;
         },
 
         getIngredientByType(): IIngredientByType[] {
@@ -124,8 +128,15 @@ export const useConstructorStore = defineStore('constructorStore', {
             return storeIngredient.ingredients.reduce(function (sum, ingredient) {
                 return ingredient.Active ? sum + 1 : sum;
             }, 0) >= 3
-        }
+        },
 
+        getConstructorById: (state) => (pizzaId: number): IPizzaConstructor => {
+            const pizza = state.pizzas.find(el => el.PizzaId == pizzaId);
+            if (!pizza) {
+                throw new Error(`${pizzaId} not found`);
+            }
+            return pizza;
+        },
     },
 
     actions: {

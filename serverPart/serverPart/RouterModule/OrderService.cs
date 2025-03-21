@@ -52,30 +52,30 @@ namespace serverPart.RouterModule
                     // клиент существует
                     if ( x.ClientId != null )
                     {
-                        Client client = new Client();
                         int clientId = x.ClientId;
-                        client = await dbContext.Clients.FirstAsync ( c => c.ClientId == clientId );
-                        order.ClientId = clientId; 
-
-                        if ( x.PromocodeId != null )
+                        Client client = await dbContext.Clients.FirstOrDefaultAsync ( c => c.ClientId == clientId );
+                        if ( client != null )
                         {
+                            order.ClientId = clientId; 
+                        
                             // промокод введён 
-                            Promocode promocode = new Promocode();
-                            int promocodeId = x.PromocodeId;
-                            promocode = await dbContext.Promocodes.FirstAsync ( c => c.PromocodeId == promocodeId );
+                            if ( x.PromocodeId != null )
+                            {                            
+                                int promocodeId = x.PromocodeId;
+                                Promocode promocode = await dbContext.Promocodes.FirstOrDefaultAsync ( c => c.PromocodeId == promocodeId );
+                                if (promocode != null)
+                                {
+                                    List<int> array = JsonSerializer.Deserialize<List<int>>(client.PromocodeJson);
+                                    array.Add ( promocode.PromocodeId );
+                                    client.PromocodeJson = JsonSerializer.Serialize ( array ); 
+                                    order.PromocodeId = promocodeId;  
+                                }             
+                            }
 
-                            List<int> array = JsonSerializer.Deserialize<List<int>>(client.PromocodeJson);
-                            array.Add ( promocode.PromocodeId );
-                            client.PromocodeJson = JsonSerializer.Serialize ( array ); 
-
-                            order.PromocodeId = promocodeId;                 
+                            else
+                                order.Bonus = x.Bonus; //история бонусов со знаком
                         }
-
-                        else
-                        {   
-                            order.Bonus = x.Bonus;
-                            client.Bonus = client.Bonus + order.Bonus;
-                        }
+                        
 
                         // пицца
                         List<PizzaCart> pizzaCart = JsonSerializer.Deserialize<List<PizzaCart>>(x.PizzasJson);
@@ -104,23 +104,14 @@ namespace serverPart.RouterModule
             Get["/history-order/{id}", runAsync: true] = async ( x, token ) =>
             {
                 List<Order> orders = new List<Order> ();
-                Client client = new Client();
                 int id = x.id; // клиента
 
                 using ( var dbContext = new ApplicationContext ( ) )
                 {
-                    orders = await dbContext.Orders.Where ( c => c.ClientId == id ).ToListAsync ( );
-                    orders.ForEach ( o =>
-                    {
-                        if ( o.Status == "Принят" && DateTime.ParseExact ( o.OrderDate, "dd.MM.yyyy HH:mm", CultureInfo.InvariantCulture ) < DateTime.Now.AddMinutes ( -2 ) )
-                        {
-                            o.Status = "Доставлен";
-                        }
-                    } );
-
-                    // возможность сыграть в игру
-                    client = await dbContext.Clients.FirstOrDefaultAsync ( c => c.ClientId == id );
-                    client.CanPlay = true;
+                    orders = await dbContext.Orders
+                    .Where ( c => c.ClientId == id )
+                    .OrderByDescending ( order => order.OrderId )
+                    .Take ( 10 ).ToListAsync ( );
                 }
 
                 return JsonSerializer.Serialize ( orders );

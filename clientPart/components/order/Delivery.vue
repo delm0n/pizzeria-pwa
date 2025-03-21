@@ -153,7 +153,6 @@ async function getMap() {
 
           if (!!myPlacemark) {
             myPlacemark.geometry.setCoordinates(coords);
-            console.log(coords);
           } else {
             myPlacemark = createPlacemark(coords);
             myMap.geoObjects.add(myPlacemark);
@@ -213,8 +212,6 @@ async function setAddress(coords: any) {
     loading.value = true;
     const response = await fetch(url);
     const data = await response.json();
-
-    console.log(data);
 
     if (data.response.GeoObjectCollection.featureMember.length > 0) {
       const coords =

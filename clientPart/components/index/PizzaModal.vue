@@ -86,21 +86,26 @@ const viewport = useViewport();
 defineEmits();
 
 const addToCart = () => {
-  let newPizza: IPizzaCart = {
-    PizzaId: storeModal.pizzaModal!.PizzaId,
-    PizzaSizeId: storeModal.pizzaModal!.PizzaSizes.find((el) => el.Active)!
-      .PizzaSizeId,
-    IngredientsId: storeIngredient.getActiveIndexArray,
-    Count: storeModal.pizzaCountModal,
-  };
+  let modal = storeModal.pizzaModal;
+  if (!!modal) {
+    let size = modal.PizzaSizes.find((el) => el.Active);
+    if (!!size) {
+      let newPizza: IPizzaCart = {
+        PizzaId: modal.PizzaId,
+        PizzaSizeId: size.PizzaSizeId,
+        IngredientsId: storeIngredient.getActiveIndexArray,
+        Count: storeModal.pizzaCountModal,
+      };
 
-  if (storeModal.isEdit) {
-    storeCart.editPizzaCart(newPizza, storeModal.isEditIndex);
-  } else {
-    storeCart.addPizzaCart(newPizza);
+      if (storeModal.isEdit) {
+        storeCart.editPizzaCart(newPizza, storeModal.isEditIndex);
+      } else {
+        storeCart.addPizzaCart(newPizza);
+      }
+
+      storeModal.setModalVisible(false);
+    }
   }
-
-  storeModal.setModalVisible(false);
 };
 </script>
 

@@ -1,5 +1,6 @@
 <template>
   <main class="index-main">
+    <active-orders />
     <banner />
     <nav-bar
       @updateActiveSection="updateActiveSection"
@@ -26,6 +27,8 @@
 import PizzaSection from "~/components/index/PizzaSection.vue";
 import DishSection from "~/components/index/DishSection.vue";
 import Banner from "~/components/index/Banner.vue";
+import ActiveOrders from "~/components/index/ActiveOrders.vue";
+
 import NavBar from "~/components/UI/NavBar.vue";
 import CartIcon from "~/components/UI/CartIcon.vue";
 

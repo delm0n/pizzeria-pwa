@@ -1,35 +1,27 @@
 <template>
-  <section id="recommendation">
-    <div class="container-small">
-      <h2>Ваш выбор</h2>
-
+  <section id="active-orders" v-show="storeOrder.numberOrder.length > 0">
+    <div class="container">
       <ClientOnly>
         <Swiper
           :slides-per-view="'auto'"
           :loop="false"
           :spaceBetween="20"
-          class="recommendation-wrapper"
+          class="active-orders-wrapper"
         >
           <SwiperSlide
-            v-for="pizza in storePizza.getPizzasByClient"
-            :key="pizza.PizzaId"
+            v-for="(order, index) in storeOrder.numberOrder"
+            :key="index"
           >
-            <div
-              class="recommendation-item"
-              @click="storeModal.openModalPizza(pizza.PizzaId)"
-            >
-              <div class="recommendation-item__img">
-                <NuxtPicture
-                  format="avif,webp"
-                  sizes="90px"
-                  :src="'/images/pizzas/' + pizza.UrlImg + '.png'"
-                  :alt="pizza.PizzaName"
-                />
+            <div class="active-orders-item">
+              <div class="active-orders-item__img">
+                <p>
+                  {{ order.num }}
+                </p>
               </div>
 
-              <div class="recommendation-item__content">
-                <p v-html="pizza.PizzaName"></p>
-                <b> от {{ pizza.MinPrice }} ₽ </b>
+              <div class="active-orders-item__content">
+                <p>Заказ принят в обслуживание</p>
+                <b> {{ order.time }} </b>
               </div>
             </div>
           </SwiperSlide>
@@ -40,30 +32,24 @@
 </template>
 
 <script setup lang="ts">
-const storeModal = useModalStore();
-const storePizza = usePizzaStore();
+const storeOrder = useOrderStore();
 </script>
 
 <style lang="scss">
-#recommendation {
+#active-orders {
   overflow: hidden;
-  margin-bottom: 40px;
 
-  @media (max-width: 768px) {
-    margin-bottom: 20px;
-  }
-
-  .recommendation-wrapper {
+  .active-orders-wrapper {
     width: 100%;
     overflow: visible;
-    padding: 10px 0 20px;
+    padding: 20px 0;
 
     .swiper-slide {
       max-width: 280px;
       width: 100%;
     }
 
-    .recommendation-item {
+    .active-orders-item {
       display: flex;
       align-items: center;
       padding: 8px 12px;
@@ -71,7 +57,6 @@ const storePizza = usePizzaStore();
       box-shadow: var(--shadow) 0px 2px 15px -2px;
       transition: all 0.25s ease-out;
       border-radius: 10px;
-      cursor: pointer;
 
       @media (hover: hover) {
         &:hover {
@@ -83,7 +68,21 @@ const storePizza = usePizzaStore();
         aspect-ratio: 1/1;
         max-width: 90px;
         width: 100%;
-        margin-right: 20px;
+        margin-right: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        p {
+          font-weight: 600;
+          color: var(--accent);
+          font-size: 50px;
+          text-align: center;
+
+          @media (max-width: 576px) {
+            font-size: 40px;
+          }
+        }
       }
 
       &__content {
@@ -93,8 +92,9 @@ const storePizza = usePizzaStore();
 
         b {
           display: block;
-          font-weight: 600;
+          font-weight: 400;
           margin-top: 5px;
+          color: var(--text-description);
         }
       }
     }

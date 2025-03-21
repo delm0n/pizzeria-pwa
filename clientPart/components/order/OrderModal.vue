@@ -2,7 +2,7 @@
   <Teleport to="#teleports">
     <modal-settings class="order-modal" v-if="!!storeModal.orderModal">
       <h3>
-        Ваш заказ <span> №{{ storeOrder.numberOrder }} </span>
+        <!-- Ваш заказ <span> №{{ storeOrder.numberOrder }} </span> -->
       </h3>
 
       <div class="cart-road">

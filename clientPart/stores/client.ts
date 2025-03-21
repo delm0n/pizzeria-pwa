@@ -1,9 +1,6 @@
 
 type State = {
     client: IClient;
-
-    badTryEnter: boolean;
-    badPassword: boolean;
 }
 
 const clientDefault = {
@@ -13,14 +10,14 @@ const clientDefault = {
     Email: "",
     Password: "",
     PizzaOrderJson: "",
-    Bonus: 0
+    Bonus: 0,
+
+    Record: 0,
+    CanPlay: false
 } as IClient;
 
 export const useClientStore = defineStore('clientStore', {
     state: (): State => ({
-
-        badTryEnter: false,
-        badPassword: false,
         client: clientDefault,
     }),
 
@@ -42,25 +39,22 @@ export const useClientStore = defineStore('clientStore', {
         },
 
         invalidClient(): boolean {
-            return this.isEmptyPassword || this.isEmptyTelephone
+            return this.isEmptyTelephone
         },
-
-        // isBonuses(): boolean {
-        //     const storeBonus = useBonusStore();
-        //     return this.isAutorization && storeBonus.promocode !== null;
-        // },
     },
 
     actions: {
         autorizationClient(clientId: number, firstName: string,
-            telephone: string, email: string, password: string, pizzaOrderJson: string, bonus: number) {
+            telephone: string, email: string, pizzaOrderJson: string, bonus: number, record: number, canPlay: boolean) {
             this.client.ClientId = clientId;
             this.client.FirstName = firstName;
             this.client.Telephone = telephone;
             this.client.Email = email;
-            this.client.Password = password;
             this.client.PizzaOrderJson = pizzaOrderJson;
             this.client.Bonus = bonus;
+            this.client.Password = "";
+            this.client.Record = record;
+            this.client.CanPlay = canPlay;
 
             const orderStore = useOrderStore();
             orderStore.orderName = firstName;

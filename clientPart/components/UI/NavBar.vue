@@ -81,10 +81,9 @@ const handleScroll = () => {
     }
 
     props.links.forEach((element, index) => {
-      if (!!document.getElementById(element.id)) {
-        let hgt =
-          document.getElementById(element.id)!.getBoundingClientRect().top +
-          window.innerHeight / 2;
+      let my_id = document.getElementById(element.id);
+      if (!!my_id) {
+        let hgt = my_id.getBoundingClientRect().top + window.innerHeight / 2;
 
         if (hgt <= window.innerHeight) {
           lastActiveSection.value = element.id;

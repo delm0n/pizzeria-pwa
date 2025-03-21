@@ -116,7 +116,7 @@
         </p>
       </div>
 
-      <div class="order-list__item" v-if="storeBonus.isSpendBonus">
+      <div class="order-list__item" v-if="storeBonus.bonus">
         <p class="content-name">
           <span style="display: flex; align-items: center; gap: 5px">
             Оплата бонусами

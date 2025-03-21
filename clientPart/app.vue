@@ -8,7 +8,7 @@
 
       <pizza-modal />
       <enter-modal />
-      <order-modal />
+      <!-- <order-modal /> -->
     </NuxtLayout>
   </div>
 </template>
@@ -16,7 +16,7 @@
 <script setup lang="ts">
 import PizzaModal from "~/components/index/PizzaModal.vue";
 import EnterModal from "~/components/login/EnterModal.vue";
-import OrderModal from "~/components/order/OrderModal.vue";
+// import OrderModal from "~/components/order/OrderModal.vue";
 
 useSeoMeta({
   title: "Pizzeria",
@@ -44,11 +44,20 @@ const storeIngredient = useIngredientStore();
 const storeDish = useDishStore();
 const storePizza = usePizzaStore();
 const storeСonstructor = useConstructorStore();
+const storeNotification = useNotificationStore();
 
 await callOnce(storePizza.fetch);
 await callOnce(storeIngredient.fetch);
 await callOnce(storeDish.fetch);
 await callOnce(storeСonstructor.fetch);
+
+async function callRequestPermission() {
+  await storeNotification.requestPermission();
+}
+
+onMounted(() => {
+  callRequestPermission();
+});
 </script>
 
 <style>

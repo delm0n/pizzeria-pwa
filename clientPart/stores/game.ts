@@ -1,6 +1,7 @@
 type State = {
     score: number;
     successCount: number;
+
 }
 
 export const useGameStore = defineStore('gameStore', {

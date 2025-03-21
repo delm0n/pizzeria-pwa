@@ -30,7 +30,7 @@ namespace serverPart.Data.Entity
         [ForeignKey ( "Promocode" )]
         public int? PromocodeId { get; set; }
         public Promocode Promocode { get; set; }
-        public int Bonus { get; set; } // для истории списания/пополнения
+        public int Bonus { get; set; } = 0; // для истории списания/пополнения
 
         [Required]
         public double LastPrice { get; set; } 

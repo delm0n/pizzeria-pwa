@@ -4,7 +4,12 @@
       <h2>Выбор клиентов</h2>
 
       <ClientOnly>
-        <Swiper :slides-per-view="'auto'" :loop="false" class="always-wrapper">
+        <Swiper
+          :slides-per-view="'auto'"
+          :loop="false"
+          :spaceBetween="20"
+          class="always-wrapper"
+        >
           <SwiperSlide
             v-for="pizza in storePizza.getPizzasByСountOrder"
             :key="pizza.PizzaId"
@@ -65,10 +70,6 @@ const storePizza = usePizzaStore();
     .swiper-slide {
       max-width: 280px;
       width: 100%;
-
-      &:not(:last-child) {
-        padding-right: 20px;
-      }
     }
 
     .always-item {

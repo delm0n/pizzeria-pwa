@@ -2,17 +2,12 @@
   <section class="offer-cart" v-if="cartStore.getAllCount != 0">
     <div class="container-small">
       <div class="offer-cart__item">
-        <div
-          :class="[
-            'promocode-block',
-            !storeBonus.isSpendBonus ? '' : 'disable',
-          ]"
-        >
+        <div :class="['promocode-block', !storeBonus.bonus ? '' : 'disable']">
           <promocode />
         </div>
 
         <div
-          v-if="storeBonus.bonusCanUse"
+          v-if="storeClient.isAutorization && storeClient.client.Bonus > 0"
           :class="[
             'bonus-block',
             storeBonus.promocode == null ||
@@ -50,6 +45,18 @@
               Войдите
             </span>
             и начислим
+            <span class="accent" v-text="bonusWillAdd"></span>
+            бонусами
+          </li>
+
+          <li
+            v-if="
+              storeClient.isAutorization &&
+              storeClient.client.Bonus == 0 &&
+              storeBonus.promocode == null
+            "
+          >
+            Начислим
             <span class="accent" v-text="bonusWillAdd"></span>
             бонусами
           </li>

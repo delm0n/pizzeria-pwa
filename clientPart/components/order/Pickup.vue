@@ -53,9 +53,9 @@ const bool = ref(false);
 const storeOrder = useOrderStore();
 
 const title = computed(() => {
-  return !!storeOrder.places.find((el) => el.active)
-    ? storeOrder.places.find((el) => el.active)!.text
-    : "";
+  let place = storeOrder.places.find((el) => el.active);
+
+  return !!place ? place.text : "";
 });
 </script>
 

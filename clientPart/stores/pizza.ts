@@ -37,19 +37,40 @@ export const usePizzaStore = defineStore('pizzaStore', {
 
     getters: {
         getPizza: (state) => (pizzaId: number): IPizza => {
-            return state.pizzas.find(el => el.PizzaId == pizzaId)!;
+            const pizza = state.pizzas.find(el => el.PizzaId == pizzaId);
+            if (!pizza) {
+                throw new Error(`${pizzaId} not found`);
+            }
+            return pizza;
         },
 
         getPizzaSize: (state) => (pizzaId: number, pizzaSizeId: number): IPizzaSize => {
-            return state.pizzas.find(el => el.PizzaId == pizzaId)!.PizzaSizes.find(el => el.PizzaSizeId == pizzaSizeId)!;
+            const pizza = state.pizzas.find(el => el.PizzaId == pizzaId);
+            if (!pizza) {
+                throw new Error(`${pizzaId} not found`);
+            }
+            const pizzaSize = pizza.PizzaSizes.find(el => el.PizzaSizeId == pizzaSizeId);
+            if (!pizzaSize) {
+                throw new Error(`${pizzaSizeId} not found`);
+            }
+            return pizzaSize;
         },
 
         getPizzaMass: (state) => (pizzaId: number, pizzaSizeId: number, ingredientsId: number[]): number => {
             const storeIngredient = useIngredientStore();
+            const pizza = state.pizzas.find(el => el.PizzaId == pizzaId);
 
-            return storeIngredient.ingredients.reduce(function (sum, ingredient) {
-                return ingredientsId.includes(ingredient.IngredientId) ? sum + ingredient.Mass : sum;
-            }, state.pizzas.find(el => el.PizzaId == pizzaId)!.PizzaSizes.find(el => el.PizzaSizeId == pizzaSizeId)!.Mass);
+            if (!!pizza) {
+                const size = pizza.PizzaSizes.find(el => el.PizzaSizeId == pizzaSizeId);
+
+                if (!!size) {
+                    return storeIngredient.ingredients.reduce(function (sum, ingredient) {
+                        return ingredientsId.includes(ingredient.IngredientId) ? sum + ingredient.Mass : sum;
+                    }, size.Mass);
+                }
+            }
+
+            return 0;
         },
 
         // это синтаксис со стрелочной функцией 
@@ -57,18 +78,24 @@ export const usePizzaStore = defineStore('pizzaStore', {
         getPizzaSizeDescription(state) {
             return (pizzaId: number, pizzaSizeId: number, ingredientsId: number[]): string => {
                 const pizzaMass = this.getPizzaMass(pizzaId, pizzaSizeId, ingredientsId) + ' г';
-                const sizeIndex = state.pizzas.find(el => el.PizzaId == pizzaId)!.PizzaSizes.findIndex(el => el.PizzaSizeId == pizzaSizeId)!;
+                const pizza = state.pizzas.find(el => el.PizzaId == pizzaId);
 
-                switch (sizeIndex) {
-                    case 0:
-                        return "30 см, " + pizzaMass;
-                    case 1:
-                        return "35 см, " + pizzaMass;
-                    case 2:
-                        return "40 см, " + pizzaMass;
-                    default:
-                        return "35 см, " + pizzaMass;
+                if (!!pizza) {
+                    const sizeIndex = pizza.PizzaSizes.findIndex(el => el.PizzaSizeId == pizzaSizeId);
+
+                    switch (sizeIndex) {
+                        case 0:
+                            return "30 см, " + pizzaMass;
+                        case 1:
+                            return "35 см, " + pizzaMass;
+                        case 2:
+                            return "40 см, " + pizzaMass;
+                        default:
+                            return "35 см, " + pizzaMass;
+                    }
                 }
+
+                return '';
             };
         },
 

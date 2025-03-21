@@ -126,11 +126,12 @@ const reset = () => {
 };
 
 const addToCart = () => {
+  let sauce = storeConstructor.sauceArray.find((el) => el.Count == 1);
   let newPizza: IPizzaConstructorCart = {
     PizzaId: storeConstructor.getActiveId,
     IngredientsId: storeIngredient.getActiveIndexArray,
     Count: storeConstructor.count,
-    SauceId: storeConstructor.sauceArray.find((el) => el.Count == 1)!.DishId,
+    SauceId: !!sauce ? sauce.DishId : storeConstructor.sauceArray[0].DishId,
   };
 
   if (storeConstructor.isEdit) {

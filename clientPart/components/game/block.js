@@ -9,42 +9,55 @@ import {
 } from "./utils";
 import * as constant from "./constant";
 
+// Функция проверяет столкновение блока с линией.
+// Возвращает различные значения в зависимости от типа столкновения:
+// 0 - продолжать движение, 1 - блок выходит за пределы линии,
+// 2 - повернуться влево, 3 - повернуться вправо, 4 - успешное приземление, 5 - идеальное приземлени
 const checkCollision = (block, line) => {
-  // 0 goon 1 drop 2 rotate left 3 rotate right 4 ok 5 perfect
   if (block.y + block.height >= line.y) {
     if (
+      // блок слишком далеко от линии
       block.x < line.x - block.calWidth ||
       block.x > line.collisionX + block.calWidth
     ) {
       return 1;
     }
+
+    // координата центра блока левее линии
     if (block.x < line.x) {
       return 2;
     }
+
+    // координата центра блока правее линии
     if (block.x > line.collisionX) {
       return 3;
     }
+
+    // блок идеально приземлён 10% половины ширины
     if (
-      block.x > line.x + block.calWidth * 0.8 &&
-      block.x < line.x + block.calWidth * 1.2
+      block.x > line.x + block.calWidth * 0.9 &&
+      block.x < line.x + block.calWidth * 1.1
     ) {
-      // -10% +10%
       return 5;
     }
     return 4;
   }
   return 0;
 };
+
+// Функция управляет качанием блока на веревке.
 const swing = (instance, engine, time) => {
   const ropeHeight = engine.getVariable(constant.ropeHeight);
   if (instance.status !== constant.swing) return;
   const i = instance;
   const initialAngle = engine.getVariable(constant.initialAngle);
   i.angle = initialAngle * getSwingBlockVelocity(engine, time);
+  // определяет координаты центра падающего блока с учётом раскачки
   i.weightX = i.x + Math.sin(i.angle) * ropeHeight;
   i.weightY = i.y + Math.cos(i.angle) * ropeHeight;
 };
 
+// проверка упал ли блок мимо
 const checkBlockOut = (instance, engine) => {
   if (instance.status === constant.rotateLeft) {
     if (instance.y - instance.width >= engine.height) {
@@ -59,12 +72,14 @@ const checkBlockOut = (instance, engine) => {
   }
 };
 
+// Главная функция, управляющая поведением блока
 export const blockAction = (instance, engine, time) => {
   const i = instance;
   const ropeHeight = engine.getVariable(constant.ropeHeight);
   if (!i.visible) {
     return;
   }
+
   if (!i.ready) {
     i.ready = true;
     i.status = constant.swing;
@@ -73,6 +88,8 @@ export const blockAction = (instance, engine, time) => {
     instance.x = engine.width / 2;
     instance.y = ropeHeight * -1.5;
   }
+
+  // линия на которую приземляется блок
   const line = engine.getInstance("line");
   switch (i.status) {
     case constant.swing:
@@ -88,21 +105,24 @@ export const blockAction = (instance, engine, time) => {
       );
       swing(instance, engine, time);
       break;
+
+    // перед падением
     case constant.beforeDrop:
-      i.x = instance.weightX - instance.calWidth;
-      i.y = instance.weightY + 0.3 * instance.height; // add rope height
-      i.rotate = 0;
-      i.ay = engine.pixelsPerFrame(0.0003 * engine.height); // acceleration of gravity
+      i.x = instance.weightX - instance.calWidth; // присваиваем ему x-y координаты
+      i.y = instance.weightY + 0.3 * instance.height;
+      i.rotate = 0; // обнуляем угол
+      i.ay = engine.pixelsPerFrame(0.0003 * engine.height); // скорость падения
       i.startDropTime = time;
       i.status = constant.drop;
       break;
+
     case constant.drop:
       const deltaTime = time - i.startDropTime;
       i.startDropTime = time;
       i.vy += i.ay * deltaTime;
       i.y += i.vy * deltaTime + 0.5 * i.ay * deltaTime ** 2;
-      const collision = checkCollision(instance, line);
-      const blockY = line.y - instance.height;
+      const collision = checkCollision(instance, line); // Проверяем столкновение с линией
+      const blockY = line.y - instance.height; // Вычисляем y позицию блока при приземлении
       const calRotate = (ins) => {
         ins.originOutwardAngle = Math.atan(ins.height / ins.outwardOffset);
         ins.originHypotenuse = Math.sqrt(
@@ -110,25 +130,27 @@ export const blockAction = (instance, engine, time) => {
         );
         engine.playAudio("rotate");
       };
+
+      // результат столкновения
       switch (collision) {
-        case 1:
+        case 1: // Блок выходит за пределы линии.
           checkBlockOut(instance, engine);
           break;
-        case 2:
+        case 2: // левее
           i.status = constant.rotateLeft;
           instance.y = blockY;
           instance.outwardOffset = line.x + instance.calWidth - instance.x;
           calRotate(instance);
           break;
-        case 3:
+        case 3: // правее
           i.status = constant.rotateRight;
           instance.y = blockY;
           instance.outwardOffset =
             line.collisionX + instance.calWidth - instance.x;
           calRotate(instance);
           break;
-        case 4:
-        case 5:
+        case 4: // обычное приземление
+        case 5: // идеальное приземление
           i.status = constant.land;
           const lastSuccessCount = engine.getVariable(constant.successCount);
           addSuccessCount(engine);
@@ -148,8 +170,6 @@ export const blockAction = (instance, engine, time) => {
           if (collision === 5) {
             instance.perfect = true;
             addScore(engine, true);
-            // addSuccessCount(engine);
-            // addSuccessCount(engine);
             engine.playAudio("drop-perfect");
           } else {
             addScore(engine);
@@ -160,7 +180,7 @@ export const blockAction = (instance, engine, time) => {
           break;
       }
       break;
-    case constant.land:
+    case constant.land: // состояние приземления (анимация)
       engine.getTimeMovement(
         constant.moveDownMovement,
         [
@@ -183,13 +203,13 @@ export const blockAction = (instance, engine, time) => {
       );
       instance.x += getLandBlockVelocity(engine, time);
       break;
-    case constant.rotateLeft:
-    case constant.rotateRight:
+    case constant.rotateLeft: // состояние влево (анимация)
+    case constant.rotateRight: // состояние вправо (анимация)
       const isRight = i.status === constant.rotateRight;
       const rotateSpeed = engine.pixelsPerFrame(Math.PI * 4);
       const isShouldFall = isRight
         ? instance.rotate > 1.3
-        : instance.rotate < -1.3; // 75度
+        : instance.rotate < -1.3;
       const leftFix = isRight ? 1 : -1;
       if (isShouldFall) {
         instance.rotate += (rotateSpeed / 8) * leftFix;

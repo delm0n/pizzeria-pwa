@@ -5,16 +5,16 @@ import TimeSection from "~/components/order/Time.vue";
 import Delivery from "~/components/order/Delivery.vue";
 import Pickup from "~/components/order/Pickup.vue";
 import List from "~/components/order/List.vue";
+
 const route = useRoute();
+const router = useRouter();
 
 const storeCart = useCartStore();
 const storeDish = useDishStore();
 const storeClient = useClientStore();
 const storeBonus = useBonusStore();
-const router = useRouter();
-const loading = ref(false);
 const storeOrder = useOrderStore();
-const storeModal = useModalStore();
+const loading = ref(false);
 
 const handleOrder = async () => {
   if (!storeOrder.invalidPersonal) {
@@ -38,7 +38,7 @@ const handleOrder = async () => {
             PromocodeId: storeBonus.getValuePromocode,
             Bonus: storeBonus.getValueBonus,
 
-            LastPrice: storeCart.getLastPrice,
+            LastPrice: price.value,
 
             PizzasJson: storeCart.getPizzasJSON,
             ConstructorPizzasJson: storeCart.getConstructorPizzasJson,
@@ -50,17 +50,15 @@ const handleOrder = async () => {
           }),
         });
 
-        storeOrder.numberOrder = await response.json();
+        // уведомления об изменении статуса заказа
+        storeOrder.subscribeOrderStatus(await response.json());
+
+        // установка всего по умолчанию
         router.push("/");
-        storeModal.openModalOrder();
         storeCart.pizzas = [];
         storeCart.constructors = [];
         storeDish.setDishDefault();
-
         storeBonus.setPromocodeDefault();
-        // storeClient.client.ClientId !== null
-        //   ? storeOrder.loadData(storeClient.client.ClientId)
-        //   : "";
       } catch (err) {
         console.log(err);
       } finally {
@@ -80,6 +78,14 @@ const scrollTo = (targetId: string) => {
     element.scrollIntoView({ behavior: "smooth" });
   }
 };
+
+const price = computed(() => {
+  if (storeCart.getLastPrice < 1000 && storeOrder.address[0].Active) {
+    return storeCart.getLastPrice + storeOrder.priceDelivery;
+  } else {
+    return storeCart.getLastPrice;
+  }
+});
 
 onMounted(() => {
   if (storeCart.getLastPrice <= 0) {
@@ -117,7 +123,9 @@ watch(
               @click="handleOrder()"
               class="main-button loading"
             >
-              Оформить заказ за {{ storeCart.getLastPrice }} ₽
+              Оформить заказ за
+              {{ price }}
+              ₽
             </button>
           </div>
         </div>

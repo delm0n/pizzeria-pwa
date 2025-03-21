@@ -40,7 +40,7 @@ const exitClient = () => {
 };
 
 onMounted(() => {
-  if (storeClient.client == null) {
+  if (!storeClient.isAutorization) {
     router.push("/");
   }
 });
@@ -48,7 +48,7 @@ onMounted(() => {
 watch(
   () => route.path,
   () => {
-    if (storeClient.client == null) {
+    if (!storeClient.isAutorization) {
       router.push("/");
     }
   }

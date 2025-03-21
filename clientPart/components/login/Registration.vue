@@ -86,9 +86,10 @@ const handleSubmit = async () => {
           responseValue.FirstName,
           responseValue.Telephone,
           responseValue.Email,
-          responseValue.Password,
           responseValue.PizzaOrderJson,
-          responseValue.Bonus
+          responseValue.Bonus,
+          responseValue.Record,
+          responseValue.CanPlay
         );
         router.push({ name: "account" });
       } else {

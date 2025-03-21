@@ -9,7 +9,7 @@
     </p>
     <form @submit.prevent="handleSubmit">
       <phone-input />
-      <password-input />
+      <password-input :error="errorPass" />
 
       <button
         :disabled="loading"
@@ -46,6 +46,7 @@ const storeModal = useModalStore();
 const storeClient = useClientStore();
 const router = useRouter();
 
+const errorPass = ref(false);
 const loading = ref(false);
 
 const handleSubmit = async () => {
@@ -65,37 +66,38 @@ const handleSubmit = async () => {
 
       let responseValue = await response.json();
 
-      storeClient.badTryEnter = false;
-      storeClient.badPassword = false;
-
       if (!!responseValue) {
         // пришло 1 если пароль не подошёл
         if (responseValue == 1) {
-          storeClient.badPassword = true;
-          router.push({ name: "login" });
+          errorPass.value = true;
+          setTimeout(() => {
+            errorPass.value = false;
+            loading.value = false;
+          }, 4000);
         } else {
           storeClient.autorizationClient(
             responseValue.ClientId,
             responseValue.FirstName,
             responseValue.Telephone,
             responseValue.Email,
-            responseValue.Password,
             responseValue.PizzaOrderJson,
-            responseValue.Bonus
+            responseValue.Bonus,
+            responseValue.Record,
+            responseValue.CanPlay
           );
+
+          setTimeout(() => {
+            loading.value = false;
+            storeModal.setModalVisible(false);
+          }, 400);
         }
       } else {
         // пришло 0 если клиент не зарегистрирован
-        storeClient.badTryEnter = true;
         router.push({ name: "login" });
       }
     } catch (err) {
       console.log(err);
     } finally {
-      setTimeout(() => {
-        loading.value = false;
-        storeModal.setModalVisible(false);
-      }, 400);
     }
   }
 };

@@ -23,11 +23,6 @@
         <theme-toggle />
       </div>
 
-      <!--  :to="storeClient.isAutorization ? '/bonus' : ''" 
-       @click="
-            !storeClient.isAutorization ? storeModal.openModalEnter() : ''
-          "
-      -->
       <div class="icon-box">
         <NuxtLink :to="'/bonus'" class="icon-box__coin">
           <svg
@@ -59,7 +54,9 @@
             />
           </svg>
           <div class="balance" v-if="storeClient.client.Bonus > 0">
-            {{ storeClient.client.Bonus }}
+            <p>
+              {{ storeClient.client.Bonus }}
+            </p>
           </div>
 
           <p v-if="viewport.isGreaterOrEquals('mobileWide')">Бонусы</p>
@@ -211,17 +208,24 @@ const storeModal = useModalStore();
       .balance {
         position: absolute;
         background: var(--accent);
-        color: rgb(252, 252, 253);
         border-radius: 100px;
         padding: 3px 6px;
         top: -6px;
         left: calc(50% + 4px);
-        font-size: 12px;
 
         @media (max-width: 576px) {
           padding: 2px 4px;
           top: -2px;
           font-size: 10px;
+        }
+
+        p {
+          color: rgb(252, 252, 253);
+          font-size: 12px;
+
+          @media (max-width: 576px) {
+            font-size: 10px;
+          }
         }
       }
 

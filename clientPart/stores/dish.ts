@@ -59,13 +59,19 @@ export const useDishStore = defineStore('dishStore', {
         },
 
         setDishesById(id: number) {
-            this.dishes.find(el => el.DishId == id)!.Count = 1
-            const storeNotification = useNotificationStore();
-            storeNotification.addNotification("Добавлено", this.dishes.find(el => el.DishId == id)!.Name);
+            const dish = this.dishes.find(el => el.DishId == id);
+            if (dish) {
+                const storeNotification = useNotificationStore();
+                dish.Count = 1
+                storeNotification.addNotification("Добавлено", dish.Name);
+            }
         },
 
         setDishCount(id: number, val: number) {
-            this.dishes.find(el => el.DishId == id)!.Count = val;
+            const dish = this.dishes.find(el => el.DishId == id);
+            if (dish) {
+                dish.Count = val
+            }
         },
 
         setDishDefault() {
@@ -139,7 +145,15 @@ export const useDishStore = defineStore('dishStore', {
                     DishId: item.DishId,
                     Count: item.Count,
                 })))
-        }
+        },
+
+        getDishById: (state) => (dishId: number): IDish => {
+            const dish = state.dishes.find(el => el.DishId == dishId);
+            if (!dish) {
+                throw new Error(`${dishId} not found`);
+            }
+            return dish;
+        },
     }
 })
 

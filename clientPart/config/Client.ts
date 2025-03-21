@@ -6,4 +6,7 @@ export interface IClient {
     Password: string;
     PizzaOrderJson: string;
     Bonus: number;
+
+    Record: number;
+    CanPlay: boolean;
 }

@@ -26,7 +26,7 @@
       <div class="loader-element"></div>
     </div>
 
-    <button id="start" class="start main-button">
+    <button class="main-button button-start-game start">
       <span>Начать</span>
     </button>
 
@@ -52,7 +52,7 @@ onMounted(() => {
         successCount;
 
     let gameWidth = window.innerWidth < 375 ? window.innerWidth : 375 ;
-    let gameHeight = window.innerHeight * 0.85;
+    let gameHeight = window.innerHeight ;
 
     const option = {
         width: gameWidth,
@@ -68,9 +68,7 @@ onMounted(() => {
         setGameFailed: function(f) {
           storeGame.score = score;
           storeGame.successCount = successCount;
-
-            // document.getElementById("score").textContent = score;
-            storeModal.openModalOrder();
+          storeModal.setModalGame(true);
         },
     };
 
@@ -79,11 +77,26 @@ onMounted(() => {
         game.init();
     }, document.querySelector('.game-wrapper .loading').classList.add('hide'));
 
-    document.getElementById("start").addEventListener("click", function() {
-        document.querySelector('.game-wrapper .main-button').classList.add('started')
-        if (gameStart) return;
-        gameStart = true;
-        setTimeout(game.start.bind(game), 400);
+    const startButtons = document.querySelectorAll(".button-start-game");
+    startButtons.forEach(function(button) {
+        // Для каждой кнопки добавляем обработчик события "click"
+        button.addEventListener("click", function() {
+
+          if (gameStart) {
+            // Очищаем все пространство холста
+            let canvas = document.getElementById('game');
+            let ctx = canvas.getContext('2d');
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+          }
+
+            document.querySelector('.game-wrapper .main-button').classList.add('started');
+            // Устанавливаем gameStart в true, чтобы сигнализировать, что игра началась
+            gameStart = true;
+            // Запускаем игру через 400 миллисекунд, используя метод bind для передачи контекста game
+            setTimeout(game.start.bind(game), 400);
+            storeModal.setModalGame(false)
+        });
     });
 
 })
@@ -104,8 +117,9 @@ onMounted(() => {
 
   &__bar {
     position: absolute;
-    left: 16px;
-    top: 1px;
+    left: 2px;
+    top: 3px;
+
     .logo {
       padding: 20px 0;
       display: flex;
@@ -126,14 +140,20 @@ onMounted(() => {
     }
   }
 
-  .main-button {
+  .main-button.start {
     max-width: 250px;
     height: 50px;
     position: absolute;
-    top: 55%;
+    top: 60%;
 
     &.started {
       animation: st 1s ease-in-out forwards;
+    }
+
+    @media (max-width: 576px) {
+      max-width: 200px;
+      font-size: 16px;
+      height: 48px;
     }
 
     @keyframes st {

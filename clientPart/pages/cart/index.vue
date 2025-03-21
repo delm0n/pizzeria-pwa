@@ -43,13 +43,6 @@ CartOfferSection.value = defineAsyncComponent({
   delay: 500,
   timeout: 3000,
 });
-
-// const Recommendation = ref<null | any>(null);
-// Recommendation.value = defineAsyncComponent({
-//   loader: () => import("~/components/cart/Recommendation.vue"),
-//   delay: 500,
-//   timeout: 3000,
-// });
 </script>
 
 <style lang="scss">
