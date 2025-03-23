@@ -77,16 +77,13 @@ export const getLandBlockVelocity = (engine, time) => {
 
   let hard = 0;
   switch (true) {
-    case successCount - Math.ceil(window.innerHeight / 2 / 35) <= 2:
+    case successCount <= 10:
       hard = 0;
       break;
-    case successCount - Math.ceil(window.innerHeight / 2 / 35) > 2 &&
-      successCount <= 20:
+    case successCount > 10 && successCount <= 20:
       hard = 0.0005;
       break;
-    case successCount - Math.ceil(window.innerHeight / 2 / 35) > 2 &&
-      successCount > 20 &&
-      successCount <= 27:
+    case successCount > 20 && successCount <= 27:
       hard = 0.002;
       break;
     default:
@@ -146,8 +143,9 @@ export const addFailedCount = (engine) => {
   engine.setVariable(constant.perfectCount, 0);
   if (setGameFailed) setGameFailed(failed);
   if (failed >= 1) {
-    engine.pauseAudio("bgm");
-    engine.playAudio("game-over");
+    engine.pauseAudio("drop-perfect");
+    engine.pauseAudio("drop");
+    engine.playAudio("rotate");
     engine.setVariable(constant.gameStartNow, false);
   }
 };
@@ -157,12 +155,15 @@ export const addScore = (engine, isPerfect) => {
   const { setGameScore, successScore, perfectScore } = engine.getVariable(
     constant.gameUserOption
   );
-  const lastPerfectCount = engine.getVariable(constant.perfectCount, 0);
   const lastGameScore = engine.getVariable(constant.gameScore);
   const perfect = isPerfect ? 1 : 0;
+
   const score = lastGameScore + 1 + 3 * perfect;
-  //   lastGameScore + (successScore || 25) + (perfectScore || 25) * perfect;
-  engine.setVariable(constant.gameScore, score);
+  if (score >= 100) {
+    engine.setVariable(constant.gameScore, 100);
+  } else {
+    engine.setVariable(constant.gameScore, score);
+  }
   engine.setVariable(constant.perfectCount, perfect);
   if (setGameScore) setGameScore(score);
 };

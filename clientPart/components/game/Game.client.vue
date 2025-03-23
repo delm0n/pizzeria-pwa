@@ -22,7 +22,7 @@
 
     <canvas id="game"></canvas>
 
-    <div class="loading">
+    <div class="loading-bar">
       <div class="loader-element"></div>
     </div>
 
@@ -40,6 +40,7 @@ import { TowerGame } from "./towerGame.js";
 const viewport = useViewport();
 const storeModal = useModalStore();
 const storeGame = useGameStore();
+const router = useRouter();
 
 const logo = computed(() => {
   return  viewport.isLessThan("mobileWide");
@@ -75,29 +76,16 @@ onMounted(() => {
     game = TowerGame(option);
     game.load(function() {
         game.init();
-    }, document.querySelector('.game-wrapper .loading').classList.add('hide'));
+    }, document.querySelector('.game-wrapper .loading-bar').classList.add('hide'));
 
-    const startButtons = document.querySelectorAll(".button-start-game");
-    startButtons.forEach(function(button) {
-        // Для каждой кнопки добавляем обработчик события "click"
-        button.addEventListener("click", function() {
-
-          if (gameStart) {
-            // Очищаем все пространство холста
-            let canvas = document.getElementById('game');
-            let ctx = canvas.getContext('2d');
-
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-          }
-
-            document.querySelector('.game-wrapper .main-button').classList.add('started');
-            // Устанавливаем gameStart в true, чтобы сигнализировать, что игра началась
-            gameStart = true;
-            // Запускаем игру через 400 миллисекунд, используя метод bind для передачи контекста game
-            setTimeout(game.start.bind(game), 400);
-            storeModal.setModalGame(false)
+    document.querySelector(".button-start-game").addEventListener("click", function() {
+          document.querySelector('.game-wrapper .main-button').classList.add('started');
+          // Устанавливаем gameStart в true, чтобы сигнализировать, что игра началась
+          gameStart = true;
+          // Запускаем игру через 400 миллисекунд, используя метод bind для передачи контекста game
+          setTimeout(game.start.bind(game), 400);
+          storeModal.setModalGame(false)
         });
-    });
 
 })
 </script>
@@ -164,47 +152,6 @@ onMounted(() => {
         transform: translate(0, 1000%);
         display: none;
       }
-    }
-  }
-
-  .loading {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    background: var(--background);
-    z-index: 5;
-
-    &.hide {
-      display: none;
-      pointer-events: none;
-      visibility: hidden;
-    }
-
-    @keyframes spinner {
-      from {
-      }
-      to {
-        transform: rotate(360deg);
-      }
-    }
-
-    .loader-element {
-      display: block;
-      width: 60px;
-      height: 60px;
-      aspect-ratio: 1/1;
-      border: 5px solid #f4576d;
-      border-radius: 50%;
-      border-top-color: transparent;
-      animation: spinner 1s linear infinite;
-      box-sizing: border-box;
     }
   }
 }

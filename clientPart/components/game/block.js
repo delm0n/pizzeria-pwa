@@ -128,7 +128,6 @@ export const blockAction = (instance, engine, time) => {
         ins.originHypotenuse = Math.sqrt(
           ins.height ** 2 + ins.outwardOffset ** 2
         );
-        engine.playAudio("rotate");
       };
 
       // результат столкновения

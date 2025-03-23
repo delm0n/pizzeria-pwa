@@ -60,6 +60,10 @@ Recommendation.value = defineAsyncComponent({
   delay: 500,
   timeout: 3000,
 });
+
+defineOptions({
+  name: "AccountPage", // Указываем уникальное имя
+});
 </script>
 
 <style lang="scss">

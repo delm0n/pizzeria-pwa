@@ -3,7 +3,11 @@
     <VitePwaManifest />
     <NuxtLayout>
       <transition name="page" mode="out-in">
-        <NuxtPage keepalive class="page-content" />
+        <NuxtPage
+          keepalive
+          :keep-alive-props="{ exclude: ['GamePage'] }"
+          class="page-content"
+        />
       </transition>
 
       <pizza-modal />

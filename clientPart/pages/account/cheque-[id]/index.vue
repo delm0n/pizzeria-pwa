@@ -114,7 +114,7 @@ watch(
       <div class="cheque-content accent-box" v-if="cheque.Bonus > 0">
         <div class="cheque-content__item">
           <p class="content-name">
-            <span>Начислим бонусов</span><span>{{ cheque.Bonus }} ₽</span>
+            <span>Начислили бонусов</span><span>{{ cheque.Bonus }} ₽</span>
           </p>
         </div>
       </div>
@@ -137,6 +137,8 @@ watch(
 <style lang="scss">
 .cheque {
   position: relative;
+  margin-bottom: 50px;
+
   .container-small {
     max-width: 580px;
   }

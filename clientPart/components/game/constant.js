@@ -38,5 +38,4 @@ export const bgInitMovement = "BG_INIT_MOVEMENT";
 export const hookDownMovement = "HOOK_DOWN_MOVEMENT";
 export const hookUpMovement = "HOOK_UP_MOVEMENT";
 export const lightningMovement = "LIGHTNING_MOVEMENT";
-export const tutorialMovement = "TUTORIAL_MOVEMENT";
 export const moveDownMovement = "MOVE_DOWN_MOVEMENT";

@@ -2,7 +2,7 @@ type State = {
     promocode: IPromocode | null;
     promocodeFail: boolean;
     message: string;
-
+    gameKey: number;
     bonus: boolean;
 }
 
@@ -11,7 +11,7 @@ export const useBonusStore = defineStore('bonusStore', {
         promocode: null,
         promocodeFail: false,
         message: "",
-
+        gameKey: Date.now(),
         bonus: false // по умолчанию копим [0]
         //bonus: true списываем [1]
 

@@ -32,7 +32,7 @@
             Рекорд:
             <animated-number
               :from="0"
-              :to="100"
+              :to="record"
               :start="storeModal.gameModal"
               :duration="1500"
             />
@@ -58,8 +58,19 @@
             />
           </p>
 
-          <p class="button-bonus">Начислить баллы</p>
-          <button class="main-button button-start-game">Новая игра</button>
+          <p
+            @click="addBonus()"
+            v-if="!!storeClient.client.CanPlay"
+            :style="
+              !loadingButton || textButton != 'Начислить баллы'
+                ? ''
+                : 'pointer-events: none;'
+            "
+            class="button-bonus"
+          >
+            {{ textButton }}
+          </p>
+          <button @click="retry()" class="main-button">Новая игра</button>
         </div>
       </div>
     </div>
@@ -69,13 +80,66 @@
 <script lang="ts" setup>
 import AnimatedNumber from "./AnimatedNumber.vue";
 
+const storeClient = useClientStore();
 const storeModal = useModalStore();
 const storeGame = useGameStore();
 const router = useRouter();
+const storeBonus = useBonusStore();
+const loadingButton = ref(false);
+const textButton = ref("Начислить баллы");
 
 const close = () => {
   storeModal.setModalVisible(false);
   router.push("/bonus");
+  storeBonus.gameKey = Date.now();
+};
+
+const retry = () => {
+  storeModal.setModalVisible(false);
+  router.push("/loading");
+  storeBonus.gameKey = Date.now();
+  setTimeout(() => {
+    router.push("/game");
+  }, 400);
+};
+
+const record = computed(() => {
+  if (storeClient.client != null) {
+    return storeClient.client.Record > storeGame.successCount
+      ? storeClient.client.Record
+      : storeGame.successCount;
+  }
+  return storeGame.successCount;
+});
+
+const addBonus = async () => {
+  try {
+    storeBonus.message = "";
+    const response = await fetch(
+      `http://localhost:1234/game-bonus/${storeClient.client.ClientId}-${storeGame.score}-${storeGame.successCount}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    let respond = await response.json();
+    //если пришёл ответ
+    if (!!respond) {
+      textButton.value = "Баллы начислены!";
+      storeClient.client.Bonus = respond;
+      storeClient.client.CanPlay = false;
+
+      close();
+    }
+  } catch (err) {
+  } finally {
+    setTimeout(() => {
+      loadingButton.value = false;
+    }, 400);
+  }
 };
 </script>
 

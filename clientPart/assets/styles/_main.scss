@@ -140,3 +140,44 @@ img[data-loaded] {
 @import "./UI/pizza-input";
 @import "./UI/pizza-checkbox";
 @import "./UI/filter-sort";
+
+.loading-bar {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--background);
+  z-index: 5;
+
+  &.hide {
+    display: none;
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  @keyframes spinner {
+    from {
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .loader-element {
+    display: block;
+    width: 60px;
+    height: 60px;
+    aspect-ratio: 1/1;
+    border: 5px solid #f4576d;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spinner 1s linear infinite;
+    box-sizing: border-box;
+  }
+}

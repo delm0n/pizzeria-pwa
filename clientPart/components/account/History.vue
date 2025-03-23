@@ -81,7 +81,12 @@
         <p>
           Сумма заказа: <span> {{ item.LastPrice }} ₽</span>
         </p>
-        <div class="more-button"><p>Посмотреть</p></div>
+        <NuxtLink
+          @click="checkPromocode(item.PromocodeId)"
+          :to="'/account/cheque-' + item.OrderId"
+          class="more-button"
+          >Посмотреть</NuxtLink
+        >
       </div>
     </div>
   </section>
@@ -89,11 +94,9 @@
 
 <script lang="ts" setup>
 const loading = ref(false);
-// const wasMount = ref(false);
 
 const orderStore = useOrderStore();
 const storeClient = useClientStore();
-
 const viewport = useViewport();
 
 const fetchData = async () => {
@@ -171,10 +174,11 @@ onMounted(() => {
     }
   }
 
-  .more-button p {
+  .more-button {
     color: var(--accent);
     font-weight: 600;
     cursor: pointer;
+    display: block;
   }
 
   .history-mobile {
@@ -210,6 +214,7 @@ onMounted(() => {
       }
 
       .more-button {
+        display: block;
         margin-top: 10px;
       }
     }

@@ -1,5 +1,5 @@
 <template>
-  <main class="game-main">
+  <main class="game-main" :key="storeBonus.gameKey">
     <div class="container-small">
       <ClientOnly>
         <game />
@@ -10,9 +10,13 @@
 
 <script setup>
 import Game from "~/components/game/Game.client.vue";
+const storeBonus = useBonusStore();
 
 definePageMeta({
   layout: false,
+});
+defineOptions({
+  name: "GamePage", // Указываем уникальное имя
 });
 </script>
 

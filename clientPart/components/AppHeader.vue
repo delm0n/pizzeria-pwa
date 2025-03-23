@@ -2,7 +2,7 @@
   <div class="container">
     <header id="header" class="header-wrapper">
       <div class="logo">
-        <NuxtLink to="/">
+        <div @click="goBack">
           <h1 v-if="!logo">Pizzeria</h1>
           <svg
             v-else
@@ -18,7 +18,7 @@
               fill="#50A684"
             ></path>
           </svg>
-        </NuxtLink>
+        </div>
 
         <theme-toggle />
       </div>
@@ -121,13 +121,20 @@
 
 <script setup lang="ts">
 import ThemeToggle from "~/components/UI/ThemeToggle.vue";
+import { pageClick } from "@/utils/pageClick";
 
 const route = useRoute();
+const router = useRouter();
 const viewport = useViewport();
 
 const logo = computed(() => {
   return route.path != "/" && viewport.isLessThan("mobileWide");
 });
+
+const goBack = () => {
+  pageClick();
+  router.back();
+};
 
 const storeClient = useClientStore();
 const storeModal = useModalStore();

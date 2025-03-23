@@ -117,7 +117,37 @@ namespace serverPart.RouterModule
                 return JsonSerializer.Serialize ( orders );
             };
 
+            Get["/game-bonus/{id}-{bonus}-{record}", runAsync: true] = async ( x, token ) =>
+            {
+                
+                int id = x.id; // клиента
+                int bonus = x.bonus; // кол-во бонусов
+                int record = x.record; 
 
+                using ( var dbContext = new ApplicationContext ( ) )
+                {
+                    Client client = await dbContext.Clients
+                    .Where ( c => c.ClientId == id ).FirstOrDefaultAsync ( );
+
+                    if ( client == null )
+                    {
+                        return "0";
+                    }
+                    else
+                    {
+                        client.Bonus += bonus;
+                        client.CanPlay = false;
+                        if ( x.record > client.Record )
+                        {
+                            client.Record = x.record;
+                        }
+
+                        dbContext.SaveChanges ( );
+
+                        return client.Bonus;
+                    }
+                }
+            };
         }
     }
 }
