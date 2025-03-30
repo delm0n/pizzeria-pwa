@@ -45,7 +45,6 @@
 </template>
 
 <script lang="ts" setup>
-//   const storePizza = usePizzaStore();
 const storeCart = useCartStore();
 const storeConstructor = useConstructorStore();
 const storeDish = useDishStore();

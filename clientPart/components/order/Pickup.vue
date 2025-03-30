@@ -97,7 +97,7 @@ const title = computed(() => {
 
       p {
         font-weight: 500;
-        color: #3f3f3f;
+        // color: var(--accent);
 
         @media (max-width: 576px) {
           font-size: 14px;

@@ -89,11 +89,15 @@ const handleSubmit = async () => {
           setTimeout(() => {
             loading.value = false;
             storeModal.setModalVisible(false);
-          }, 400);
+          }, 200);
         }
       } else {
         // пришло 0 если клиент не зарегистрирован
         router.push({ name: "login" });
+        setTimeout(() => {
+          loading.value = false;
+          storeModal.setModalVisible(false);
+        }, 200);
       }
     } catch (err) {
       console.log(err);

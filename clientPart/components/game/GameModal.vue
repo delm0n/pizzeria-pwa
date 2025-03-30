@@ -28,7 +28,7 @@
           </svg>
         </div>
         <div class="game-modal__wrapper">
-          <p>
+          <p style="position: relative">
             Рекорд:
             <animated-number
               :from="0"
@@ -36,6 +36,12 @@
               :start="storeModal.gameModal"
               :duration="1500"
             />
+
+            <span
+              class="new-record"
+              v-show="storeClient.client.Record < storeGame.successCount"
+              >Новый рекорд!</span
+            >
           </p>
 
           <p>
@@ -48,7 +54,7 @@
             />
           </p>
 
-          <p>
+          <p style="margin-bottom: 150px">
             Бонусов за игру:
             <animated-number
               :from="0"
@@ -113,32 +119,34 @@ const record = computed(() => {
 });
 
 const addBonus = async () => {
-  try {
-    storeBonus.message = "";
-    const response = await fetch(
-      `http://localhost:1234/game-bonus/${storeClient.client.ClientId}-${storeGame.score}-${storeGame.successCount}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
+  if (storeClient.isAutorization) {
+    try {
+      storeBonus.message = "";
+      const response = await fetch(
+        `http://localhost:1234/game-bonus/${storeClient.client.ClientId}-${storeGame.score}-${storeGame.successCount}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      let respond = await response.json();
+      //если пришёл ответ
+      if (!!respond) {
+        textButton.value = "Баллы начислены!";
+        storeClient.client.Bonus = respond;
+        storeClient.client.CanPlay = false;
+
+        close();
       }
-    );
-
-    let respond = await response.json();
-    //если пришёл ответ
-    if (!!respond) {
-      textButton.value = "Баллы начислены!";
-      storeClient.client.Bonus = respond;
-      storeClient.client.CanPlay = false;
-
-      close();
+    } catch (err) {
+    } finally {
+      setTimeout(() => {
+        loadingButton.value = false;
+      }, 400);
     }
-  } catch (err) {
-  } finally {
-    setTimeout(() => {
-      loadingButton.value = false;
-    }, 400);
   }
 };
 </script>
@@ -153,6 +161,12 @@ const addBonus = async () => {
       padding: 30px 20px;
     }
   }
+
+  .new-record {
+    position: absolute;
+    right: 0;
+  }
+
   &__wrapper {
     p {
       font-weight: 500;
@@ -167,7 +181,6 @@ const addBonus = async () => {
     .button-bonus {
       color: var(--accent);
       text-align: center;
-      margin-top: 150px;
       font-weight: 500;
       cursor: pointer;
     }

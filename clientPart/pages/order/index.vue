@@ -14,6 +14,8 @@ const storeDish = useDishStore();
 const storeClient = useClientStore();
 const storeBonus = useBonusStore();
 const storeOrder = useOrderStore();
+const storeCheque = useChequeStore();
+
 const loading = ref(false);
 
 const handleOrder = async () => {
@@ -22,43 +24,51 @@ const handleOrder = async () => {
       loading.value = true;
 
       try {
+        const order = {
+          ClientId: storeClient.client.ClientId,
+          OrderName: storeOrder.orderName,
+          OrderTelephone: storeOrder.orderTelephone,
+
+          Time: storeOrder.orderTime,
+          TypeOfPay: storeOrder.getTypeOfPay,
+
+          PromocodeId: storeBonus.getValuePromocode,
+          Bonus: storeBonus.getValueBonus,
+
+          LastPrice: storeCart.getLastPrice,
+
+          PizzasJson: storeCart.getPizzasJSON,
+          ConstructorPizzasJson: storeCart.getConstructorPizzasJson,
+          DishesJson: storeDish.getDishesJSON,
+
+          Comment: storeOrder.orderComment,
+          Address: storeOrder.getAddressJSON,
+          Pickup: storeOrder.getPickupJSON,
+          DeliveryPrice: price.value,
+        };
+
         const response = await fetch("http://localhost:1234/send-order", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            ClientId: storeClient.client.ClientId,
-            OrderName: storeOrder.orderName,
-            OrderTelephone: storeOrder.orderTelephone,
-
-            Time: "Как можно скорее",
-            TypeOfPay: storeOrder.getTypeOfPay,
-
-            PromocodeId: storeBonus.getValuePromocode,
-            Bonus: storeBonus.getValueBonus,
-
-            LastPrice: price.value,
-
-            PizzasJson: storeCart.getPizzasJSON,
-            ConstructorPizzasJson: storeCart.getConstructorPizzasJson,
-            DishesJson: storeDish.getDishesJSON,
-
-            Comment: storeOrder.orderComment,
-            Address: storeOrder.getAddressJSON,
-            Pickup: storeOrder.getPickupJSON,
-          }),
+          body: JSON.stringify(order),
         });
 
-        // уведомления об изменении статуса заказа
-        storeOrder.subscribeOrderStatus(await response.json());
+        const orderResp: IOrder = await response.json();
 
-        // установка всего по умолчанию
-        router.push("/");
-        storeCart.pizzas = [];
-        storeCart.constructors = [];
-        storeDish.setDishDefault();
-        storeBonus.setPromocodeDefault();
+        //уведомления об изменении статуса заказа
+        storeCheque.startOrderStatus(orderResp);
+
+        if (storeClient.isAutorization) {
+          if (storeBonus.getValueBonus < 0) {
+            // вычитание бонусов
+            storeClient.client.Bonus =
+              storeClient.client.Bonus + storeBonus.getValueBonus;
+          }
+        }
+
+        setDefaultOrder();
       } catch (err) {
         console.log(err);
       } finally {
@@ -80,12 +90,23 @@ const scrollTo = (targetId: string) => {
 };
 
 const price = computed(() => {
-  if (storeCart.getLastPrice < 1000 && storeOrder.address[0].Active) {
-    return storeCart.getLastPrice + storeOrder.priceDelivery;
+  if (storeCart.getLastPrice < 1000 && storeOrder.isDelivery) {
+    return storeOrder.priceDelivery;
   } else {
-    return storeCart.getLastPrice;
+    return 0;
   }
 });
+
+const setDefaultOrder = () => {
+  // установка всего по умолчанию
+  router.push("/");
+  storeCart.pizzas = [];
+  storeCart.constructors = [];
+  storeDish.setDishDefault();
+  storeBonus.setPromocodeDefault();
+  storeBonus.bonus = false;
+  storeOrder.setOrderDefault();
+};
 
 onMounted(() => {
   if (storeCart.getLastPrice <= 0) {
@@ -124,7 +145,7 @@ watch(
               class="main-button loading"
             >
               Оформить заказ за
-              {{ price }}
+              {{ price + storeCart.getLastPrice }}
               ₽
             </button>
           </div>
@@ -214,7 +235,7 @@ watch(
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    margin-top: 20px;
+    margin-top: 50px;
 
     .back-button {
       display: block;

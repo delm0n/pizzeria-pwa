@@ -111,6 +111,7 @@ const token = "e6ddd505-3fdb-4820-ac43-6f27c0ebfb31";
 const loading = ref(false);
 const errorMap = ref(false);
 let myPlacemark: any;
+let myMap: any; // Добавляем глобальную переменную для карты
 
 const onInputFlat = (event: Event) => {
   const target = event.target as HTMLInputElement;
@@ -139,7 +140,8 @@ async function getMap() {
       //@ts-ignore
       ymaps.ready(function () {
         //@ts-ignore
-        let myMap = new ymaps.Map("my-map", {
+        myMap = new ymaps.Map("my-map", {
+          // Инициализация карты с присвоением переменной myMap
           center: [58.603562, 49.668],
           zoom: 14,
           controls: ["zoomControl"],
@@ -218,7 +220,12 @@ async function setAddress(coords: any) {
         data.response.GeoObjectCollection.featureMember[0].GeoObject.Point.pos
           .split(" ")
           .map(Number);
+
+      // Устанавливаем координаты метки
       myPlacemark.geometry.setCoordinates([coords[1], coords[0]]);
+
+      // Перемещаем карту к новым координатам
+      myMap.panTo([coords[1], coords[0]], { duration: 1000 }); // Устанавливаем центр и масштаб
     } else {
       mapError();
     }

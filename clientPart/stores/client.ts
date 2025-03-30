@@ -52,7 +52,6 @@ export const useClientStore = defineStore('clientStore', {
             this.client.Email = email;
             this.client.PizzaOrderJson = pizzaOrderJson;
             this.client.Bonus = bonus;
-            this.client.Password = "";
             this.client.Record = record;
             this.client.CanPlay = canPlay;
 
@@ -60,8 +59,15 @@ export const useClientStore = defineStore('clientStore', {
             orderStore.orderName = firstName;
             orderStore.orderTelephone = telephone;
 
+            const storeCheque = useChequeStore();
+            storeCheque.loadData(clientId)
+
             const storeBonus = useBonusStore();
             storeBonus.setPromocodeDefault();
+
+            setTimeout(() => {
+                this.client.Password = "";
+            }, 800);
         },
 
         setClientDefault() {

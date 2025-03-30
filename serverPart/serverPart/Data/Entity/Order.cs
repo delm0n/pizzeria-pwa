@@ -45,6 +45,8 @@ namespace serverPart.Data.Entity
         public string Address { get; set; }  // адрес доставки если есть
         public string Pickup { get; set; } // адрес самовывоза если есть
 
+        public int DeliveryPrice { get; set;}
+
 
     }
 }

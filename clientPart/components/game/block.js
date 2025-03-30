@@ -169,6 +169,7 @@ export const blockAction = (instance, engine, time) => {
           if (collision === 5) {
             instance.perfect = true;
             addScore(engine, true);
+            engine.pauseAudio("drop-perfect");
             engine.playAudio("drop-perfect");
           } else {
             addScore(engine);

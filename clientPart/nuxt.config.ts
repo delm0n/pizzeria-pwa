@@ -108,6 +108,7 @@ export default defineNuxtConfig({
     "~/assets/styles/_colors.scss",
     "~/assets/styles/_fonts.scss",
     "~/assets/styles/_main.scss",
+    'vue-datepicker-next/index.css',
   ],
 
   image: {

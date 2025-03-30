@@ -18,7 +18,6 @@
         <SwiperSlide>
           <div class="banner-item">
             <picture>
-              <!-- <source srcset="/images/banner/banner-item-1.webp" /> -->
               <img
                 src="/images/banner/banner-item-1.png"
                 alt="скидка по промокоду"
@@ -30,7 +29,6 @@
         <SwiperSlide>
           <NuxtLink to="/constructor" class="banner-item">
             <picture>
-              <!-- <source srcset="/images/banner/banner-item-2.webp" /> -->
               <img
                 src="/images/banner/banner-item-2.png"
                 alt="скидка по промокоду"
@@ -38,13 +36,23 @@
             </picture>
           </NuxtLink>
         </SwiperSlide>
+
+        <!-- <SwiperSlide>
+          <NuxtLink to="/bonus" class="banner-item">
+            <picture>
+              <img
+                src="/images/banner/banner-item-3.png"
+                alt="скидка по промокоду"
+              />
+            </picture>
+          </NuxtLink>
+        </SwiperSlide> -->
       </Swiper>
     </ClientOnly>
 
     <div v-if="!isLoaded" class="banner-plug">
       <div class="banner-item">
         <picture>
-          <!-- <source srcset="/images/banner/banner-item-1.webp" /> -->
           <img
             src="/images/banner/banner-item-1.png"
             alt="скидка по промокоду"

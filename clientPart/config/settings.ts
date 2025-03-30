@@ -24,3 +24,10 @@ export interface IAddress {
     flat?: string;
     floor?: string;
 }
+
+export interface IChequeDetails {
+    pizzas: IPizzaCart[];
+    dishes: IDishCart[];
+    constructorPizzas: IPizzaConstructorCart[];
+    address: string
+}

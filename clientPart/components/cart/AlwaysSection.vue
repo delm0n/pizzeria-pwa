@@ -53,6 +53,10 @@ const storePizza = usePizzaStore();
     padding: 20px 0;
   }
 
+  .container-small {
+    overflow: visible;
+  }
+
   h2 {
     font-size: 24px;
     font-weight: 600;

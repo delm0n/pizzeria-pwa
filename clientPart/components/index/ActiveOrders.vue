@@ -1,5 +1,5 @@
 <template>
-  <section id="active-orders" v-show="storeOrder.numberOrder.length > 0">
+  <section id="active-orders" v-show="storeCheque.cheques.length > 0">
     <div class="container">
       <ClientOnly>
         <Swiper
@@ -9,10 +9,10 @@
           class="active-orders-wrapper"
         >
           <SwiperSlide
-            v-for="(order, index) in storeOrder.numberOrder"
+            v-for="(order, index) in storeCheque.cheques"
             :key="index"
           >
-            <div class="active-orders-item">
+            <NuxtLink :to="'/cheque-' + order.num" class="active-orders-item">
               <div class="active-orders-item__img">
                 <p>
                   {{ order.num }}
@@ -20,10 +20,10 @@
               </div>
 
               <div class="active-orders-item__content">
-                <p>Заказ принят в обслуживание</p>
-                <b> {{ order.time }} </b>
+                <p>Статус заказа:</p>
+                <b> {{ order.status }} </b>
               </div>
-            </div>
+            </NuxtLink>
           </SwiperSlide>
         </Swiper>
       </ClientOnly>
@@ -33,6 +33,7 @@
 
 <script setup lang="ts">
 const storeOrder = useOrderStore();
+const storeCheque = useChequeStore();
 </script>
 
 <style lang="scss">
@@ -76,7 +77,7 @@ const storeOrder = useOrderStore();
         p {
           font-weight: 600;
           color: var(--accent);
-          font-size: 50px;
+          font-size: 48px;
           text-align: center;
 
           @media (max-width: 576px) {
@@ -87,6 +88,7 @@ const storeOrder = useOrderStore();
 
       &__content {
         p {
+          color: var(--text-color);
           font-weight: 500;
         }
 

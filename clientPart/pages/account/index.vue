@@ -31,12 +31,15 @@ const storeClient = useClientStore();
 const storeBonus = useBonusStore();
 const storePizza = usePizzaStore();
 const storeOrder = useOrderStore();
+const storeCheque = useChequeStore();
 
 const exitClient = () => {
   storeClient.setClientDefault();
   storeBonus.setPromocodeDefault();
+  storeBonus.bonus = false;
   storeOrder.setOrderDefault();
   router.push("/");
+  storeCheque.setChequeDefault();
 };
 
 onMounted(() => {

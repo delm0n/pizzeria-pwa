@@ -24,22 +24,56 @@ namespace serverPart.Data.Helper
 
         protected override async void OnMessage ( MessageEventArgs e )
         {
-            if ( int.TryParse ( e.Data, out int orderId ) )
-            {   
-                SendMessage sendMessage = new SendMessage ();
+            var message = JsonSerializer.Deserialize<GetMessage>(e.Data);
+            int orderId = -1;
+            SendMessage sendMessage = new SendMessage ();
+
+            if ( message.Action == "cancel" && int.TryParse ( message.Num, out orderId ) )
+            {
+                using ( var dbContext = new ApplicationContext ( ) )
+                {
+                    Order order = await dbContext.Orders.FirstOrDefaultAsync(o => o.OrderId == orderId);
+
+                    if ( order != null && order.Status == "Принят" )
+                    {
+                        order.Status = "Отменён";
+                        sendMessage.Message = "Отменён";
+                        sendMessage.Num = orderId;
+
+                        if ( order.ClientId != null )
+                        {
+                            Client client = await dbContext.Clients.Where(c => c.ClientId == order.ClientId).FirstOrDefaultAsync();
+
+                            if ( client != null )
+                            {
+                                sendMessage.Bonus = client.Bonus;
+                            }
+                        }
+
+                        dbContext.SaveChanges ( );
+                        Send ( JsonSerializer.Serialize ( sendMessage ) );
+                    }
+                }
+            }
+
+            if ( message.Action == "accept" && int.TryParse ( message.Num, out orderId ) )
+            {
                 using ( var dbContext = new ApplicationContext ( ) )
                 {
                     Order order = await dbContext.Orders.Where(c => c.OrderId == orderId).FirstOrDefaultAsync();
 
                     if ( order != null )
                     {
-                        // Запускаем отложенную задачу на 2 минуты
+                        order.Status = "Готовится";
+                        await dbContext.SaveChangesAsync ( );
+
+                        // Запускаем отложенную задачу на 1 минуту
                         await Task.Run ( async ( ) =>
                         {
-                            await Task.Delay ( TimeSpan.FromMinutes ( 1 ) ); // Ждем 1 минуту
-                            order.Status = "Доставлен";
+                            await Task.Delay ( TimeSpan.FromMinutes ( 1 ) );
 
-                            sendMessage.Message = "доставлен";
+                            order.Status = "Доставлен";
+                            sendMessage.Message = "Доставлен";
                             sendMessage.Num = orderId;
 
                             if ( order.ClientId != null )
@@ -52,13 +86,14 @@ namespace serverPart.Data.Helper
 
                                     sendMessage.Bonus = client.Bonus;
                                     sendMessage.CanPlay = client.CanPlay;
-
                                 }
                             }
 
-                            await dbContext.SaveChangesAsync ( );
-                            Send ( JsonSerializer.Serialize ( sendMessage) );
+                            dbContext.SaveChanges ( );
+                            Send ( JsonSerializer.Serialize ( sendMessage ) );
+
                         } );
+
                     }
                 }
             }

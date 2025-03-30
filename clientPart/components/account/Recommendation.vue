@@ -53,6 +53,10 @@ const storePizza = usePizzaStore();
     margin-bottom: 20px;
   }
 
+  .container-small {
+    overflow: visible;
+  }
+
   .recommendation-wrapper {
     width: 100%;
     overflow: visible;

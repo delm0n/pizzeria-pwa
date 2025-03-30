@@ -134,6 +134,11 @@
     <Compile Include="Data\Entity\PizzaSize.cs" />
     <Compile Include="Data\Entity\Promocode.cs" />
     <Compile Include="Data\Helper\DishCart.cs" />
+    <Compile Include="Data\Helper\GetMessage.cs" />
+    <Compile Include="Migrations\202503271322363_addDelivery.cs" />
+    <Compile Include="Migrations\202503271322363_addDelivery.Designer.cs">
+      <DependentUpon>202503271322363_addDelivery.cs</DependentUpon>
+    </Compile>
     <Compile Include="OrderStatus.cs" />
     <Compile Include="Data\Helper\PizzaCart.cs" />
     <Compile Include="Data\Helper\PizzaConstructorCart.cs" />
@@ -312,6 +317,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202503151919532_updOrderAddPromocodeFK.resx">
       <DependentUpon>202503151919532_updOrderAddPromocodeFK.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202503271322363_addDelivery.resx">
+      <DependentUpon>202503271322363_addDelivery.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

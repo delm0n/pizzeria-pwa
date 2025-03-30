@@ -131,7 +131,7 @@
     </div>
 
     <div class="order-list__offer">
-      <div class="order-list__item">
+      <div v-if="storeOrder.isDelivery" class="order-list__item">
         <p class="content-name">
           <span style="display: flex; align-items: center; gap: 5px">
             Доставка

@@ -48,6 +48,7 @@ namespace serverPart.RouterModule
 
                     order.Address = x.Address;
                     order.Pickup = x.Pickup;
+                    order.DeliveryPrice = x.DeliveryPrice;
 
                     // клиент существует
                     if ( x.ClientId != null )
@@ -75,9 +76,8 @@ namespace serverPart.RouterModule
                             else
                                 order.Bonus = x.Bonus; //история бонусов со знаком
                         }
-                        
 
-                        // пицца
+                        //пицца
                         List<PizzaCart> pizzaCart = JsonSerializer.Deserialize<List<PizzaCart>>(x.PizzasJson);
                         List<int> pizzaCartId = JsonSerializer.Deserialize<List<int>>(client.PizzaOrderJson);
                         foreach ( var pizza in pizzaCart )
@@ -98,7 +98,7 @@ namespace serverPart.RouterModule
                     dbContext.SaveChanges ( );
                 }
 
-                return JsonSerializer.Serialize ( order.OrderId );
+                return JsonSerializer.Serialize ( order );
             };
 
             Get["/history-order/{id}", runAsync: true] = async ( x, token ) =>
@@ -145,6 +145,34 @@ namespace serverPart.RouterModule
                         dbContext.SaveChanges ( );
 
                         return client.Bonus;
+                    }
+                }
+            };
+
+            Get["/game-record/{id}-{record}", runAsync: true] = async ( x, token ) =>
+            {
+                int id = x.id; // клиента
+                int record = x.record;
+
+                using ( var dbContext = new ApplicationContext ( ) )
+                {
+                    Client client = await dbContext.Clients
+                    .Where ( c => c.ClientId == id ).FirstOrDefaultAsync ( );
+
+                    if ( client == null )
+                    {
+                        return "0";
+                    }
+                    else
+                    {
+                        if ( x.record > client.Record )
+                        {
+                            client.Record = x.record;
+                        }
+
+                        dbContext.SaveChanges ( );
+
+                        return client.Record;
                     }
                 }
             };

@@ -63,7 +63,7 @@ const props = withDefaults(
 );
 
 const storeClient = useClientStore();
-const passwordType = ref(false);
+const passwordType = ref(true);
 
 const switchVisibility = () => {
   passwordType.value = !passwordType.value;

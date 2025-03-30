@@ -21,4 +21,6 @@ export interface IOrder {
 
     Address: string;
     Pickup: string;
+
+    DeliveryPrice: number;
 }

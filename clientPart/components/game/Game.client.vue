@@ -40,7 +40,6 @@ import { TowerGame } from "./towerGame.js";
 const viewport = useViewport();
 const storeModal = useModalStore();
 const storeGame = useGameStore();
-const router = useRouter();
 
 const logo = computed(() => {
   return  viewport.isLessThan("mobileWide");
@@ -70,6 +69,9 @@ onMounted(() => {
           storeGame.score = score;
           storeGame.successCount = successCount;
           storeModal.setModalGame(true);
+
+          // функция обновления рекорда
+          storeGame.updateRecord(successCount)
         },
     };
 

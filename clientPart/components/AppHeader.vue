@@ -2,7 +2,7 @@
   <div class="container">
     <header id="header" class="header-wrapper">
       <div class="logo">
-        <div @click="goBack">
+        <NuxtLink to="/">
           <h1 v-if="!logo">Pizzeria</h1>
           <svg
             v-else
@@ -18,7 +18,7 @@
               fill="#50A684"
             ></path>
           </svg>
-        </div>
+        </NuxtLink>
 
         <theme-toggle />
       </div>
@@ -130,11 +130,6 @@ const viewport = useViewport();
 const logo = computed(() => {
   return route.path != "/" && viewport.isLessThan("mobileWide");
 });
-
-const goBack = () => {
-  pageClick();
-  router.back();
-};
 
 const storeClient = useClientStore();
 const storeModal = useModalStore();

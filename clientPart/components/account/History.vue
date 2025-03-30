@@ -46,7 +46,7 @@
       </div>
 
       <div
-        v-for="(item, index) in orderStore.orders"
+        v-for="(item, index) in storeCheque.orders"
         :key="index"
         class="history-wrapper__row"
       >
@@ -57,7 +57,7 @@
         <p class="status">{{ item.Status }}</p>
         <NuxtLink
           @click="checkPromocode(item.PromocodeId)"
-          :to="'/account/cheque-' + item.OrderId"
+          :to="'/cheque-' + item.OrderId"
           class="more-button"
           ><p>Посмотреть</p></NuxtLink
         >
@@ -69,7 +69,7 @@
       class="history-mobile"
     >
       <div
-        v-for="(item, index) in orderStore.orders"
+        v-for="(item, index) in storeCheque.orders"
         :key="index"
         class="history-mobile__row"
       >
@@ -83,7 +83,7 @@
         </p>
         <NuxtLink
           @click="checkPromocode(item.PromocodeId)"
-          :to="'/account/cheque-' + item.OrderId"
+          :to="'/cheque-' + item.OrderId"
           class="more-button"
           >Посмотреть</NuxtLink
         >
@@ -95,7 +95,7 @@
 <script lang="ts" setup>
 const loading = ref(false);
 
-const orderStore = useOrderStore();
+const storeCheque = useChequeStore();
 const storeClient = useClientStore();
 const viewport = useViewport();
 
@@ -103,7 +103,7 @@ const fetchData = async () => {
   try {
     loading.value = true;
     storeClient.client.ClientId !== null
-      ? orderStore.loadData(storeClient.client.ClientId)
+      ? storeCheque.loadData(storeClient.client.ClientId)
       : "";
   } catch {
     console.log("error orderStore");
@@ -115,7 +115,7 @@ const fetchData = async () => {
 };
 
 const checkPromocode = (id: number | undefined) => {
-  !!id ? orderStore.getPromocode(id) : "";
+  !!id ? storeCheque.getPromocode(id) : "";
 };
 
 onMounted(() => {

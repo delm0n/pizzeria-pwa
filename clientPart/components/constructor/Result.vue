@@ -134,14 +134,16 @@ const addToCart = () => {
     SauceId: !!sauce ? sauce.DishId : storeConstructor.sauceArray[0].DishId,
   };
 
+  router.push("/cart");
   if (storeConstructor.isEdit) {
     storeCart.editConstructorCart(newPizza, storeConstructor.isEditIndex);
   } else {
     storeCart.addConstructorCart(newPizza);
   }
 
-  reset();
-  storeConstructor.isEditIndex = -1;
-  router.push("/cart");
+  setTimeout(() => {
+    reset();
+    storeConstructor.isEditIndex = -1;
+  }, 200);
 };
 </script>
