@@ -1,4 +1,4 @@
-import type { IChequeDetails } from '~/config/settings';
+import type { IChequeDetails, IAddress } from '~/config/settings';
 import { getWebSocket } from '~/utils/websocket';
 
 interface ICheque {
@@ -87,6 +87,31 @@ export const useChequeStore = defineStore('chequeStore', {
 
             return chequeDetails;
         },
+
+        getAddressHistory(): IAddress[] {
+
+            let address: IAddress[] = []; // Создаем пустой массив для хранения адресов
+
+            this.orders.forEach((element) => {
+                // Проверяем, что Address существует и не является пустой строкой
+                if (element.Address && element.Address.trim() !== "") {
+                    // Парсим JSON-строку в объект
+                    const parsedAddress = JSON.parse(element.Address);
+
+                    // Проверяем, что locality, street и house заполнены
+                    if (
+                        typeof parsedAddress === "object" &&
+                        parsedAddress.locality &&
+                        parsedAddress.street &&
+                        parsedAddress.house
+                    ) {
+                        address.push(parsedAddress); // Добавляем адрес в массив
+                    }
+                }
+            });
+
+            return address.slice(-2); // Возвращаем массив адресов
+        }
     },
 
     actions: {
@@ -164,7 +189,7 @@ export const useChequeStore = defineStore('chequeStore', {
                 if (!!storeClient.client.ClientId) {
                     storeClient.client.Bonus = Number(messageData.Bonus);
 
-                    if (messageData.Message === "Доставлен") {
+                    if (messageData.Message == "Доставлен" || "Готов к выдаче") {
                         storeClient.client.CanPlay = Boolean(messageData.CanPlay);
                     }
                 }

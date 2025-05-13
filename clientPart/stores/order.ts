@@ -150,6 +150,5 @@ export const useOrderStore = defineStore('orderStore', {
             this.orderTime = "Как можно скорее";
         },
 
-
     },
 })

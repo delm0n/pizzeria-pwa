@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <download />
     <header id="header" class="header-wrapper">
       <div class="logo">
         <NuxtLink to="/">
@@ -121,10 +122,9 @@
 
 <script setup lang="ts">
 import ThemeToggle from "~/components/UI/ThemeToggle.vue";
-import { pageClick } from "@/utils/pageClick";
+import Download from "./index/Download.vue";
 
 const route = useRoute();
-const router = useRouter();
 const viewport = useViewport();
 
 const logo = computed(() => {

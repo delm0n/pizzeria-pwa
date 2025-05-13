@@ -67,7 +67,7 @@ const storeCheque = useChequeStore();
 
       &__img {
         aspect-ratio: 1/1;
-        max-width: 90px;
+        max-width: 80px;
         width: 100%;
         margin-right: 10px;
         display: flex;
@@ -77,11 +77,11 @@ const storeCheque = useChequeStore();
         p {
           font-weight: 600;
           color: var(--accent);
-          font-size: 48px;
+          font-size: 44px;
           text-align: center;
 
           @media (max-width: 576px) {
-            font-size: 40px;
+            font-size: 38px;
           }
         }
       }

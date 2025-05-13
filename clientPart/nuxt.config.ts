@@ -128,6 +128,4 @@ export default defineNuxtConfig({
     // modules: [], // all modules are imported by default
   },
 
-
-
 })

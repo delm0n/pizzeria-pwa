@@ -72,8 +72,16 @@ namespace serverPart.Data.Helper
                         {
                             await Task.Delay ( TimeSpan.FromMinutes ( 1 ) );
 
-                            order.Status = "Доставлен";
-                            sendMessage.Message = "Доставлен";
+                            if ( order.Pickup != "")
+                            {
+                                order.Status = "Готов к выдаче";
+                            }
+                            else
+                            {
+                                order.Status = "Доставлен";
+                            }
+
+                            sendMessage.Message = order.Status;
                             sendMessage.Num = orderId;
 
                             if ( order.ClientId != null )

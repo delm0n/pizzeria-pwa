@@ -242,6 +242,14 @@ watch(
       color: var(--text-description);
       opacity: 0.9;
 
+      @media (max-width: 1136px) {
+        display: none;
+      }
+
+      @media (max-width: 992px) {
+        display: block;
+      }
+
       @media (max-width: 576px) {
         display: none;
       }

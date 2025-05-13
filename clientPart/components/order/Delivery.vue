@@ -6,6 +6,22 @@
       <div id="my-map"></div>
     </div>
 
+    <div class="address-map__history">
+      <div
+        v-for="(item, index) in storeCheque.getAddressHistory"
+        :key="index"
+        class="history-row"
+      >
+        <p>
+          {{ address(item) }}
+        </p>
+
+        <p @click="clickAddress(item)" class="address-map__history-button">
+          Выбрать
+        </p>
+      </div>
+    </div>
+
     <div class="address-map__box">
       <div class="input-row address-map__input">
         <label class="pizza-input" :style="'position: relative;'">
@@ -82,7 +98,7 @@
 
     <button
       :disabled="loading"
-      @click="setAddress"
+      @click="setAddress()"
       class="button map-button loading"
     >
       Поиск
@@ -106,6 +122,7 @@
 
 <script lang="ts" setup>
 const storeOrder = useOrderStore();
+const storeCheque = useChequeStore();
 
 const token = "e6ddd505-3fdb-4820-ac43-6f27c0ebfb31";
 const loading = ref(false);
@@ -205,7 +222,7 @@ async function getAddress(coords: any) {
   }
 }
 
-async function setAddress(coords: any) {
+async function setAddress() {
   const url = `https://geocode-maps.yandex.ru/1.x/?apikey=${token}&geocode=${encodeURIComponent(
     `${storeOrder.orderAddress.locality}, ${storeOrder.orderAddress.street}, ${storeOrder.orderAddress.house}`
   )}&format=json`;
@@ -259,6 +276,28 @@ const mapError = () => {
   }, 5000);
 };
 
+const address = (item: IAddress) => {
+  let result = item.locality + ", " + item.street + " " + item.house;
+
+  if (!!item.flat) {
+    result += `, кв. ${item.flat}`;
+  }
+  // Добавляем этаж, если он указан
+  if (!!item.floor) {
+    result += `, этаж ${item.floor}`;
+  }
+
+  return result;
+};
+
+const clickAddress = (item: IAddress) => {
+  storeOrder.orderAddress = Object.assign({}, item);
+
+  setTimeout(() => {
+    setAddress();
+  }, 500);
+};
+
 onMounted(() => {
   getMap();
 });
@@ -287,7 +326,7 @@ onMounted(() => {
   }
 
   &__box {
-    margin: 40px 0 10px;
+    margin: 30px 0 10px;
   }
 
   &__input {
@@ -317,6 +356,45 @@ onMounted(() => {
     @media (max-width: 576px) {
       max-width: 140px;
       height: 41px;
+    }
+  }
+
+  &__history {
+    margin-top: 30px;
+
+    p {
+      font-weight: 500;
+      transition: all 0.3s;
+
+      @media (max-width: 576px) {
+        font-size: 14px;
+      }
+    }
+
+    &-button {
+      cursor: pointer;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .history-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 30px;
+      margin-bottom: 14px;
+      padding: 4px 0 4px 10px;
+      border-left: 3px solid var(--accent);
+      @media (max-width: 576px) {
+        margin-bottom: 8px;
+        border-left: 2px solid var(--accent);
+      }
+
+      @media (hover: hover) {
+        &:hover p {
+          color: var(--accent);
+        }
+      }
     }
   }
 }

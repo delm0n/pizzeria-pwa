@@ -316,7 +316,7 @@ const storeOrder = useOrderStore();
     margin-bottom: 5px;
   }
   .content-bonus {
-    margin: 10px 0 0;
+    margin: 0 0 5px;
   }
   .content-price {
     font-weight: 600;

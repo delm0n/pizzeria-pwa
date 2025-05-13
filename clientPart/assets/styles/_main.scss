@@ -77,8 +77,10 @@ body {
   z-index: 1;
   cursor: pointer;
 
-  &:hover {
-    background: rgba(57, 57, 57, 0.45);
+  @media (hover: hover) {
+    &:hover {
+      background: rgba(57, 57, 57, 0.45);
+    }
   }
 
   &:active {

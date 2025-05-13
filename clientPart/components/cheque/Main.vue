@@ -1,11 +1,7 @@
 <template>
   <div class="cheque" v-if="cheque !== null">
     <div
-      v-if="
-        activeOrder !== null &&
-        cheque.Status != 'Доставлен' &&
-        cheque.Status != 'Отменён'
-      "
+      v-if="activeOrder !== null && cheque.Status == 'Принят'"
       class="cheque-cancel"
     >
       <div v-if="activeOrder.timer > 0">
@@ -79,7 +75,12 @@
     >
       <div class="cheque-content__item">
         <p class="content-name">
-          <span>Начислили бонусов</span><span>{{ cheque.Bonus }} ₽</span>
+          <span
+            >{{
+              cheque.Status != "Принят" ? "Начислили" : "Начислим"
+            }}
+            бонусов</span
+          ><span>{{ cheque.Bonus }} ₽</span>
         </p>
       </div>
     </div>

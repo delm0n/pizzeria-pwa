@@ -152,7 +152,6 @@ export default defineNuxtComponent({
       const totalMinutes = hours * 60 + minutes;
       const startTotalMinutes = startHours * 60 + startMinutes;
       const endTotalMinutes = endHours * 60 + endMinutes;
-
       // Проверяем, попадает ли время в границы
       return (
         totalMinutes >= startTotalMinutes && totalMinutes <= endTotalMinutes

@@ -4,9 +4,9 @@
       :class="['pizza-input', bool ? 'pizza-input__active' : '']"
       @click="bool = !bool"
     >
-      <span> Выберите ресторан:</span>
+      <span style="transition: none"> Выберите ресторан:</span>
       <div class="pizza-input__hero">
-        <p v-text="title"></p>
+        <p style="color: #3f3f3f" v-text="title"></p>
         <svg
           :style="
             bool ? 'transform: rotate(180deg)' : 'transform: rotate(0deg)'
